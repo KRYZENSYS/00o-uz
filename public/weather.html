@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0e1a">
+<title>Ob-havo — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,sans-serif;background:#0a0e1a;color:#f1f5f9;min-height:100vh;padding:60px 16px 100px;max-width:720px;margin:0 auto}
+h1{font-size:clamp(24px,6vw,32px);font-weight:800;text-align:center;background:linear-gradient(135deg,#fbbf24,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
+.sub{text-align:center;color:#94a3b8;font-size:14px;margin-bottom:20px}
+.search{width:100%;padding:14px;border-radius:14px;background:rgba(0,0,0,0.4);color:white;border:1px solid rgba(255,255,255,0.1);font-size:15px;margin-bottom:12px}
+.search:focus{outline:none;border-color:#8b5cf6}
+.hero{background:linear-gradient(135deg,rgba(251,191,36,0.15),rgba(245,158,11,0.05));border:1px solid rgba(251,191,36,0.2);border-radius:20px;padding:24px;text-align:center;margin-bottom:12px}
+.city{font-size:20px;font-weight:700;margin-bottom:4px}
+.date{font-size:12px;color:#94a3b8}
+.temp{font-size:72px;font-weight:800;font-family:ui-monospace,monospace;line-height:1;background:linear-gradient(135deg,#fbbf24,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:8px 0}
+.icon{font-size:80px;margin:8px 0}
+.desc{font-size:14px;color:#cbd5e1;margin-bottom:8px}
+.row{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
+.cell{padding:12px;background:rgba(255,255,255,0.05);border-radius:10px;text-align:center}
+.cell-l{font-size:11px;color:#94a3b8;text-transform:uppercase}
+.cell-v{font-size:18px;font-weight:700;margin-top:2px}
+.forecast{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:12px}
+.day{padding:10px;background:rgba(255,255,255,0.05);border-radius:10px;text-align:center}
+.day-i{font-size:28px}
+.day-t{font-size:11px;color:#94a3b8;margin-top:2px}
+.day-temp{font-size:13px;font-weight:700;margin-top:2px}
+.empty{text-align:center;padding:40px;color:#64748b}
+</style>
+</head>
+<body>
+<h1>☀️ Ob-havo</h1>
+<p class="sub">Shahar bo'yicha ob-havo ma'lumotlari</p>
+<input class="search" id="s" placeholder="🔍 Shahar qidiring (Toshkent, London, ...)">
+<div id="out"><div class="empty">Shahar tanlang</div></div>
+<script>
+// Mock weather data
+var db = {
+  'toshkent':{city:'Toshkent',country:'UZ',temp:32,desc:'Quyoshli',icon:'☀️',hum:35,wind:8,feels:35,uv:8},
+  'samarqand':{city:'Samarqand',country:'UZ',temp:30,desc:'Quyoshli',icon:'☀️',hum:30,wind:10,feels:33,uv:9},
+  'london':{city:'London',country:'UK',temp:18,desc:'Bulutli',icon:'☁️',hum:75,wind:15,feels:17,uv:3},
+  'moskva':{city:'Moskva',country:'RU',temp:22,desc:'Yomg\'ir',icon:'🌧️',hum:80,wind:12,feels:21,uv:4},
+  'new york':{city:'New York',country:'US',temp:25,desc:'Quyoshli',icon:'☀️',hum:60,wind:10,feels:26,uv:6},
+  'tokyo':{city:'Tokyo',country:'JP',temp:28,desc:'Bulutli',icon:'⛅',hum:70,wind:7,feels:30,uv:5},
+  'istanbul':{city:'Istanbul',country:'TR',temp:29,desc:'Quyoshli',icon:'☀️',hum:55,wind:11,feels:31,uv:7},
+  'dubai':{city:'Dubai',country:'AE',temp:42,desc:'Issiq',icon:'🌞',hum:45,wind:6,feels:48,uv:11},
+  'paris':{city:'Paris',country:'FR',temp:20,desc:'Bulutli',icon:'☁️',hum:70,wind:9,feels:19,uv:4},
+  'berlin':{city:'Berlin',country:'DE',temp:19,desc:'Yomg\'ir',icon:'🌧️',hum:80,wind:14,feels:18,uv:3}
+};
+function genForecast(t){
+  var d=['Bugun','Ertaga','Indiki','3 kun','4 kun'];
+  return d.map(function(x,i){ return {d:x,i:['☀️','⛅','☁️','🌧️','⛈️'][i],hi:t+Math.floor(Math.random()*5-2),lo:t-5+Math.floor(Math.random()*5)}; });
+}
+function show(name){
+  var k=name.toLowerCase().trim();
+  var d=db[k];
+  if(!d){
+    // Generate mock
+    d={city:name, country:'??', temp:Math.floor(Math.random()*30+5), desc:['Quyoshli','Bulutli','Yomg\'ir','Qor'][Math.floor(Math.random()*4)], icon:['☀️','⛅','🌧️','❄️'][Math.floor(Math.random()*4)], hum:Math.floor(Math.random()*60+30), wind:Math.floor(Math.random()*15+5), feels:Math.floor(Math.random()*30+5), uv:Math.floor(Math.random()*10+1)};
+  }
+  var fc=genForecast(d.temp);
+  document.getElementById('out').innerHTML='<div class="hero"><div class="city">'+d.city+', '+d.country+'</div><div class="date">'+new Date().toLocaleDateString('uz-UZ',{weekday:'long',day:'numeric',month:'long'})+'</div><div class="icon">'+d.icon+'</div><div class="temp">'+d.temp+'°</div><div class="desc">'+d.desc+'</div><div class="row"><div class="cell"><div class="cell-l">Namlik</div><div class="cell-v">'+d.hum+'%</div></div><div class="cell"><div class="cell-l">Shamol</div><div class="cell-v">'+d.wind+' m/s</div></div><div class="cell"><div class="cell-l">His</div><div class="cell-v">'+d.feels+'°</div></div><div class="cell"><div class="cell-l">UV</div><div class="cell-v">'+d.uv+'</div></div></div></div><div class="hero" style="background:linear-gradient(135deg,rgba(139,92,246,0.15),rgba(236,72,153,0.05));border-color:rgba(139,92,246,0.2)"><h3 style="margin-bottom:10px;font-size:15px">📅 5 kunlik</h3><div class="forecast">'+fc.map(function(f){return '<div class="day"><div class="day-i">'+f.i+'</div><div class="day-t">'+f.d+'</div><div class="day-temp">'+f.hi+'°/'+f.lo+'°</div></div>';}).join('')+'</div></div>';
+}
+document.getElementById('s').addEventListener('keypress',function(e){ if(e.key==='Enter') show(this.value); });
+show('Toshkent');
+</script>
+</body>
+</html>
