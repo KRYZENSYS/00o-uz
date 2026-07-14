@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Markdown Editor — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; padding: 100px 20px; }
+.container { max-width: 1200px; margin: 0 auto; }
+h1 { font-size: 28px; margin-bottom: 16px; text-align: center;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; min-height: 60vh; }
+@media (max-width:768px) { .grid { grid-template-columns: 1fr; } }
+.box { padding: 16px; border-radius: 16px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; }
+.box h3 { margin-bottom: 8px; }
+textarea { flex: 1; width: 100%; padding: 12px; border-radius: 8px; background: rgba(0,0,0,0.4); color: white; border: 1px solid rgba(255,255,255,0.1); font-family: 'Courier New', monospace; font-size: 13px; resize: none; min-height: 400px; }
+.preview { flex: 1; padding: 12px; border-radius: 8px; background: rgba(0,0,0,0.2); overflow-y: auto; min-height: 400px; line-height: 1.6; }
+.preview h1, .preview h2, .preview h3 { margin: 12px 0 8px; }
+.preview code { background: rgba(139,92,246,0.2); padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+.preview pre { background: rgba(0,0,0,0.4); padding: 12px; border-radius: 8px; overflow-x: auto; }
+.preview blockquote { border-left: 4px solid #8b5cf6; padding-left: 12px; color: #94a3b8; }
+.preview a { color: #c4b5fd; }
+.preview ul, .preview ol { padding-left: 24px; }
+.tools { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 8px; }
+.tbtn { padding: 6px 10px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; cursor: pointer; font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>✍️ Markdown Editor</h1>
+  <div class="grid">
+    <div class="box">
+      <div class="tools">
+        <button class="tbtn" onclick="ins('**','**')">B</button>
+        <button class="tbtn" onclick="ins('*','*')"><i>I</i></button>
+        <button class="tbtn" onclick="ins('~~','~~')">S</button>
+        <button class="tbtn" onclick="ins('# ','')">H1</button>
+        <button class="tbtn" onclick="ins('## ','')">H2</button>
+        <button class="tbtn" onclick="ins('- ','')">•</button>
+        <button class="tbtn" onclick="ins('[',']()')">🔗</button>
+        <button class="tbtn" onclick="ins('`','`')">code</button>
+        <button class="tbtn" onclick="ins('```\n','\n```')">block</button>
+      </div>
+      <textarea id="inp" oninput="preview()"># Salom dunyo! 👋
+
+Bu **markdown** editor. _Yozing va natijani ko'ring_.
+
+## Xususiyatlar:
+- **Qalin** matn
+- *Kursiv* matn
+- `kod` bloki
+- [Havolalar](https://00o.uz)
+
+> Bu iqtibos. Markdown oddiy va kuchli.
+
+\`\`\`javascript
+const hello = "world";
+console.log(hello);
+\`\`\`
+
+| Ustun 1 | Ustun 2 |
+|---------|---------|
+| Qiymat  | Qiymat  |
+</textarea>
+    </div>
+    <div class="box">
+      <h3>👁 Preview</h3>
+      <div class="preview" id="out"></div>
+    </div>
+  </div>
+</div>
+<script>
+function preview() {
+  const t = document.getElementById('inp').value;
+  let h = t
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/~~(.+?)~~/g, '<del>$1</del>')
+    .replace(/`(.+?)`/g, '<code>$1</code>')
+    .replace(/```([\s\S]+?)```/g, '<pre><code>$1</code></pre>')
+    .replace(/^> (.*$)/gim, '<blockquote>$1</blockquote>')
+    .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank">$1</a>')
+    .replace(/^\- (.*$)/gim, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
+    .replace(/^\d+\. (.*$)/gim, '<oli>$1</oli>')
+    .replace(/^---$/gim, '<hr>')
+    .replace(/\n/g, '<br>');
+  document.getElementById('out').innerHTML = h;
+}
+function ins(a, b) {
+  const ta = document.getElementById('inp');
+  const s = ta.selectionStart, e = ta.selectionEnd;
+  ta.value = ta.value.substring(0, s) + a + ta.value.substring(s, e) + b + ta.value.substring(e);
+  ta.focus();
+  preview();
+}
+preview();
+</script>
+</body>
+</html>
