@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mood Tracker — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; padding: 100px 20px 60px; }
+.container { max-width: 600px; margin: 0 auto; }
+h1 { font-size: 32px; margin-bottom: 8px; text-align: center;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.moods { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 20px 0; }
+.mood { aspect-ratio: 1; font-size: 40px; display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.03); border: 2px solid transparent; border-radius: 16px; cursor: pointer; transition: 0.2s; }
+.mood:hover, .mood.active { background: rgba(251,191,36,0.15); border-color: #fbbf24; transform: scale(1.1); }
+.box { padding: 20px; border-radius: 16px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); margin-bottom: 16px; }
+textarea { width: 100%; padding: 12px; border-radius: 8px; background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 12px; resize: vertical; min-height: 80px; font-family: inherit; }
+.btn { padding: 12px; border-radius: 10px; background: linear-gradient(135deg, #fbbf24, #f59e0b); color: white; border: none; font-weight: 700; cursor: pointer; width: 100%; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.s { padding: 12px; border-radius: 10px; background: rgba(255,255,255,0.03); text-align: center; }
+.s-n { font-size: 24px; font-weight: 800; }
+.chart { display: flex; gap: 2px; height: 100px; align-items: flex-end; margin-top: 16px; }
+.bar { flex: 1; background: linear-gradient(180deg, #fbbf24, #f59e0b); border-radius: 4px 4px 0 0; min-height: 4px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>😊 Mood Tracker</h1>
+  <p style="color:#94a3b8;text-align:center;margin-bottom:20px">Kayfiyatingizni kuzatib boring</p>
+  <div class="box">
+    <h3 style="margin-bottom:12px">Bugun qanday?</h3>
+    <div class="moods">
+      <div class="mood" onclick="pick(1, this)">😢</div>
+      <div class="mood" onclick="pick(2, this)">😕</div>
+      <div class="mood" onclick="pick(3, this)">😐</div>
+      <div class="mood" onclick="pick(4, this)">😊</div>
+      <div class="mood" onclick="pick(5, this)">😄</div>
+    </div>
+    <textarea id="note" placeholder="Bugun nima his qildingiz?"></textarea>
+    <button class="btn" onclick="save()">💾 Saqlash</button>
+  </div>
+  <div class="stats" style="margin-bottom:16px">
+    <div class="s"><div class="s-n" id="avg">0</div><div style="font-size:11px;color:#94a3b8">O'rtacha</div></div>
+    <div class="s"><div class="s-n" id="streak">0</div><div style="font-size:11px;color:#94a3b8">Streak</div></div>
+    <div class="s"><div class="s-n" id="total">0</div><div style="font-size:11px;color:#94a3b8">Jami</div></div>
+  </div>
+  <div class="box">
+    <h3>📈 So'nggi 30 kun</h3>
+    <div class="chart" id="chart"></div>
+  </div>
+  <div class="box">
+    <h3>📜 Tarix</h3>
+    <div id="hist"></div>
+  </div>
+</div>
+<script>
+let data = JSON.parse(localStorage.getItem('oo-mood') || '[]');
+let cur = 0;
+const e = ['', '😢 Juda yomon', '😕 Yomon', '😐 Normal', '😊 Yaxshi', '😄 Ajoyib'];
+function pick(m, el) { document.querySelectorAll('.mood').forEach(x => x.classList.remove('active')); el.classList.add('active'); cur = m; }
+function save() { if (!cur) return alert('Kayfiyatni tanlang'); const today = new Date().toDateString(); data = data.filter(d => d.date !== today); data.unshift({date: today, m: cur, n: document.getElementById('note').value, t: new Date().toLocaleTimeString('uz-UZ',{hour:'2-digit',minute:'2-digit'})}); localStorage.setItem('oo-mood', JSON.stringify(data)); render(); }
+function render() {
+  if (!data.length) return;
+  document.getElementById('avg').textContent = (data.reduce((s, d) => s + d.m, 0) / data.length).toFixed(1);
+  document.getElementById('total').textContent = data.length;
+  let streak = 1; for (let i = 1; i < data.length; i++) { const prev = new Date(data[i-1].date); const cur = new Date(data[i].date); if ((prev - cur) / 86400000 === 1) streak++; else break; } document.getElementById('streak').textContent = streak;
+  // Chart last 30
+  const last30 = data.slice(0, 30).reverse();
+  document.getElementById('chart').innerHTML = last30.map(d => `<div class="bar" style="height:${d.m * 20}%" title="${d.date}: ${e[d.m]}"></div>`).join('');
+  document.getElementById('hist').innerHTML = data.slice(0, 10).map(d => `<div style="display:flex;gap:8px;padding:8px;border-radius:6px;background:rgba(255,255,255,0.03);margin-bottom:4px">
+    <span style="font-size:24px">${e[d.m].split(' ')[0]}</span>
+    <div style="flex:1"><div style="font-size:12px">${new Date(d.date).toLocaleDateString('uz-UZ',{day:'numeric',month:'short'})}</div><div style="font-size:13px;color:#cbd5e1">${d.n || e[d.m]}</div></div>
+  </div>`).join('');
+}
+render();
+</script>
+</body>
+</html>
