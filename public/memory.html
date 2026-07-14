@@ -1,58 +1,78 @@
 <!DOCTYPE html>
 <html lang="uz"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0e1a">
 <title>Memory — 00o.uz</title>
 <script src="/global.js"></script>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white;
-  min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-.box { text-align: center; }
-h1 { font-size: 32px; margin-bottom: 8px; background: linear-gradient(135deg, #8b5cf6, #ec4899);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.s { display: flex; gap: 16px; justify-content: center; margin-bottom: 16px; font-family: monospace; }
-.board { display: grid; grid-template-columns: repeat(4, 80px); gap: 8px; }
-@media (max-width:480px) { .board { grid-template-columns: repeat(4, 65px); } }
-.card { aspect-ratio: 1; border-radius: 10px; cursor: pointer; transition: 0.3s; transform-style: preserve-3d; position: relative; }
-.card.flipped { transform: rotateY(180deg); }
-.card .f, .card .b { position: absolute; inset: 0; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 32px; backface-visibility: hidden; }
-.card .f { background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; font-size: 20px; }
-.card .b { background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05)); transform: rotateY(180deg); border: 2px solid #8b5cf6; }
-.card.matched .b { background: linear-gradient(135deg, #22c55e, #10b981); border-color: #22c55e; }
-.b { padding: 10px 20px; border-radius: 100px; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; border: none; font-weight: 700; cursor: pointer; margin-top: 16px; }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+body{font-family:-apple-system,sans-serif;background:#0a0e1a;color:#f1f5f9;min-height:100vh;padding:60px 16px 100px;max-width:480px;margin:0 auto}
+h1{font-size:clamp(24px,6vw,32px);font-weight:800;text-align:center;background:linear-gradient(135deg,#8b5cf6,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
+.score-row{display:flex;gap:8px;margin-bottom:16px}
+.score{flex:1;padding:10px;border-radius:10px;background:rgba(255,255,255,0.05);text-align:center}
+.s-n{font-size:20px;font-weight:800;color:#fbbf24}
+.s-l{font-size:10px;color:#94a3b8;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-width:380px;margin:0 auto}
+.card{aspect-ratio:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:36px;cursor:pointer;transition:transform 0.2s}
+.card:active{transform:scale(0.95)}
+.card.open{background:linear-gradient(135deg,#8b5cf6,#ec4899);transform:rotateY(180deg)}
+.card.matched{background:linear-gradient(135deg,#22c55e,#10b981);animation:pop 0.4s}
+@keyframes pop{50%{transform:scale(1.1)}}
+button{padding:12px;border-radius:10px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:white;border:none;font-weight:700;cursor:pointer;width:100%;margin-top:14px;font-size:14px}
 </style>
 </head>
 <body>
-<div class="box">
-  <h1>🎴 Memory</h1>
-  <div class="s"><div>🎯 <span id="mv">0</span> urinish</div><div>⏱ <span id="tm">0</span>s</div><div>📈 <span id="bs">0</span> eng yaxshi</div></div>
-  <div class="board" id="bd"></div>
-  <button class="b" onclick="init()">🔄 Yangi</button>
+<h1>🎴 Memory</h1>
+<div class="score-row">
+  <div class="score"><div class="s-n" id="mv">0</div><div class="s-l">Yurishlar</div></div>
+  <div class="score"><div class="s-n" id="mt">0</div><div class="s-l">Juftlar</div></div>
+  <div class="score"><div class="s-n" id="best">0</div><div class="s-l">Eng yaxshi</div></div>
 </div>
+<div class="grid" id="grid"></div>
+<button onclick="init()">🔄 Yangi o'yin</button>
 <script>
-const em = ['🍎','🍌','🍇','🍓','🍑','🥝','🍍','🥭'];
-let cards, flipped, matched, moves, time, timer, best = parseInt(localStorage.getItem('oo-memory')||'0');
-document.getElementById('bs').textContent = best;
-function init() {
-  const sel = em.slice(0, 8);
-  cards = [...sel, ...sel].sort(() => Math.random() - 0.5).map((e, i) => ({e, i, m:false, f:false}));
-  flipped = []; matched = 0; moves = 0; time = 0;
-  document.getElementById('mv').textContent = 0; document.getElementById('tm').textContent = 0;
-  clearInterval(timer);
-  timer = setInterval(() => { time++; document.getElementById('tm').textContent = time; }, 1000);
-  draw();
+var icons=['🍎','🍌','🍇','🍓','🍑','🥝','🍍','🥥'];
+var cards=[], open=[], moves=0, matched=0, lock=false;
+var best=parseInt(localStorage.getItem('oo-mem-best')||'0');
+document.getElementById('best').textContent=best;
+function init(){
+  cards=[...icons,...icons].sort(function(){return Math.random()-0.5;});
+  open=[]; moves=0; matched=0; lock=false;
+  document.getElementById('mv').textContent=0;
+  document.getElementById('mt').textContent=0;
+  document.getElementById('grid').innerHTML=cards.map(function(c,i){
+    return '<div class="card" data-i="'+i+'" onclick="flip('+i+')">?</div>';
+  }).join('');
 }
-function draw() { document.getElementById('bd').innerHTML = cards.map((c, i) => `<div class="card ${c.m?'matched':''} ${c.f?'flipped':''}" onclick="click(${i})"><div class="f">?</div><div class="b">${c.e}</div></div>`).join(''); }
-function click(i) {
-  if (cards[i].m || cards[i].f || flipped.length === 2) return;
-  cards[i].f = true; flipped.push(i); draw();
-  if (flipped.length === 2) {
-    moves++; document.getElementById('mv').textContent = moves;
-    if (cards[flipped[0]].e === cards[flipped[1]].e) {
-      cards[flipped[0]].m = cards[flipped[1]].m = true; matched += 2; flipped = [];
-      window.confetti && window.confetti({count:30});
-      if (matched === 16) { clearInterval(timer); const score = Math.max(0, 1000 - moves*5 - time*5); if (score > best) { best = score; localStorage.setItem('oo-memory', best); document.getElementById('bs').textContent = best; } window.toast?.success(`Tabriklayman! ${score} ball`, '🎉'); }
-    } else { setTimeout(() => { flipped.forEach(j => cards[j].f = false); flipped = []; draw(); }, 800); }
+function flip(i){
+  if(lock) return;
+  var el=document.querySelector('[data-i="'+i+'"]');
+  if(el.classList.contains('open')||el.classList.contains('matched')) return;
+  el.classList.add('open');
+  el.textContent=cards[i];
+  open.push(i);
+  if(open.length===2){
+    moves++;
+    document.getElementById('mv').textContent=moves;
+    if(cards[open[0]]===cards[open[1]]){
+      matched++;
+      document.getElementById('mt').textContent=matched;
+      open.forEach(function(x){document.querySelector('[data-i="'+x+'"]').classList.add('matched');});
+      open=[];
+      if(matched===icons.length){
+        setTimeout(function(){
+          if(moves<best||!best){ best=moves; localStorage.setItem('oo-mem-best',best); document.getElementById('best').textContent=best; }
+          window.confetti({count:80});
+          toast.success('Yutdingiz! 🎉 '+moves+' yurishda');
+        },400);
+      }
+    } else {
+      lock=true;
+      setTimeout(function(){
+        open.forEach(function(x){var e=document.querySelector('[data-i="'+x+'"]'); e.classList.remove('open'); e.textContent='?';});
+        open=[]; lock=false;
+      },800);
+    }
   }
 }
 init();
