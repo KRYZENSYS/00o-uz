@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hazillar — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white;
+  min-height: 100vh; padding: 100px 20px 60px; }
+.container { max-width: 600px; margin: 0 auto; }
+h1 { font-size: 32px; margin-bottom: 8px; text-align: center;
+  background: linear-gradient(135deg, #fbbf24, #ef4444);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+.s { padding: 12px; border-radius: 10px; background: rgba(255,255,255,0.03); text-align: center; }
+.s-n { font-size: 22px; font-weight: 800; }
+.s-l { font-size: 11px; color: #94a3b8; }
+.joke-card { padding: 30px; border-radius: 20px; background: linear-gradient(135deg, rgba(251,191,36,0.1), rgba(239,68,68,0.05));
+  border: 1px solid rgba(251,191,36,0.2); text-align: center; min-height: 200px; display: flex; flex-direction: column; justify-content: center; transition: 0.3s; }
+.joke { font-size: 20px; line-height: 1.5; margin-bottom: 12px; }
+.punch { font-size: 22px; font-weight: 800; color: #fbbf24; }
+.btns { display: flex; gap: 8px; justify-content: center; margin-top: 16px; }
+.btn { padding: 12px 20px; border-radius: 100px; border: none; font-weight: 700; cursor: pointer; font-size: 14px; }
+.btn-p { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: white; }
+.btn-g { background: rgba(34,197,94,0.2); color: #86efac; }
+.btn-b { background: rgba(239,68,68,0.2); color: #fca5a5; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>😂 Hazillar</h1>
+  <p style="color:#94a3b8;text-align:center;margin-bottom:20px">Kundalik kayfiyat ko'taruvchi</p>
+  <div class="stats">
+    <div class="s"><div class="s-n" id="seen">0</div><div class="s-l">Ko'rilgan</div></div>
+    <div class="s"><div class="s-n" id="liked">0</div><div class="s-l">Yoqgan</div></div>
+    <div class="s"><div class="s-n" id="funny">0</div><div class="s-l">Kulgini</div></div>
+  </div>
+  <div class="joke-card" id="jc">
+    <div class="joke" id="setup">Yuklanmoqda...</div>
+    <div class="punch" id="pun" style="display:none">😄</div>
+  </div>
+  <div class="btns">
+    <button class="btn btn-b" onclick="vote(0)">👎</button>
+    <button class="btn btn-p" onclick="reveal()">😂 Punchline</button>
+    <button class="btn btn-g" onclick="vote(1)">👍</button>
+  </div>
+  <div class="btns" style="margin-top:8px">
+    <button class="btn" style="background:linear-gradient(135deg,#8b5cf6,#ec4899);color:white;width:100%" onclick="next()">🎲 Keyingi hazil</button>
+  </div>
+</div>
+<script>
+const J = [
+  {s:'Dasturchi xotiniga nima deydi?', p:'"Yur, do\'konga boramiz, men senga <body> ko\'rsataman."'},
+  {s:'Qaysi oy eng kam so\'z aytadi?', p:'Fevral — u qisqa.'},
+  {s:'Kompyuter shifokorga bordi. Shifokor nima dedi?', p:'"Sizda virus bor!"'},
+  {s:'Ikki pingvin Quyoshga qaradi. Birinchisi ikkinchisiga nima deydi?', p:'"Menga non oq bo\'lib ko\'rinayapti."'},
+  {s:'Nima uchun dasturchi do\'kon ketdi?', p:'Supermarket-da array (supermarket array) sotib olishdi.'},
+  {s:'Qaysi daraxt eng ko\'p gapiradi?', p:'Til daraxti.'},
+  {s:'Telegram bot nima uchun hech qachon yig\'lamaydi?', p:'Chunki u har doim "message" yuboradi.'},
+  {s:'Frontendchi yotadi. DevOps nima qiladi?', p:'Production\'ni pastga tushiradi.'},
+  {s:'Bug dasturchining eng yaxshi do\'sti.', p:'"Sen meni shuncha vaqt bezovta qilmading" — boshqa boshqa shikoyat qilmaydi.'},
+  {s:'CSS nima uchun yomon kayfiyatda?', p:'Margin va padding tufayli.'},
+  {s:'HTML — bu ...', p:'... dasturlash tili, lekin dasturchilar buni inkor qiladi.'},
+  {s:'Java va JavaScript nima o\'xshash?', p:'Xuddi kiyik va kiyik kabi.'},
+  {s:'Nima uchun WiFi yomon?', p:'Chunki u "wireless" — ya\'ni simsiz, ya\'ni tushunarsiz.'},
+  {s:'Nima uchun dasturchi uxlamaydi?', p:'Chunki "Stack Overflow" da javob bor.'},
+  {s:'AI xotiniga nima deydi?', p:'"Men sening haqingda 1000 ma\'lumot o\'rgandim, lekin baribir tushunmayman."'}
+];
+let seen = parseInt(localStorage.getItem('oo-jokes-seen') || '0');
+let liked = parseInt(localStorage.getItem('oo-jokes-liked') || '0');
+let funny = parseInt(localStorage.getItem('oo-jokes-funny') || '0');
+let revealed = false;
+let cur = null;
+function save() { localStorage.setItem('oo-jokes-seen', seen); localStorage.setItem('oo-jokes-liked', liked); localStorage.setItem('oo-jokes-funny', funny); }
+function render() {
+  document.getElementById('seen').textContent = seen;
+  document.getElementById('liked').textContent = liked;
+  document.getElementById('funny').textContent = funny;
+}
+function next() {
+  if (cur && revealed) { /* nothing */ }
+  cur = J[Math.floor(Math.random() * J.length)];
+  document.getElementById('setup').textContent = cur.s;
+  document.getElementById('pun').textContent = '?';
+  document.getElementById('pun').style.display = 'none';
+  revealed = false;
+  seen++; save(); render();
+}
+function reveal() {
+  if (!cur) return;
+  document.getElementById('pun').textContent = cur.p;
+  document.getElementById('pun').style.display = 'block';
+  revealed = true;
+  window.confetti && window.confetti({count: 20});
+}
+function vote(v) {
+  if (!revealed) reveal();
+  if (v === 1) liked++; else funny++;
+  save(); render();
+  setTimeout(next, 800);
+}
+next(); render();
+</script>
+</body>
+</html>
