@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop — 00o.uz</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(10,14,26,0.85); backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.05); z-index: 100; padding: 16px 0; }
+.nav-inner { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+.nav-links { display: flex; gap: 8px; list-style: none; }
+.nav-links a { color: #cbd5e1; text-decoration: none; font-size: 14px; padding: 8px 14px; border-radius: 8px; }
+.nav-links a:hover { background: rgba(255,255,255,0.05); }
+.nav-links a.active { background: linear-gradient(135deg, #ec4899, #f59e0b); }
+.btn-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1); color: white; cursor: pointer; }
+.sh-hero { padding: 100px 0 20px; text-align: center; }
+.sh-hero h1 { font-size: 40px; font-weight: 800; margin-bottom: 8px;
+  background: linear-gradient(135deg, #ec4899, #f59e0b);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.coins { display: inline-block; padding: 8px 20px; border-radius: 100px;
+  background: rgba(251,191,36,0.15); border: 1px solid rgba(251,191,36,0.3);
+  color: #fbbf24; font-weight: 700; margin: 10px 0; }
+.tabs { display: flex; gap: 4px; padding: 4px; background: rgba(255,255,255,0.05);
+  border-radius: 12px; width: fit-content; margin: 0 auto 30px; }
+.tab { padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; }
+.tab.active { background: linear-gradient(135deg, #ec4899, #f59e0b); }
+.items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; padding-bottom: 60px; }
+.item { padding: 20px; border-radius: 16px; text-align: center; cursor: pointer;
+  background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.06); transition: 0.3s; position: relative; }
+.item:hover { transform: translateY(-4px); border-color: rgba(236,72,153,0.4); }
+.item.owned::after { content: '✓ OWNED'; position: absolute; top: 10px; right: 10px;
+  padding: 4px 10px; border-radius: 100px; background: #22c55e; color: white; font-size: 10px; font-weight: 700; }
+.item-img { font-size: 60px; margin: 20px 0; }
+.item-name { font-weight: 700; margin-bottom: 6px; }
+.item-desc { color: #94a3b8; font-size: 12px; min-height: 32px; }
+.item-price { padding: 8px 16px; background: linear-gradient(135deg, rgba(251,191,36,0.2), rgba(245,158,11,0.1));
+  border: 1px solid rgba(251,191,36,0.3); border-radius: 100px; color: #fbbf24;
+  font-weight: 800; display: inline-block; margin-top: 12px; cursor: pointer; }
+</style>
+</head>
+<body>
+<nav>
+  <div class="container nav-inner">
+    <a href="index.html" class="logo">00o.uz</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Bosh</a></li>
+      <li><a href="leaderboard.html">🏆 Top</a></li>
+      <li><a href="shop.html" class="active">🛍 Shop</a></li>
+      <li><a href="spin-wheel.html">🎰</a></li>
+      <li><a href="battle-pass.html">⚔ Pass</a></li>
+    </ul>
+    <div style="display:flex;gap:8px;">
+      <button class="btn-icon">🔔</button>
+      <a href="profile.html" class="btn-icon">👤</a>
+    </div>
+  </div>
+</nav>
+<section class="sh-hero container">
+  <h1>🛍 Tanga Do'koni</h1>
+  <p>Avatar, banner, frame, rang — barchasi shu yerda</p>
+  <div class="coins">💰 12,480 tanga</div>
+</section>
+<section class="container">
+  <div class="tabs">
+    <div class="tab active" onclick="setTab(this, 'avatar')">🎭 Avatar</div>
+    <div class="tab" onclick="setTab(this, 'frame')">🖼 Frame</div>
+    <div class="tab" onclick="setTab(this, 'banner')">🎨 Banner</div>
+    <div class="tab" onclick="setTab(this, 'title')">👑 Title</div>
+    <div class="tab" onclick="setTab(this, 'boost')">⚡ Boost</div>
+  </div>
+  <div class="items-grid" id="itemsGrid"></div>
+</section>
+<script src="/toast.js"></script>
+<script src="/confetti.js"></script>
+<script src="/animations.js"></script>
+<script src="/sound-effects.js"></script>
+<script>
+const items = {
+  avatar: [
+    {icon:'👨‍💻', name:'Developer', desc:'Dasturchi uchun', price:500, owned:true},
+    {icon:'🧑‍🚀', name:'Astronaut', desc:'Koinot kashfiyotchisi', price:2000},
+    {icon:'🧙', name:'Wizard', desc:'Sehrgar', price:5000},
+    {icon:'👨‍🎨', name:'Artist', desc:'Rassom', price:1500},
+    {icon:'🦸', name:'Hero', desc:'Qahramon', price:3000},
+    {icon:'🧛', name:'Vampire', desc:'Vampir', price:10000},
+    {icon:'🤖', name:'Robot', desc:'Android', price:4000},
+    {icon:'👽', name:'Alien', desc:'Begona sayyoralik', price:8000},
+  ],
+  frame: [
+    {icon:'🌟', name:'Gold Frame', desc:'Oltin ramka', price:1000, owned:true},
+    {icon:'💎', name:'Diamond', desc:'Brilliant', price:5000},
+    {icon:'🔥', name:'Fire', desc:'Olov', price:2000},
+    {icon:'❄️', name:'Ice', desc:'Muz', price:2000},
+    {icon:'🌈', name:'Rainbow', desc:'Kamus rang', price:3000},
+  ],
+  banner: [
+    {icon:'🌅', name:'Sunset', desc:'Quyosh botishi', price:800},
+    {icon:'🌌', name:'Galaxy', desc:'Galaktika', price:1500},
+    {icon:'🏔', name:'Mountains', desc:'Tog\'lar', price:1200},
+    {icon:'🌊', name:'Ocean', desc:'Okean', price:1000},
+  ],
+  title: [
+    {icon:'👑', name:'Legend', desc:'Afsona', price:10000},
+    {icon:'💎', name:'Pro', desc:'Professional', price:5000, owned:true},
+    {icon:'⭐', name:'Star', desc:'Yulduz', price:2000},
+    {icon:'🚀', name:'Pioneer', desc:'Kashfiyotchi', price:3000},
+  ],
+  boost: [
+    {icon:'⚡', name:'2x XP (24h)', desc:'Ikki barobar XP', price:500},
+    {icon:'💰', name:'2x Coin (24h)', desc:'Ikki barobar tanga', price:500},
+    {icon:'🎯', name:'Boost (3h)', desc:'3 soatlik boost', price:200},
+  ]
+};
+let activeTab = 'avatar';
+function setTab(el, t) {
+  document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+  el.classList.add('active');
+  activeTab = t;
+  render();
+}
+function render() {
+  const list = items[activeTab] || [];
+  document.getElementById('itemsGrid').innerHTML = list.map(i =>
+    `<div class="item ${i.owned?'owned':''} oo-anim fade-up" onclick="buy(event, ${i.price}, '${i.name}')">
+      <div class="item-img">${i.icon}</div>
+      <div class="item-name">${i.name}</div>
+      <div class="item-desc">${i.desc}</div>
+      <div class="item-price">💰 ${i.price.toLocaleString()}</div>
+    </div>`
+  ).join('');
+}
+function buy(e, price, name) {
+  if (e.target.closest('.item-price') || !e.currentTarget.classList.contains('owned')) {
+    window.sfx?.coin();
+    window.toast?.success(`${name} sotib olindi!`, '🛍 Shop');
+    e.currentTarget.classList.add('owned');
+    setTimeout(() => window.confetti({count:60}), 200);
+  } else {
+    window.toast?.info('Sizda bu bor!', '✓');
+  }
+}
+render();
+</script>
+</body>
+</html>
