@@ -1,2 +1,5 @@
-import { redirect } from 'next/navigation';
-export default function RootPage() { redirect('/uz/home'); }
+import HomePage from './[locale]/home/page';
+
+export default function RootPage() {
+  return <HomePage />;
+}
