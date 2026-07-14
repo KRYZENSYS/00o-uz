@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Story Viewer — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #000; color: white;
+  min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+.phone { width: 100%; max-width: 400px; height: 100vh; max-height: 800px; position: relative; background: #000; overflow: hidden; }
+.story { position: absolute; inset: 0; display: flex; flex-direction: column; }
+.bg { position: absolute; inset: 0; }
+.progress { position: absolute; top: 8px; left: 8px; right: 8px; display: flex; gap: 4px; z-index: 10; }
+.pbar { flex: 1; height: 3px; background: rgba(255,255,255,0.3); border-radius: 2px; overflow: hidden; }
+.pfill { height: 100%; background: white; width: 0; }
+.pbar.done .pfill { width: 100%; }
+.header { position: absolute; top: 20px; left: 0; right: 0; display: flex; align-items: center; gap: 8px; padding: 0 12px; z-index: 5; }
+.avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #8b5cf6, #ec4899); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.uname { flex: 1; font-weight: 700; font-size: 14px; text-shadow: 0 1px 3px black; }
+.utime { font-size: 12px; opacity: 0.8; }
+.close { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+.content { position: relative; padding: 80px 24px 100px; flex: 1; display: flex; flex-direction: column; justify-content: center; z-index: 3; }
+.story-text { font-size: 22px; line-height: 1.4; text-align: center; text-shadow: 0 2px 8px black; font-weight: 600; }
+.story-emoji { font-size: 80px; text-align: center; margin-bottom: 16px; }
+.footer { position: absolute; bottom: 20px; left: 0; right: 0; padding: 0 16px; z-index: 5; }
+.reply { width: 100%; padding: 12px 16px; border-radius: 100px; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 14px; }
+.nav { position: absolute; top: 0; bottom: 0; width: 50%; z-index: 2; }
+.nav-l { left: 0; }
+.nav-r { right: 0; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="bg" id="bg"></div>
+  <div class="progress" id="prog"></div>
+  <div class="header">
+    <div class="avatar">🚀</div>
+    <div><div class="uname">@kryzensys</div><div class="utime">5 soat oldin</div></div>
+    <button class="close" onclick="alert(\'Yopildi\')">×</button>
+  </div>
+  <div class="content">
+    <div class="story-emoji" id="em">🚀</div>
+    <div class="story-text" id="txt">Salom! Bu 00o.uz platformasining story viewer.</div>
+  </div>
+  <div class="footer"><input class="reply" placeholder="Javob yozing..."></div>
+  <div class="nav nav-l" onclick="prev()"></div>
+  <div class="nav nav-r" onclick="next()"></div>
+</div>
+<script>
+const stories = [
+  {bg:'linear-gradient(135deg,#8b5cf6,#ec4899)', em:'🚀', txt:'Yangi loyiha 00o.uz 300+ funksiyaga ega!'},
+  {bg:'linear-gradient(135deg,#22c55e,#06b6d4)', em:'🎉', txt:'Bugun 50,000 foydalanuvchiga yetdik!'},
+  {bg:'linear-gradient(135deg,#fbbf24,#ef4444)', em:'🔥', txt:'Yangi o\'yinlar qo\'shildi: Snake, Tetris, 2048'},
+  {bg:'linear-gradient(135deg,#06b6d4,#3b82f6)', em:'💡', txt:'Maslahat: Focus rejimida telefonsiz ishlang'},
+  {bg:'linear-gradient(135deg,#ec4899,#8b5cf6)', em:'❤️', txt:'Sizga yoqadimi? React qiling!'}
+];
+let cur = 0, timer;
+function init() { document.getElementById('prog').innerHTML = stories.map((_,i) => `<div class="pbar"><div class="pfill" id="pf${i}"></div></div>`).join(''); show(0); }
+function show(i) {
+  cur = i;
+  const s = stories[i];
+  document.getElementById('bg').style.background = s.bg;
+  document.getElementById('em').textContent = s.em;
+  document.getElementById('txt').textContent = s.txt;
+  stories.forEach((_, j) => {
+    const el = document.getElementById('pf' + j);
+    if (j < i) { el.parentElement.classList.add('done'); el.style.width = '100%'; }
+    else if (j === i) { el.parentElement.classList.remove('done'); animateFill(el); }
+    else { el.parentElement.classList.remove('done'); el.style.width = '0'; }
+  });
+  clearTimeout(timer);
+  timer = setTimeout(() => { if (cur < stories.length - 1) show(cur + 1); else { cur = -1; show(0); } }, 5000);
+}
+function animateFill(el) {
+  let w = 0; el.style.width = '0%';
+  const interval = setInterval(() => { w += 2; el.style.width = w + '%'; if (w >= 100) clearInterval(interval); }, 100);
+}
+function next() { if (cur < stories.length - 1) show(cur + 1); else show(0); }
+function prev() { if (cur > 0) show(cur - 1); else show(stories.length - 1); }
+init();
+</script>
+</body>
+</html>
