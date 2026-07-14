@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --primary: 262 83% 58%;
+    --border: 214.3 31.8% 91.4%;
+    --radius: 0.75rem;
+  }
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --primary: 263 70% 50%;
+    --border: 217.2 32.6% 17.5%;
+  }
+}
+
+@layer components {
+  .glass { @apply backdrop-blur-xl bg-white/5 border border-white/10; }
+  .glass-strong { @apply backdrop-blur-2xl bg-white/10 border border-white/20; }
+  .gradient-text { @apply bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent; }
+  .glow { box-shadow: 0 0 40px rgba(168, 85, 247, 0.4); }
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; font-family: -apple-system, "Inter", "Segoe UI", sans-serif; }
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+::-webkit-scrollbar-thumb { background: rgba(168, 85, 247, 0.5); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(168, 85, 247, 0.7); }
