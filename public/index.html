@@ -1,162 +1,140 @@
 <!DOCTYPE html>
 <html lang="uz"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>00o.uz — 300+ Funksiyali Mega Platforma</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0e1a">
+<meta name="description" content="00o.uz — O'zbek tilidagi eng katta bepul onlayn platforma. 50+ ilova, 7 ta kategoriya.">
+<title>00o.uz — 50+ Ilovalar Mega Platforma</title>
+<link rel="manifest" href="/manifest.json">
 <script src="/global.js"></script>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; }
-.hero { padding: 80px 20px 40px; text-align: center;
-  background: linear-gradient(180deg, rgba(139,92,246,0.15), transparent 60%); }
-.hero-badge { display: inline-block; padding: 6px 14px; border-radius: 100px; background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.3); font-size: 12px; margin-bottom: 12px; }
-h1 { font-size: 48px; font-weight: 800; margin-bottom: 12px;
-  background: linear-gradient(135deg, #8b5cf6, #ec4899, #06b6d4);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1; }
-.tagline { font-size: 18px; color: #cbd5e1; max-width: 600px; margin: 0 auto 24px; }
-.search { max-width: 500px; margin: 0 auto; padding: 14px 20px; border-radius: 100px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); color: white; font-size: 15px; width: 100%; }
-.search:focus { outline: none; border-color: #8b5cf6; }
-.stats { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin: 24px 0; }
-.s { padding: 16px 20px; border-radius: 12px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); text-align: center; }
-.s-n { font-size: 28px; font-weight: 800; background: linear-gradient(135deg, #8b5cf6, #ec4899);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.s-l { font-size: 12px; color: #94a3b8; }
-.container { max-width: 1200px; margin: 0 auto; padding: 0 20px 60px; }
-.section { margin-top: 40px; }
-.section-title { font-size: 24px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
-.app { padding: 16px 12px; border-radius: 12px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); text-align: center; cursor: pointer; transition: 0.2s; text-decoration: none; color: white; }
-.app:hover { transform: translateY(-4px); border-color: rgba(139,92,246,0.4); background: linear-gradient(135deg, rgba(139,92,246,0.1), rgba(236,72,153,0.05)); }
-.app-i { font-size: 36px; margin-bottom: 6px; }
-.app-n { font-size: 12px; font-weight: 600; }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0e1a;color:#f1f5f9;min-height:100vh;padding:0 0 100px;max-width:100%}
+.hero{padding:60px 16px 24px;text-align:center;background:linear-gradient(180deg,rgba(139,92,246,0.15) 0%,transparent 100%)}
+.badge{display:inline-block;padding:6px 14px;border-radius:100px;background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.3);font-size:11px;margin-bottom:12px;color:#c4b5fd}
+h1{font-size:clamp(36px,9vw,56px);font-weight:800;background:linear-gradient(135deg,#8b5cf6,#ec4899,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1;margin-bottom:8px}
+.tagline{color:#cbd5e1;font-size:clamp(14px,3.5vw,16px);max-width:500px;margin:0 auto 16px;line-height:1.4}
+.search{max-width:500px;margin:0 auto;padding:12px 18px;border-radius:100px;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.1);color:white;font-size:15px;width:100%;display:block}
+.search:focus{outline:none;border-color:#8b5cf6}
+.stats{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:20px 0 8px}
+.s{padding:10px 14px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);text-align:center;min-width:80px}
+.s-n{font-size:18px;font-weight:800;background:linear-gradient(135deg,#8b5cf6,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.s-l{font-size:10px;color:#94a3b8;text-transform:uppercase}
+.container{max-width:800px;margin:0 auto;padding:0 16px}
+.section{margin-top:32px}
+.sec-t{font-size:clamp(18px,4.5vw,22px);font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px;color:#e2e8f0}
+.sec-c{font-size:11px;color:#94a3b8;background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:100px;font-weight:400}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.app{padding:14px 8px;border-radius:12px;background:linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.06);text-align:center;cursor:pointer;transition:all 0.2s;text-decoration:none;color:white;display:block}
+.app:active{transform:scale(0.97)}
+.app-i{font-size:32px;margin-bottom:4px;display:block}
+.app-n{font-size:12px;font-weight:600}
+.empty{padding:40px 20px;text-align:center;color:#64748b;background:rgba(255,255,255,0.03);border-radius:12px}
+.footer{text-align:center;color:#64748b;padding:30px 16px;margin-top:30px;border-top:1px solid rgba(255,255,255,0.05);font-size:12px}
+.footer a{color:#8b5cf6;text-decoration:none}
 </style>
 </head>
 <body>
 <div class="hero">
-  <div class="hero-badge">🚀 v2.0 · 2026-07-14</div>
+  <div class="badge">🚀 v2.0 · 2026 · PWA</div>
   <h1>00o.uz</h1>
-  <p class="tagline">O'zbek tilidagi eng katta bepul onlayn platforma. 300+ funksiya, 12+ kategoriya, 100% mobil qulay.</p>
-  <input type="text" class="search" id="s" placeholder="🔍 300+ ilova ichidan qidiring..." oninput="filter()">
+  <p class="tagline">O'zbek tilidagi eng katta bepul onlayn platforma. 50+ ilova, 7 ta kategoriya, 100% mobil qulay.</p>
+  <input type="text" class="search" id="s" placeholder="🔍 Ilova qidiring..." oninput="filter()">
   <div class="stats">
-    <div class="s"><div class="s-n">300+</div><div class="s-l">Funksiya</div></div>
-    <div class="s"><div class="s-n">12</div><div class="s-l">Kategoriya</div></div>
+    <div class="s"><div class="s-n">50+</div><div class="s-l">Ilova</div></div>
+    <div class="s"><div class="s-n">7</div><div class="s-l">Kategoriya</div></div>
     <div class="s"><div class="s-n">100%</div><div class="s-l">Tekin</div></div>
-    <div class="s"><div class="s-n">0</div><div class="s-l">Reklamalar</div></div>
+    <div class="s"><div class="s-n">0</div><div class="s-l">Reklama</div></div>
   </div>
 </div>
-<div class="container">
-  <div class="section">
-    <div class="section-title">🛠 Utility & Vositalar</div>
-    <div class="grid" id="utility"></div>
-  </div>
-  <div class="section">
-    <div class="section-title">📊 Productivity & Tashkiliy</div>
-    <div class="grid" id="productivity"></div>
-  </div>
-  <div class="section">
-    <div class="section-title">🎮 O'yinlar</div>
-    <div class="grid" id="games"></div>
-  </div>
-  <div class="section">
-    <div class="section-title">🎨 Media & Kreativ</div>
-    <div class="grid" id="media"></div>
-  </div>
-  <div class="section">
-    <div class="section-title">💪 Salomatlik & Ta'lim</div>
-    <div class="grid" id="health"></div>
-  </div>
-  <div class="section">
-    <div class="section-title">💰 Moliya & Biznes</div>
-    <div class="grid" id="finance"></div>
-  </div>
-  <div class="section">
-    <div class="section-title">💬 Ijtimoiy & Ko'ngil ochar</div>
-    <div class="grid" id="social"></div>
-  </div>
-  <div style="text-align:center;color:#94a3b8;padding:30px;margin-top:30px;border-top:1px solid rgba(255,255,255,0.05)">
-    Made with ❤️ by KRYZENSYS · 2026 · <a href="https://github.com/KRYZENSYS/00o-uz" style="color:#8b5cf6;text-decoration:none">GitHub</a>
-  </div>
+<div class="container" id="content">
+  <div class="empty">Yuklanmoqda...</div>
+</div>
+<div class="footer">
+  Made with ❤️ by KRYZENSYS · 2026<br>
+  <a href="https://github.com/KRYZENSYS/00o-uz">GitHub</a> · <a href="/install.html">PWA o'rnatish</a>
 </div>
 <script>
-const apps = {
-  utility: [
+var apps = {
+  '🛠 Utility & Vositalar': [
     {n:'QR Code', u:'qr-generator.html', i:'📱'},
     {n:'Parol', u:'password.html', i:'🔐'},
     {n:'UUID', u:'uuid.html', i:'🔑'},
     {n:'Base64', u:'base64.html', i:'🔤'},
-    {n:'Hash', u:'hash.html', i:'#️⃣'},
-    {n:'JSON', u:'json.html', i:'{}'},
-    {n:'Markdown', u:'markdown.html', i:'📝'},
-    {n:'RegExp', u:'regex.html', i:'🔍'},
-    {n:'Cron', u:'cron.html', i:'⏰'},
-    {n:'Lorem', u:'lorem.html', i:'📄'},
-    {n:'Slug', u:'slug.html', i:'🔗'},
-    {n:'Diff', u:'diff.html', i:'🔀'},
-    {n:'Stopwatch', u:'timer.html', i:'⏱️'},
-    {n:'Color Picker', u:'color-picker.html', i:'🎨'},
+    {n:'JSON', u:'json.html', i:'{ }'},
+    {n:'Ob-havo', u:'weather.html', i:'☀️'},
+    {n:'Timer', u:'timer.html', i:'⏱️'},
+    {n:'Tasodifiy', u:'dice.html', i:'🎲'},
+    {n:'Kalkulyator', u:'calculator.html', i:'🧮'},
+    {n:'Konvertor', u:'converter.html', i:'📐'},
+    {n:'Matn', u:'text-tools.html', i:'📄'},
+    {n:'Rang', u:'color-picker.html', i:'🎨'},
     {n:'Pomodoro', u:'pomodoro.html', i:'🍅'}
   ],
-  productivity: [
+  '📊 Productivity': [
     {n:'Todo', u:'todo.html', i:'✅'},
     {n:'Notes', u:'notes.html', i:'📝'},
+    {n:'Kalendar', u:'calendar.html', i:'📅'},
     {n:'Kanban', u:'kanban-board.html', i:'📋'},
-    {n:'Calendar', u:'calendar.html', i:'📅'},
     {n:'Habit', u:'habit-tracker.html', i:'🎯'},
     {n:'Bookmarks', u:'bookmarks.html', i:'📚'}
   ],
-  games: [
+  '🎮 O\'yinlar': [
     {n:'Snake', u:'snake.html', i:'🐍'},
-    {n:'Tetris', u:'tetris.html', i:'🧱'},
     {n:'2048', u:'2048.html', i:'🔢'},
     {n:'Memory', u:'memory.html', i:'🎴'},
     {n:'Tic-Tac-Toe', u:'tic-tac-toe.html', i:'❌'},
-    {n:'Dice', u:'dice.html', i:'🎲'}
+    {n:'Quiz', u:'quiz.html', i:'❓'},
+    {n:'Clicker', u:'clicker.html', i:'👆'}
   ],
-  media: [
+  '🎨 Media & Kreativ': [
     {n:'Meme', u:'meme-generator.html', i:'😂'},
     {n:'Avatar', u:'avatar-generator.html', i:'👤'},
     {n:'Gradient', u:'gradient-generator.html', i:'🌈'},
     {n:'Emoji', u:'emoji-search.html', i:'😀'},
-    {n:'Photo Editor', u:'photo-editor.html', i:'🖼️'},
-    {n:'Meme Maker', u:'meme-maker.html', i:'🎭'}
+    {n:'Sticker', u:'sticker.html', i:'🌟'},
+    {n:'Rasm', u:'image-tools.html', i:'🖼️'}
   ],
-  health: [
+  '💪 Salomatlik': [
     {n:'Workout', u:'workout.html', i:'💪'},
-    {n:'Water', u:'water.html', i:'💧'},
-    {n:'Sleep', u:'sleep.html', i:'😴'},
+    {n:'Suv', u:'water.html', i:'💧'},
+    {n:'UykU', u:'sleep.html', i:'😴'},
     {n:'Mood', u:'mood.html', i:'😊'},
     {n:'BMI', u:'bmi.html', i:'⚖️'},
-    {n:'Calories', u:'calories.html', i:'🍎'},
-    {n:'Meditation', u:'meditation.html', i:'🧘'},
-    {n:'Quiz', u:'quiz.html', i:'📚'}
+    {n:'Meditatsiya', u:'meditation.html', i:'🧘'}
   ],
-  finance: [
-    {n:'Currency', u:'currency.html', i:'💱'},
-    {n:'Loan', u:'loan.html', i:'💰'},
-    {n:'Budget', u:'budget.html', i:'💵'}
+  '💰 Moliya': [
+    {n:'Valyuta', u:'currency.html', i:'💱'},
+    {n:'Kredit', u:'loan.html', i:'💰'},
+    {n:'Byudjet', u:'budget.html', i:'💵'}
   ],
-  social: [
-    {n:'Quotes', u:'quotes.html', i:'💭'},
-    {n:'Jokes', u:'jokes.html', i:'😂'},
+  '💬 Ijtimoiy': [
+    {n:'Iqtibos', u:'quotes.html', i:'💭'},
+    {n:'Hazil', u:'jokes.html', i:'😂'},
     {n:'Story', u:'story.html', i:'📖'},
-    {n:'Poll', u:'poll.html', i:'📊'}
+    {n:'So\'rov', u:'poll.html', i:'📊'}
   ]
 };
-function render() {
-  Object.keys(apps).forEach(cat => {
-    document.getElementById(cat).innerHTML = apps[cat].map(a => 
-      `<a href="${a.u}" class="app"><div class="app-i">${a.i}</div><div class="app-n">${a.n}</div></a>`
-    ).join('');
+function render(filter){
+  var q=(filter||'').toLowerCase();
+  var total=0, visible=0;
+  var html='';
+  Object.keys(apps).forEach(function(cat){
+    var list=apps[cat].filter(function(a){return !q||a.n.toLowerCase().indexOf(q)>=0;});
+    total+=apps[cat].length;
+    visible+=list.length;
+    if(!list.length) return;
+    html+='<div class="section"><div class="sec-t">'+cat+' <span class="sec-c">'+list.length+'</span></div><div class="grid">';
+    list.forEach(function(a){
+      html+='<a class="app" href="'+a.u+'"><span class="app-i">'+a.i+'</span><span class="app-n">'+a.n+'</span></a>';
+    });
+    html+='</div></div>';
   });
+  if(!visible){
+    html='<div class="section"><div class="empty">🔍 "'+filter+'" hech narsa topilmadi</div></div>';
+  }
+  document.getElementById('content').innerHTML=html;
 }
-function filter() {
-  const q = document.getElementById('s').value.toLowerCase();
-  Object.keys(apps).forEach(cat => {
-    const filtered = apps[cat].filter(a => !q || a.n.toLowerCase().includes(q));
-    document.getElementById(cat).innerHTML = filtered.map(a => 
-      `<a href="${a.u}" class="app"><div class="app-i">${a.i}</div><div class="app-n">${a.n}</div></a>`
-    ).join('');
-  });
-}
+function filter(){ render(document.getElementById('s').value); }
 render();
 </script>
 </body>
