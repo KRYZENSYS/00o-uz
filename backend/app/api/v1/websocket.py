@@ -1,85 +1,67 @@
-"""WebSocket - Real-time chat, notifications"""
-import json
-import asyncio
-from typing import Dict, Set
+"""WebSocket"""
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-from datetime import datetime
-import jwt
+from typing import Dict, Set
+import json, asyncio
 
-from app.core.config import settings
-
-router = APIRouter()
+router = APIRouter(prefix="/ws", tags=["websocket"])
 
 
 class ConnectionManager:
     def __init__(self):
-        self.active_connections: Dict[int, WebSocket] = {}
-        self.online_users: Set[int] = set()
+        self.active: Dict[int, Set[WebSocket]] = {}
+        self.lock = asyncio.Lock()
 
-    async def connect(self, user_id: int, websocket: WebSocket):
-        await websocket.accept()
-        self.active_connections[user_id] = websocket
-        self.online_users.add(user_id)
-        await self.broadcast_presence(user_id, "online")
+    async def connect(self, user_id: int, ws: WebSocket):
+        await ws.accept()
+        async with self.lock:
+            self.active.setdefault(user_id, set()).add(ws)
 
-    def disconnect(self, user_id: int):
-        self.active_connections.pop(user_id, None)
-        self.online_users.discard(user_id)
+    async def disconnect(self, user_id: int, ws: WebSocket):
+        async with self.lock:
+            if user_id in self.active: self.active[user_id].discard(ws)
+            if user_id in self.active and not self.active[user_id]: del self.active[user_id]
 
     async def send_personal(self, user_id: int, message: dict):
-        if user_id in self.active_connections:
-            try:
-                await self.active_connections[user_id].send_json(message)
-            except:
-                self.disconnect(user_id)
+        if user_id in self.active:
+            for ws in list(self.active[user_id]):
+                try: await ws.send_json(message)
+                except: pass
 
-    async def broadcast(self, message: dict, exclude: int = None):
-        for user_id, ws in self.active_connections.items():
-            if user_id != exclude:
-                try:
-                    await ws.send_json(message)
-                except:
-                    self.disconnect(user_id)
+    async def broadcast(self, message: dict):
+        for user_id in list(self.active.keys()):
+            await self.send_personal(user_id, message)
 
-    async def broadcast_presence(self, user_id: int, status: str):
-        await self.broadcast({
-            "type": "presence", "user_id": user_id, "status": status,
-            "timestamp": datetime.utcnow().isoformat()
-        }, exclude=user_id)
+    async def send_chat(self, from_id: int, to_id: int, message: dict):
+        await self.send_personal(to_id, {**message, "from": from_id})
+        await self.send_personal(from_id, message)
+
+    def is_online(self, user_id: int) -> bool:
+        return user_id in self.active and len(self.active[user_id]) > 0
+
+    def online_users(self) -> int:
+        return len(self.active)
 
 
 manager = ConnectionManager()
 
 
-@router.websocket("/ws/{token}")
-async def websocket_endpoint(websocket: WebSocket, token: str):
-    try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
-        user_id = payload.get("user_id")
-        if not user_id:
-            await websocket.close(code=1008)
-            return
-    except:
-        await websocket.close(code=1008)
-        return
-
+@router.websocket("/{user_id}")
+async def websocket_endpoint(websocket: WebSocket, user_id: int):
     await manager.connect(user_id, websocket)
     try:
+        await manager.send_personal(user_id, {"type": "connected", "message": "WebSocket ulandi"})
         while True:
-            data = await websocket.receive_json()
-            msg_type = data.get("type")
-            if msg_type == "chat_message":
-                await manager.broadcast({
-                    "type": "new_message", "chat_id": data.get("chat_id"),
-                    "sender_id": user_id, "content": data.get("content"),
-                    "timestamp": datetime.utcnow().isoformat()
-                })
-            elif msg_type == "typing":
-                await manager.broadcast({
-                    "type": "typing", "chat_id": data.get("chat_id"),
-                    "user_id": user_id, "is_typing": data.get("is_typing", False)
-                })
-            elif msg_type == "ping":
-                await manager.send_personal(user_id, {"type": "pong"})
+            data = await websocket.receive_text()
+            try:
+                msg = json.loads(data)
+                if msg.get("type") == "ping":
+                    await websocket.send_json({"type": "pong"})
+                elif msg.get("type") == "chat":
+                    to_id = msg.get("to")
+                    if to_id: await manager.send_chat(user_id, to_id, {"type": "chat", "content": msg.get("content", "")})
+                elif msg.get("type") == "typing":
+                    to_id = msg.get("to")
+                    if to_id: await manager.send_personal(to_id, {"type": "typing", "from": user_id})
+            except: pass
     except WebSocketDisconnect:
-        manager.disconnect(user_id)
+        await manager.disconnect(user_id, websocket)
