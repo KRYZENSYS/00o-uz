@@ -1,88 +1,83 @@
 <!DOCTYPE html>
 <html lang="uz"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BMI Kalkulyator — 00o.uz</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0e1a">
+<title>BMI — 00o.uz</title>
 <script src="/global.js"></script>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white;
-  min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-.box { text-align: center; max-width: 500px; }
-h1 { font-size: 32px; margin-bottom: 8px; background: linear-gradient(135deg, #22c55e, #06b6d4);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.tabs { display: flex; gap: 6px; justify-content: center; margin: 16px 0; }
-.tab { padding: 8px 16px; border-radius: 100px; background: rgba(255,255,255,0.05); cursor: pointer; }
-.tab.active { background: linear-gradient(135deg, #22c55e, #06b6d4); }
-.gauge { width: 280px; height: 160px; margin: 20px auto; position: relative; overflow: hidden; }
-.gauge svg { width: 100%; height: 100%; }
-.bmi-num { font-size: 64px; font-weight: 800; font-family: monospace;
-  background: linear-gradient(135deg, #22c55e, #06b6d4);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.cat { font-size: 20px; font-weight: 700; margin: 8px 0; }
-.inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 16px 0; }
-input { padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(255,255,255,0.1); text-align: center; font-size: 16px; }
-.info { padding: 16px; border-radius: 12px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); margin-top: 16px; }
-.row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-.row:last-child { border: none; }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,sans-serif;background:#0a0e1a;color:#f1f5f9;min-height:100vh;padding:60px 16px 100px;max-width:480px;margin:0 auto}
+h1{font-size:clamp(24px,6vw,32px);font-weight:800;text-align:center;background:linear-gradient(135deg,#22c55e,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
+.sub{text-align:center;color:#94a3b8;font-size:14px;margin-bottom:20px}
+.gauge{width:100%;max-width:280px;margin:0 auto 20px;display:block}
+.g-num{font-size:72px;font-weight:800;font-family:ui-monospace,monospace;text-align:center;background:linear-gradient(135deg,#22c55e,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.g-cat{font-size:18px;font-weight:700;text-align:center;margin:8px 0}
+.box{padding:16px;border-radius:14px;background:linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.06);margin-bottom:12px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+label{font-size:12px;color:#94a3b8;display:block;margin-bottom:4px}
+input{width:100%;padding:12px;border-radius:10px;background:rgba(0,0,0,0.4);color:white;border:1px solid rgba(255,255,255,0.1);font-size:18px;font-weight:700;text-align:center}
+input:focus{outline:none;border-color:#22c55e}
+.tabs{display:flex;gap:4px;margin-bottom:12px;background:rgba(255,255,255,0.03);padding:4px;border-radius:10px}
+.tab{flex:1;padding:8px;border-radius:8px;text-align:center;cursor:pointer;font-size:12px;color:#94a3b8}
+.tab.act{background:linear-gradient(135deg,#22c55e,#06b6d4);color:white;font-weight:700}
+.info{padding:12px;border-radius:10px;background:rgba(0,0,0,0.3);margin-top:8px}
+.info-r{display:flex;justify-content:space-between;padding:6px 0;font-size:13px}
+.info-r span:last-child{font-weight:700;color:#22c55e}
 </style>
 </head>
 <body>
+<h1>⚖️ BMI Kalkulyator</h1>
+<p class="sub">Tana massasi indeksi</p>
+<svg class="gauge" viewBox="0 0 200 110">
+  <defs>
+    <linearGradient id="b1" x1="0" x2="1"><stop offset="0" stop-color="#3b82f6"/><stop offset="1" stop-color="#06b6d4"/></linearGradient>
+    <linearGradient id="b2" x1="0" x2="1"><stop offset="0" stop-color="#22c55e"/><stop offset="1" stop-color="#10b981"/></linearGradient>
+    <linearGradient id="b3" x1="0" x2="1"><stop offset="0" stop-color="#fbbf24"/><stop offset="1" stop-color="#f59e0b"/></linearGradient>
+    <linearGradient id="b4" x1="0" x2="1"><stop offset="0" stop-color="#ef4444"/><stop offset="1" stop-color="#f97316"/></linearGradient>
+  </defs>
+  <path d="M 10 100 A 90 90 0 0 1 60 22" fill="none" stroke="url(#b1)" stroke-width="22"/>
+  <path d="M 60 22 A 90 90 0 0 1 100 10" fill="none" stroke="url(#b2)" stroke-width="22"/>
+  <path d="M 100 10 A 90 90 0 0 1 140 22" fill="none" stroke="url(#b3)" stroke-width="22"/>
+  <path d="M 140 22 A 90 90 0 0 1 190 100" fill="none" stroke="url(#b4)" stroke-width="22"/>
+  <line id="needle" x1="100" y1="100" x2="100" y2="20" stroke="white" stroke-width="3" stroke-linecap="round" transform="rotate(-90 100 100)"/>
+  <circle cx="100" cy="100" r="6" fill="white"/>
+</svg>
+<div class="g-num" id="bmi">—</div>
+<div class="g-cat" id="cat">Ma'lumot kiriting</div>
+<div class="tabs">
+  <div class="tab act" onclick="setU('m',this)">📏 Metr</div>
+  <div class="tab" onclick="setU('i',this)">📐 Inch</div>
+</div>
 <div class="box">
-  <h1>⚖️ BMI Kalkulyator</h1>
-  <div class="tabs">
-    <div class="tab active" onclick="setU('metric', this)">📏 Metr</div>
-    <div class="tab" onclick="setU('imperial', this)">📐 Inch</div>
-  </div>
-  <div class="gauge">
-    <svg viewBox="0 0 200 110">
-      <path d="M 10 100 A 90 90 0 0 1 190 100" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="20"/>
-      <path d="M 10 100 A 90 90 0 0 1 60 22" fill="none" stroke="#3b82f6" stroke-width="20"/>
-      <path d="M 60 22 A 90 90 0 0 1 100 10" fill="none" stroke="#22c55e" stroke-width="20"/>
-      <path d="M 100 10 A 90 90 0 0 1 140 22" fill="none" stroke="#fbbf24" stroke-width="20"/>
-      <path d="M 140 22 A 90 90 0 0 1 190 100" fill="none" stroke="#ef4444" stroke-width="20"/>
-      <line id="needle" x1="100" y1="100" x2="100" y2="20" stroke="white" stroke-width="3" stroke-linecap="round"/>
-    </svg>
-  </div>
-  <div class="bmi-num" id="bmi">0</div>
-  <div class="cat" id="cat">Ma'lumot kiriting</div>
-  <div class="inputs">
-    <input type="number" id="h" placeholder="Bo'y (sm)" value="175">
-    <input type="number" id="w" placeholder="Vazn (kg)" value="70">
-  </div>
-  <div class="info">
-    <div class="row"><span>Ideal vazn:</span><span id="ideal">-</span></div>
-    <div class="row"><span>Kerakli kaloriya:</span><span id="cal">-</span></div>
-    <div class="row"><span>Suv (kunlik):</span><span id="water">-</span></div>
+  <div class="row">
+    <div><label id="hl">Bo'y (sm)</label><input type="number" id="h" value="175"></div>
+    <div><label id="wl">Vazn (kg)</label><input type="number" id="w" value="70"></div>
   </div>
 </div>
+<div class="info" id="info"></div>
 <script>
-let unit = 'metric';
-function setU(u, el) { document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active')); el.classList.add('active'); unit = u; const h = document.getElementById('h'); const w = document.getElementById('w'); h.placeholder = u==='metric'?'Bo\'y (sm)':'Bo\'y (in)'; w.placeholder = u==='metric'?'Vazn (kg)':'Vazn (lb)'; calc(); }
-function calc() {
-  let h = parseFloat(document.getElementById('h').value);
-  let w = parseFloat(document.getElementById('w').value);
-  if (!h || !w) return;
-  if (unit === 'imperial') { h = h * 2.54; w = w * 0.453592; }
-  const bmi = w / Math.pow(h/100, 2);
-  document.getElementById('bmi').textContent = bmi.toFixed(1);
-  let cat, deg, color;
-  if (bmi < 18.5) { cat = '⚠️ Ozg\'in'; deg = -90 + (bmi / 18.5) * 45; color = '#3b82f6'; }
-  else if (bmi < 25) { cat = '✅ Normal'; deg = -45 + ((bmi-18.5) / 6.5) * 45; color = '#22c55e'; }
-  else if (bmi < 30) { cat = '⚠️ Ortiqcha'; deg = 0 + ((bmi-25) / 5) * 45; color = '#fbbf24'; }
-  else { cat = '🔴 Semizlik'; deg = 45 + Math.min(((bmi-30) / 10) * 45, 45); color = '#ef4444'; }
-  document.getElementById('cat').textContent = cat;
-  document.getElementById('cat').style.color = color;
-  const needle = document.getElementById('needle');
-  needle.setAttribute('transform', `rotate(${deg} 100 100)`);
-  needle.style.stroke = color;
-  // Ideal weight (BMI 22)
-  const idealH = h/100;
-  const ideal = (22 * idealH * idealH).toFixed(1);
-  document.getElementById('ideal').textContent = ideal + ' kg';
-  document.getElementById('cal').textContent = Math.round(w * 30) + ' kcal';
-  document.getElementById('water').textContent = Math.round(w * 35) + ' ml';
+var unit='m';
+function setU(u,el){ unit=u; document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('act');}); el.classList.add('act'); document.getElementById('hl').textContent=u==='m'?"Bo'y (sm)":"Bo'y (in)"; document.getElementById('wl').textContent=u==='m'?'Vazn (kg)':'Vazn (lb)'; calc(); }
+function calc(){
+  var h=parseFloat(document.getElementById('h').value);
+  var w=parseFloat(document.getElementById('w').value);
+  if(!h||!w){ document.getElementById('bmi').textContent='—'; document.getElementById('cat').textContent='Ma\'lumot kiriting'; document.getElementById('cat').style.color='#94a3b8'; document.getElementById('needle').setAttribute('transform','rotate(-90 100 100)'); document.getElementById('info').innerHTML=''; return; }
+  var hm=unit==='m'?h:h*2.54; var wkg=unit==='m'?w:w*0.453592;
+  var bmi=wkg/Math.pow(hm/100,2);
+  document.getElementById('bmi').textContent=bmi.toFixed(1);
+  var cat,deg,col;
+  if(bmi<18.5){ cat='⚠️ Ozg\'in'; deg=-90+(bmi/18.5)*45; col='#3b82f6'; }
+  else if(bmi<25){ cat='✅ Normal'; deg=-45+((bmi-18.5)/6.5)*45; col='#22c55e'; }
+  else if(bmi<30){ cat='⚠️ Ortiqcha'; deg=0+((bmi-25)/5)*45; col='#fbbf24'; }
+  else { cat='🔴 Semizlik'; deg=45+Math.min(((bmi-30)/10)*45,45); col='#ef4444'; }
+  document.getElementById('cat').textContent=cat;
+  document.getElementById('cat').style.color=col;
+  document.getElementById('needle').setAttribute('transform','rotate('+deg+' 100 100)');
+  document.getElementById('needle').style.stroke=col;
+  var ideal=(22*Math.pow(hm/100,2)).toFixed(1);
+  document.getElementById('info').innerHTML='<div class="info-r"><span>Ideal vazn (BMI 22):</span><span>'+ideal+' kg</span></div><div class="info-r"><span>Kunlik kaloriya:</span><span>'+Math.round(wkg*30)+' kcal</span></div><div class="info-r"><span>Kunlik suv:</span><span>'+Math.round(wkg*35)+' ml</span></div><div class="info-r"><span>BMR:</span><span>'+Math.round(10*wkg+6.25*hm-5*25+5)+' kcal</span></div>';
 }
-['h','w'].forEach(id => document.getElementById(id).oninput = calc);
+['h','w'].forEach(function(id){ document.getElementById(id).addEventListener('input',calc); });
 calc();
 </script>
 </body>
