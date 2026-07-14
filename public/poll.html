@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>So'rovnoma — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; padding: 100px 20px 60px; }
+.container { max-width: 600px; margin: 0 auto; }
+h1 { font-size: 32px; margin-bottom: 8px; text-align: center;
+  background: linear-gradient(135deg, #06b6d4, #3b82f6);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.box { padding: 20px; border-radius: 16px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); margin-bottom: 16px; }
+input, textarea { width: 100%; padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 8px; }
+.btn { padding: 12px; border-radius: 10px; background: linear-gradient(135deg, #06b6d4, #3b82f6); color: white; border: none; font-weight: 700; cursor: pointer; width: 100%; }
+.opt { padding: 12px; border-radius: 10px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); margin-bottom: 6px; position: relative; overflow: hidden; cursor: pointer; }
+.opt-bar { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(6,182,212,0.2), rgba(59,130,246,0.1)); transition: width 0.5s; z-index: 0; }
+.opt-content { position: relative; z-index: 1; display: flex; justify-content: space-between; }
+.voted { color: #06b6d4; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📊 So'rovnoma yaratish</h1>
+  <div class="box">
+    <h3 style="margin-bottom:12px">Yangi so'rovnoma</h3>
+    <input id="q" placeholder="Savol...">
+    <div id="opts">
+      <input class="opt-in" placeholder="Variant 1" value="Olma">
+      <input class="opt-in" placeholder="Variant 2" value="Nok">
+    </div>
+    <button class="btn" style="background:rgba(255,255,255,0.05);margin-bottom:8px" onclick="addOpt()">+ Variant qo'shish</button>
+    <button class="btn" onclick="create()">✨ Yaratish</button>
+  </div>
+  <div class="box" id="result"></div>
+</div>
+<script>
+function addOpt() { const i = document.createElement('input'); i.className='opt-in'; i.placeholder='Variant...'; document.getElementById('opts').appendChild(i); }
+function create() {
+  const q = document.getElementById('q').value.trim();
+  const opts = [...document.querySelectorAll('.opt-in')].map(x => x.value.trim()).filter(Boolean);
+  if (!q || opts.length < 2) return alert('Savol va kamida 2 variant kiriting');
+  const poll = {q, opts: opts.map(t => ({t, v: 0})), total: 0};
+  localStorage.setItem('oo-poll', JSON.stringify(poll));
+  render();
+}
+function vote(i) {
+  const p = JSON.parse(localStorage.getItem('oo-poll'));
+  if (!p) return;
+  p.opts[i].v++; p.total++;
+  localStorage.setItem('oo-poll', JSON.stringify(p));
+  render();
+}
+function render() {
+  const p = JSON.parse(localStorage.getItem('oo-poll'));
+  if (!p) return;
+  document.getElementById('result').innerHTML = `<h3 style="margin-bottom:12px">📈 ${p.q}</h3>${p.opts.map((o, i) => {
+    const pct = p.total ? Math.round(o.v / p.total * 100) : 0;
+    return `<div class="opt" onclick="vote(${i})"><div class="opt-bar" style="width:${pct}%"></div><div class="opt-content"><span>${o.t}</span><span class="voted">${pct}% (${o.v})</span></div></div>`;
+  }).join('')}<div style="text-align:center;color:#94a3b8;margin-top:8px">👥 Jami ovoz: ${p.total}</div>`;
+}
+render();
+</script>
+</body>
+</html>
