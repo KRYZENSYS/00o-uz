@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>00o.uz O'rnatish — PWA</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.box { text-align: center; max-width: 500px; }
+.app-icon { width: 120px; height: 120px; border-radius: 28px; margin: 0 auto 24px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899); display: flex; align-items: center; justify-content: center; font-size: 70px; box-shadow: 0 20px 60px rgba(139,92,246,0.4); }
+h1 { font-size: 32px; margin-bottom: 8px; background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.tagline { color: #94a3b8; margin-bottom: 24px; }
+.btn { width: 100%; padding: 14px; border-radius: 12px; border: none; font-weight: 700; font-size: 16px; cursor: pointer; margin-bottom: 8px; }
+.btn-p { background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; }
+.btn-s { background: rgba(255,255,255,0.05); color: white; }
+.feat { display: flex; gap: 12px; padding: 12px; border-radius: 10px; background: rgba(255,255,255,0.03); margin-bottom: 8px; text-align: left; align-items: center; }
+.f-i { font-size: 24px; }
+.f-t { font-size: 13px; color: #cbd5e1; }
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="app-icon">00</div>
+  <h1>00o.uz</h1>
+  <p class="tagline">300+ funksiyali super ilovani telefoningizga o'rnating</p>
+  <button class="btn btn-p" onclick="install()">📲 Telefonga o'rnatish</button>
+  <button class="btn btn-s" onclick="location.href='/index.html'">Asosiy sahifa</button>
+  <div style="margin-top:24px">
+    <h3 style="margin-bottom:12px;text-align:left">⚡ Xususiyatlar</h3>
+    <div class="feat"><div class="f-i">🚀</div><div class="f-t">Tezkor ishlash</div></div>
+    <div class="feat"><div class="f-i">📱</div><div class="f-t">Mobil-optimallashtirilgan</div></div>
+    <div class="feat"><div class="f-i">🌑</div><div class="f-t">Qorong'u rejim</div></div>
+    <div class="feat"><div class="f-i">🔒</div><div class="f-t">Xavfsiz va maxfiy</div></div>
+    <div class="feat"><div class="f-i">💾</div><div class="f-t">Oflayn ishlaydi</div></div>
+  </div>
+</div>
+<script>
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+});
+function install() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(r => {
+      if (r.outcome === 'accepted') window.toast?.success('O\'rnatildi!', '🎉');
+    });
+  } else {
+    alert('Brauzer: "Asosiy sahifaga qo\'shish" ni bosing yoki Share → Add to Home Screen');
+  }
+}
+</script>
+</body>
+</html>
