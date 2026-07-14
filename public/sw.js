@@ -1,28 +1,28 @@
-// 00o.uz Service Worker — offline support
-const CACHE = 'oo-uz-v1';
-const ASSETS = ['/', '/index.html', '/install.html', '/global.js', '/manifest.json'];
+// 00o.uz Service Worker - offline support
+var CACHE = 'oo-uz-v1';
+var ASSETS = ['/', '/index.html', '/install.html', '/global.js', '/manifest.json'];
 
-self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).catch(()=>{}));
+self.addEventListener('install', function(e) {
+  e.waitUntil(caches.open(CACHE).then(function(c){ return c.addAll(ASSETS); }).catch(function(){}));
   self.skipWaiting();
 });
 
-self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))));
+self.addEventListener('activate', function(e) {
+  e.waitUntil(caches.keys().then(function(keys){ return Promise.all(keys.filter(function(k){ return k !== CACHE; }).map(function(k){ return caches.delete(k); })); }));
   self.clients.claim();
 });
 
-self.addEventListener('fetch', e => {
+self.addEventListener('fetch', function(e) {
   if (e.request.method !== 'GET') return;
   e.respondWith(
-    caches.match(e.request).then(cached => {
-      const network = fetch(e.request).then(res => {
+    caches.match(e.request).then(function(cached){
+      var network = fetch(e.request).then(function(res){
         if (res && res.status === 200 && res.type === 'basic') {
-          const clone = res.clone();
-          caches.open(CACHE).then(c => c.put(e.request, clone)).catch(()=>{});
+          var clone = res.clone();
+          caches.open(CACHE).then(function(c){ c.put(e.request, clone); }).catch(function(){});
         }
         return res;
-      }).catch(() => cached);
+      }).catch(function(){ return cached; });
       return cached || network;
     })
   );
