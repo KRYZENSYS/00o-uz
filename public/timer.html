@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taymer — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; padding: 100px 20px 60px; }
+.container { max-width: 600px; margin: 0 auto; text-align: center; }
+h1 { font-size: 32px; margin-bottom: 8px; background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.tabs { display: flex; gap: 6px; justify-content: center; margin: 20px 0; }
+.tab { padding: 10px 20px; border-radius: 100px; background: rgba(255,255,255,0.05); cursor: pointer; font-size: 13px; font-weight: 600; }
+.tab.active { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
+.dis { font-size: 96px; font-weight: 800; font-family: monospace; margin: 30px 0;
+  background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.presets { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 8px; margin-bottom: 20px; }
+.preset { padding: 10px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); cursor: pointer; font-size: 14px; }
+.preset:hover { background: rgba(255,255,255,0.1); }
+.inputs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+.inputs input { padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(255,255,255,0.1); text-align: center; font-size: 16px; }
+.controls { display: flex; gap: 8px; justify-content: center; }
+.btn { padding: 14px 28px; border-radius: 100px; border: none; font-weight: 700; cursor: pointer; font-size: 15px; }
+.btn-p { background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; }
+.btn-s { background: rgba(255,255,255,0.05); color: white; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>⏱️ Taymer</h1>
+  <div class="tabs">
+    <div class="tab active" onclick="setMode('timer', this)">⏱ Taymer</div>
+    <div class="tab" onclick="setMode('stopwatch', this)">⏱ Stopwatch</div>
+    <div class="tab" onclick="setMode('alarm', this)">⏰ Budilnik</div>
+  </div>
+  <div id="main"></div>
+</div>
+<script>
+let mode='timer', t=0, timer, running=false, alarmTime=null;
+function setMode(m, el) { document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active')); el.classList.add('active'); mode=m; stop(); render(); }
+function render() {
+  const m = document.getElementById('main');
+  if (mode === 'timer') {
+    m.innerHTML = `<div class="dis" id="d">00:00:00</div>
+      <div class="presets">
+        <div class="preset" onclick="setT(60)">1m</div>
+        <div class="preset" onclick="setT(300)">5m</div>
+        <div class="preset" onclick="setT(600)">10m</div>
+        <div class="preset" onclick="setT(1800)">30m</div>
+        <div class="preset" onclick="setT(3600)">1s</div>
+      </div>
+      <div class="inputs">
+        <input type="number" id="h" placeholder="Soat" min="0" max="23" value="0">
+        <input type="number" id="m" placeholder="Minut" min="0" max="59" value="5">
+        <input type="number" id="s" placeholder="Soniya" min="0" max="59" value="0">
+      </div>
+      <div class="controls">
+        <button class="btn btn-p" onclick="start()">▶ Boshlash</button>
+        <button class="btn btn-s" onclick="stop()">⏸ To'xtatish</button>
+        <button class="btn btn-s" onclick="reset()">⟲ Reset</button>
+      </div>`;
+  } else if (mode === 'stopwatch') {
+    m.innerHTML = `<div class="dis" id="d">00:00:00.00</div>
+      <div class="controls">
+        <button class="btn btn-p" onclick="startSW()">▶ Start</button>
+        <button class="btn btn-s" onclick="stop()">⏸ Stop</button>
+        <button class="btn btn-s" onclick="reset()">⟲ Reset</button>
+      </div>`;
+  } else {
+    m.innerHTML = `<div class="dis" id="d">⏰</div>
+      <div style="margin-bottom:20px">
+        <input type="time" id="at" style="padding:12px;border-radius:10px;background:rgba(0,0,0,0.3);color:white;border:1px solid rgba(255,255,255,0.1);font-size:18px">
+      </div>
+      <div class="controls">
+        <button class="btn btn-p" onclick="setAlarm()">⏰ O'rnatish</button>
+        <button class="btn btn-s" onclick="stop()">✖ Bekor</button>
+      </div>
+      <div id="aStat" style="margin-top:16px;color:#94a3b8"></div>`;
+  }
+}
+function fmt(sec) { const h=Math.floor(sec/3600), m=Math.floor((sec%3600)/60), s=Math.floor(sec%60); return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; }
+function setT(s) { const h=Math.floor(s/3600), m=Math.floor((s%3600)/60), sec=s%60; document.getElementById('h').value=h; document.getElementById('m').value=m; document.getElementById('s').value=sec; }
+function start() {
+  if (mode==='timer') {
+    if (!running) t = (parseInt(document.getElementById('h').value)||0)*3600 + (parseInt(document.getElementById('m').value)||0)*60 + (parseInt(document.getElementById('s').value)||0);
+    if (t <= 0) return;
+    running = true;
+    timer = setInterval(() => { t--; document.getElementById('d').textContent = fmt(t); if (t <= 0) { stop(); window.toast?.success('Taymer tugadi!', '⏰'); new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAA').play().catch(()=>{}); } }, 1000);
+  } else if (mode==='stopwatch') { startSW(); }
+}
+function startSW() {
+  if (running) return;
+  running = true;
+  const startTime = Date.now() - t*10;
+  timer = setInterval(() => { t = (Date.now() - startTime) / 1000; const h=Math.floor(t/3600), m=Math.floor((t%3600)/60), s=t%60; document.getElementById('d').textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${s.toFixed(2).padStart(5,'0')}`; }, 30);
+}
+function setAlarm() {
+  const v = document.getElementById('at').value;
+  if (!v) return;
+  alarmTime = v;
+  document.getElementById('aStat').textContent = `⏰ ${v} ga budilnik o'rnatildi`;
+  document.getElementById('d').textContent = v;
+  timer = setInterval(() => {
+    const now = new Date();
+    const cur = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+    if (cur === alarmTime) { stop(); window.toast?.success('Budilnik!', '⏰'); new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAA').play().catch(()=>{}); }
+  }, 1000);
+}
+function stop() { running = false; clearInterval(timer); }
+function reset() { stop(); t = 0; if (mode==='timer') { document.getElementById('d').textContent = '00:00:00'; setT(0); } else if (mode==='stopwatch') document.getElementById('d').textContent = '00:00:00.00'; else { alarmTime = null; document.getElementById('aStat').textContent = ''; document.getElementById('d').textContent = '⏰'; } }
+render();
+</script>
+</body>
+</html>
