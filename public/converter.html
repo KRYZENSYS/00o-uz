@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0e1a">
+<title>Konvertor — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,sans-serif;background:#0a0e1a;color:#f1f5f9;min-height:100vh;padding:60px 16px 100px;max-width:720px;margin:0 auto}
+h1{font-size:clamp(24px,6vw,32px);font-weight:800;text-align:center;background:linear-gradient(135deg,#8b5cf6,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
+.sub{text-align:center;color:#94a3b8;font-size:14px;margin-bottom:20px}
+.tabs{display:flex;gap:4px;margin-bottom:16px;background:rgba(255,255,255,0.03);padding:4px;border-radius:10px;flex-wrap:wrap}
+.tab{flex:1;min-width:70px;padding:8px 4px;border-radius:8px;text-align:center;cursor:pointer;font-size:12px;color:#94a3b8}
+.tab.act{background:linear-gradient(135deg,#8b5cf6,#ec4899);color:white;font-weight:700}
+.box{padding:16px;border-radius:14px;background:linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.06);margin-bottom:12px}
+.row{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:end;margin-bottom:12px}
+input{width:100%;padding:14px;border-radius:10px;background:rgba(0,0,0,0.4);color:white;border:1px solid rgba(255,255,255,0.1);font-size:18px;font-weight:700;text-align:center}
+input:focus{outline:none;border-color:#8b5cf6}
+select{width:100%;padding:12px;border-radius:10px;background:rgba(0,0,0,0.4);color:white;border:1px solid rgba(255,255,255,0.1);font-size:14px;margin-top:4px}
+.swap{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:white;border:none;font-size:20px;cursor:pointer;align-self:end}
+.large{font-size:36px;font-weight:800;text-align:center;font-family:ui-monospace,monospace;background:linear-gradient(135deg,#fbbf24,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;padding:20px 0}
+label{font-size:12px;color:#94a3b8}
+</style>
+</head>
+<body>
+<h1>📐 Konvertor</h1>
+<p class="sub">Birliklarni bir-biriga o'zgartiring</p>
+<div class="tabs">
+  <div class="tab act" onclick="setT('len',this)">📏 Uzunlik</div>
+  <div class="tab" onclick="setT('weight',this)">⚖️ Vazn</div>
+  <div class="tab" onclick="setT('temp',this)">🌡 Harorat</div>
+  <div class="tab" onclick="setT('area',this)">📐 Yuza</div>
+  <div class="tab" onclick="setT('volume',this)">💧 Hajm</div>
+</div>
+<div class="box">
+  <div class="row">
+    <div><label>Qiymat</label><input type="number" id="v" value="1" oninput="conv()"></div>
+    <button class="swap" onclick="swap()">⇅</button>
+    <div><label>Natija</label><input type="number" id="r" readonly></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    <select id="u1" onchange="conv()"></select>
+    <select id="u2" onchange="conv()"></select>
+  </div>
+  <div class="large" id="big">1 m = 100 cm</div>
+</div>
+<script>
+var data={
+  len:{n:'Uzunlik',f:m,units:[['m',1],['cm',0.01],['mm',0.001],['km',1000],['inch',0.0254],['ft',0.3048],['yard',0.9144],['mile',1609.34]]},
+  weight:{n:'Vazn',f:m,units:[['kg',1],['g',0.001],['mg',0.000001],['ton',1000],['lb',0.453592],['oz',0.0283495]]},
+  area:{n:'Yuza',f:m,units:[['m²',1],['cm²',0.0001],['km²',1000000],['ha',10000],['acre',4046.86]]},
+  volume:{n:'Hajm',f:m,units:[['l',1],['ml',0.001],['m³',1000],['gal',3.78541],['cup',0.236588]]},
+  temp:{n:'Harorat',f:temp,units:[['°C',0],['°F',0],['K',0]]}
+};
+var type='len';
+function m(v,f,t){ return v*f/t; }
+function temp(v,f,t){
+  var c;
+  if(f==='°C') c=v; else if(f==='°F') c=(v-32)*5/9; else c=v-273.15;
+  if(t==='°C') return c; if(t==='°F') return c*9/5+32; return c+273.15;
+}
+function setT(t,el){
+  type=t; document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('act');}); el.classList.add('act');
+  var d=data[t];
+  var h=d.units.map(function(u){return '<option>'+u[0]+'</option>';}).join('');
+  document.getElementById('u1').innerHTML=h;
+  document.getElementById('u2').innerHTML=h;
+  document.getElementById('u2').selectedIndex=1;
+  conv();
+}
+function conv(){
+  var d=data[type];
+  var v=parseFloat(document.getElementById('v').value)||0;
+  var u1=document.getElementById('u1').value;
+  var u2=document.getElementById('u2').value;
+  var f1=d.units.find(function(u){return u[0]===u1;})[1];
+  var f2=d.units.find(function(u){return u[0]===u2;})[1];
+  var r=d.f(v,f1,f2);
+  document.getElementById('r').value=+r.toFixed(6);
+  document.getElementById('big').textContent=v+' '+u1+' = '+(+r.toFixed(4))+' '+u2;
+}
+function swap(){
+  var u1=document.getElementById('u1'); var u2=document.getElementById('u2');
+  var tmp=u1.value; u1.value=u2.value; u2.value=tmp;
+  conv();
+}
+setT('len',document.querySelector('.tab.act'));
+</script>
+</body>
+</html>
