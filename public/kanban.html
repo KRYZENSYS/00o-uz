@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kanban Board — 00o.uz</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #0a0e1a; color: white; min-height: 100vh; overflow-x: auto; }
+.container { max-width: 1600px; margin: 0 auto; padding: 0 24px; }
+nav { position: fixed; top: 0; left: 0; right: 0;
+  background: rgba(10, 14, 26, 0.85); backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.05); z-index: 100; padding: 16px 0; }
+.nav-inner { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+.nav-links { display: flex; gap: 8px; list-style: none; align-items: center; }
+.nav-links a { color: #cbd5e1; text-decoration: none; font-size: 14px; padding: 8px 14px; border-radius: 8px; transition: 0.3s; }
+.nav-links a:hover { background: rgba(255,255,255,0.05); color: white; }
+.nav-links a.active { background: linear-gradient(135deg, #06b6d4, #22c55e); color: white; }
+.btn-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1); color: white; cursor: pointer; font-size: 18px; }
+.btn { padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer;
+  border: none; transition: 0.3s; font-size: 14px; }
+.btn-primary { background: linear-gradient(135deg, #8b5cf6, #06b6d4); color: white; }
+.kb-hero { padding: 100px 0 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+.kb-title h1 { font-size: 32px; font-weight: 800; margin-bottom: 4px;
+  background: linear-gradient(135deg, #06b6d4, #22c55e);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.kb-title p { color: #94a3b8; font-size: 14px; }
+.kb-stats { display: flex; gap: 12px; }
+.kb-stat { padding: 10px 16px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.06); text-align: center; }
+.kb-stat-val { font-size: 18px; font-weight: 800; }
+.kb-stat-lbl { font-size: 11px; color: #94a3b8; }
+.board-wrap { padding: 24px 0 60px; overflow-x: auto; }
+.board { display: flex; gap: 16px; min-width: max-content; padding-bottom: 20px; }
+.column { width: 320px; flex-shrink: 0; display: flex; flex-direction: column; max-height: calc(100vh - 240px); }
+.column-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px;
+  border-radius: 12px 12px 0 0; font-weight: 700; }
+.column-head .col-name { display: flex; align-items: center; gap: 8px; }
+.col-dot { width: 10px; height: 10px; border-radius: 50%; }
+.col-backlog .column-head { background: linear-gradient(135deg, rgba(100,116,139,0.2), rgba(100,116,139,0.05)); }
+.col-backlog .col-dot { background: #64748b; }
+.col-todo .column-head { background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(139,92,246,0.05)); }
+.col-todo .col-dot { background: #8b5cf6; }
+.col-progress .column-head { background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(245,158,11,0.05)); }
+.col-progress .col-dot { background: #f59e0b; }
+.col-review .column-head { background: linear-gradient(135deg, rgba(6,182,212,0.2), rgba(6,182,212,0.05)); }
+.col-review .col-dot { background: #06b6d4; }
+.col-done .column-head { background: linear-gradient(135deg, rgba(34,197,94,0.2), rgba(34,197,94,0.05)); }
+.col-done .col-dot { background: #22c55e; }
+.col-count { padding: 2px 8px; border-radius: 10px; background: rgba(255,255,255,0.1); font-size: 12px; font-weight: 600; }
+.col-add { width: 24px; height: 24px; border-radius: 50%; background: rgba(255,255,255,0.1); border: none; color: white; cursor: pointer; font-size: 14px; }
+.col-add:hover { background: rgba(255,255,255,0.2); }
+.column-body { padding: 8px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+  border-top: none; border-radius: 0 0 12px 12px; flex: 1; overflow-y: auto; }
+.task { padding: 14px; border-radius: 10px; background: linear-gradient(135deg, rgba(30,41,59,0.8), rgba(15,23,42,0.6));
+  border: 1px solid rgba(255,255,255,0.06); margin-bottom: 8px; cursor: grab;
+  transition: 0.3s; position: relative; }
+.task:hover { transform: translateY(-2px); border-color: rgba(139,92,246,0.3); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+.task.dragging { opacity: 0.5; transform: rotate(2deg); }
+.task-priority { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 10px 10px 0 0; }
+.priority-high { background: linear-gradient(90deg, #ef4444, #f59e0b); }
+.priority-medium { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+.priority-low { background: linear-gradient(90deg, #22c55e, #06b6d4); }
+.task-title { font-weight: 600; font-size: 14px; margin: 4px 0 8px; line-height: 1.4; }
+.task-desc { color: #94a3b8; font-size: 12px; margin-bottom: 10px; line-height: 1.4; }
+.task-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 10px; }
+.task-tag { padding: 2px 8px; border-radius: 8px; font-size: 10px; font-weight: 600; }
+.tag-frontend { background: rgba(139,92,246,0.2); color: #c4b5fd; }
+.tag-backend { background: rgba(34,197,94,0.2); color: #86efac; }
+.tag-design { background: rgba(236,72,153,0.2); color: #f9a8d4; }
+.tag-bug { background: rgba(239,68,68,0.2); color: #fca5a5; }
+.tag-feature { background: rgba(6,182,212,0.2); color: #67e8f9; }
+.tag-urgent { background: rgba(245,158,11,0.2); color: #fbbf24; }
+.task-foot { display: flex; justify-content: space-between; align-items: center; }
+.task-avatars { display: flex; }
+.task-avatar { width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid #0a0e1a; margin-left: -6px; }
+.task-avatar:first-child { margin-left: 0; }
+.task-meta { display: flex; gap: 8px; font-size: 11px; color: #94a3b8; }
+.task-meta span { display: flex; align-items: center; gap: 2px; }
+.add-task { padding: 10px; border-radius: 8px; text-align: center; cursor: pointer;
+  color: #94a3b8; font-size: 13px; border: 1px dashed rgba(255,255,255,0.1); margin-top: 8px; }
+.add-task:hover { background: rgba(255,255,255,0.03); color: white; border-color: rgba(139,92,246,0.3); }
+</style>
+</head>
+<body>
+<nav>
+  <div class="container nav-inner">
+    <a href="index.html" class="logo">00o.uz</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Bosh sahifa</a></li>
+      <li><a href="startups.html">Startaplar</a></li>
+      <li><a href="freelancers.html">Frilanserlar</a></li>
+      <li><a href="jobs.html">Ish</a></li>
+      <li><a href="community.html">Community</a></li>
+      <li><a href="kanban.html" class="active">📋 Board</a></li>
+      <li><a href="dashboard.html">📊</a></li>
+      <li><a href="admin.html">📞</a></li>
+    </ul>
+    <div style="display:flex;gap:8px;">
+      <button class="btn-icon">🔔</button>
+      <button class="btn-icon" onclick="window.confetti({count:60})">🎉</button>
+      <a href="profile.html" class="btn-icon">👤</a>
+    </div>
+  </div>
+</nav>
+<section class="kb-hero container">
+  <div class="kb-title">
+    <h1>📋 Kanban Board</h1>
+    <p>PayUz v3.0 loyihasi · 12 ta task · 5 ta ustun · 8 ta a'zo</p>
+  </div>
+  <div class="kb-stats">
+    <div class="kb-stat"><div class="kb-stat-val" style="color:#8b5cf6">12</div><div class="kb-stat-lbl">Jami</div></div>
+    <div class="kb-stat"><div class="kb-stat-val" style="color:#22c55e">4</div><div class="kb-stat-lbl">Bajarildi</div></div>
+    <div class="kb-stat"><div class="kb-stat-val" style="color:#f59e0b">3</div><div class="kb-stat-lbl">Jarayonda</div></div>
+    <div class="kb-stat"><div class="kb-stat-val" style="color:#ef4444">2</div><div class="kb-stat-lbl">Shoshilinch</div></div>
+  </div>
+</section>
+<section class="board-wrap">
+  <div class="board container" id="board"></div>
+</section>
+<script src="/toast.js"></script>
+<script src="/confetti.js"></script>
+<script src="/animations.js"></script>
+<script src="/i18n.js"></script>
+<script>
+const cols = [
+  { id: 'backlog', name: 'Backlog', color: '#64748b', tasks: [
+    { id: 1, title: 'AI chatbot integratsiyasi', desc: 'Pay-me va Click uchun', tags: ['feature','backend'], priority: 'medium', avatars: ['👨','👩'], comments: 3, files: 2, due: '25-iyul' },
+    { id: 2, title: 'Yangi dashboard', desc: 'Analytics chartlar', tags: ['design','feature'], priority: 'low', avatars: ['👩','🧑'], comments: 5, files: 0, due: '30-iyul' },
+  ]},
+  { id: 'todo', name: 'Rejada', color: '#8b5cf6', tasks: [
+    { id: 3, title: '2FA autentifikatsiya', desc: 'SMS + Google Auth', tags: ['feature','urgent','backend'], priority: 'high', avatars: ['👨','👨','🧑'], comments: 8, files: 1, due: '15-iyul' },
+    { id: 4, title: 'Mobile app push', desc: 'iOS + Android', tags: ['feature','frontend'], priority: 'medium', avatars: ['👩','🧑'], comments: 2, files: 0, due: '20-iyul' },
+    { id: 5, title: 'Logo yangilash', desc: 'Brand refresh', tags: ['design'], priority: 'low', avatars: ['👩'], comments: 1, files: 3, due: '28-iyul' },
+  ]},
+  { id: 'progress', name: 'Jarayonda', color: '#f59e0b', tasks: [
+    { id: 6, title: 'To\'lov tizimini optimallashtirish', desc: 'P95 latency kamaytirish', tags: ['backend','urgent'], priority: 'high', avatars: ['👨','👨','👩'], comments: 12, files: 4, due: '14-iyul' },
+    { id: 7, title: 'Foydalanuvchi profili', desc: 'Yangi dizayn + funksionallik', tags: ['frontend','design'], priority: 'medium', avatars: ['👩','🧑'], comments: 6, files: 2, due: '18-iyul' },
+    { id: 8, title: 'Karta API versiyasi', desc: 'Yangi banklar qo\'shish', tags: ['backend','bug'], priority: 'high', avatars: ['👨','🧑'], comments: 4, files: 1, due: '13-iyul' },
+  ]},
+  { id: 'review', name: 'Ko\'rib chiqish', color: '#06b6d4', tasks: [
+    { id: 9, title: 'Onboarding flow', desc: 'Yangi foydalanuvchilar uchun', tags: ['design','feature'], priority: 'medium', avatars: ['👩','👨','🧑'], comments: 9, files: 5, due: '11-iyul' },
+    { id: 10, title: 'Email shablonlar', desc: 'Tranzaksiya xabarlari', tags: ['design'], priority: 'low', avatars: ['👩'], comments: 3, files: 0, due: '12-iyul' },
+  ]},
+  { id: 'done', name: 'Bajarildi', color: '#22c55e', tasks: [
+    { id: 11, title: 'Database backup', desc: 'Avtomatlashtirish', tags: ['backend'], priority: 'medium', avatars: ['👨','👨'], comments: 2, files: 0, due: '✅' },
+    { id: 12, title: 'Landing page A/B test', desc: 'Konversiya +23%', tags: ['design','feature'], priority: 'high', avatars: ['👩','🧑','👨'], comments: 7, files: 1, due: '✅' },
+  ]}
+];
+function tagLabel(t) { const m = {frontend:'Frontend',backend:'Backend',design:'Design',bug:'Bug',feature:'Feature',urgent:'Urgent'}; return m[t] || t; }
+function render() {
+  document.getElementById('board').innerHTML = cols.map(col => `
+    <div class="column col-${col.id}" data-col="${col.id}">
+      <div class="column-head">
+        <div class="col-name"><span class="col-dot"></span>${col.name}</div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <span class="col-count">${col.tasks.length}</span>
+          <button class="col-add" onclick="addTask('${col.id}')">+</button>
+        </div>
+      </div>
+      <div class="column-body" ondragover="event.preventDefault()" ondrop="drop(event,'${col.id}')">
+        ${col.tasks.map(t => `
+          <div class="task" draggable="true" ondragstart="drag(event, ${t.id}, '${col.id}')" data-id="${t.id}">
+            <div class="task-priority priority-${t.priority}"></div>
+            <div class="task-title">${t.title}</div>
+            <div class="task-desc">${t.desc}</div>
+            <div class="task-tags">${t.tags.map(tag => `<span class="task-tag tag-${tag}">${tagLabel(tag)}</span>`).join('')}</div>
+            <div class="task-foot">
+              <div class="task-avatars">${t.avatars.map(a => `<div class="task-avatar">${a}</div>`).join('')}</div>
+              <div class="task-meta">
+                <span>💬 ${t.comments}</span>
+                ${t.files ? `<span>📎 ${t.files}</span>` : ''}
+                <span>📅 ${t.due}</span>
+              </div>
+            </div>
+          </div>
+        `).join('')}
+        <div class="add-task" onclick="addTask('${col.id}')">+ Task qo'shish</div>
+      </div>
+    </div>
+  `).join('');
+}
+let dragData = null;
+function drag(e, id, from) {
+  dragData = { id, from };
+  e.dataTransfer.effectAllowed = 'move';
+  setTimeout(() => e.target.classList.add('dragging'), 0);
+}
+function drop(e, to) {
+  e.preventDefault();
+  if (!dragData) return;
+  const task = cols.find(c => c.id === dragData.from).tasks.find(t => t.id === dragData.id);
+  cols.find(c => c.id === dragData.from).tasks = cols.find(c => c.id === dragData.from).tasks.filter(t => t.id !== dragData.id);
+  cols.find(c => c.id === to).tasks.push(task);
+  dragData = null;
+  document.querySelectorAll('.task').forEach(t => t.classList.remove('dragging'));
+  render();
+  toast.success(`"${task.title}" ko'chirildi`, '📋 Board');
+}
+function addTask(colId) {
+  const title = prompt('Task nomi:');
+  if (!title) return;
+  const col = cols.find(c => c.id === colId);
+  col.tasks.push({ id: Date.now(), title, desc: 'Yangi task', tags: ['feature'], priority: 'medium', avatars: ['👤'], comments: 0, files: 0, due: 'TBD' });
+  render();
+  toast.success('Yangi task qo\'shildi!', '➕');
+}
+render();
+setTimeout(() => toast.info('3 ta task deadline yaqin', '⏰ Eslatma'), 1200);
+</script>
+</body>
+</html>
