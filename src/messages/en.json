@@ -1,0 +1,86 @@
+{
+  "common": {
+    "appName": "00o.uz",
+    "appDescription": "AI Startup & Freelancer Platform",
+    "tagline": "The largest startup and freelancer platform in Uzbekistan",
+    "search": "Search...",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "submit": "Submit",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "yes": "Yes",
+    "no": "No",
+    "getStarted": "Get started",
+    "signUp": "Sign up",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "profile": "Profile",
+    "settings": "Settings",
+    "dashboard": "Dashboard",
+    "notifications": "Notifications",
+    "messages": "Messages"
+  },
+  "nav": {
+    "home": "Home",
+    "startups": "Startups",
+    "freelancers": "Freelancers",
+    "investors": "Investors",
+    "jobs": "Jobs",
+    "teams": "Teams",
+    "ai": "AI Assistant",
+    "blog": "Blog",
+    "community": "Community",
+    "messages": "Messages",
+    "admin": "Admin Panel"
+  },
+  "auth": {
+    "signInTitle": "Sign in to your account",
+    "signUpTitle": "Create a new account",
+    "email": "Email",
+    "password": "Password",
+    "fullName": "Full name",
+    "username": "Username",
+    "forgotPassword": "Forgot password?",
+    "signInWithTelegram": "Sign in with Telegram",
+    "signInWithGoogle": "Sign in with Google",
+    "signInWithEmail": "Sign in with Email",
+    "verify": "Verify"
+  },
+  "landing": {
+    "hero": {
+      "title": "Show your startup to the world",
+      "subtitle": "00o.uz is the largest platform for startups, freelancers, and investors in Uzbekistan",
+      "searchPlaceholder": "Search for a startup, freelancer, or service..."
+    },
+    "stats": {
+      "startups": "Active startups",
+      "freelancers": "Freelancers",
+      "investors": "Investors",
+      "jobs": "Jobs"
+    },
+    "trending": "Trending startups",
+    "topFreelancers": "Top freelancers",
+    "latestJobs": "Latest jobs"
+  },
+  "ai": {
+    "title": "AI Assistant",
+    "subtitle": "Powerful tools powered by GroqCloud AI",
+    "chat": "AI Chat",
+    "input": "Type your question...",
+    "send": "Send",
+    "thinking": "Thinking..."
+  },
+  "errors": {
+    "required": "This field is required",
+    "email": "Invalid email",
+    "invalidCredentials": "Invalid login or password"
+  }
+}
