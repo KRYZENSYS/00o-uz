@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Chat — 00o.uz</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #0a0e1a; color: white; min-height: 100vh; }
+.container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+nav { position: fixed; top: 0; left: 0; right: 0;
+  background: rgba(10, 14, 26, 0.85); backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.05); z-index: 100; padding: 16px 0; }
+.nav-inner { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+.nav-links { display: flex; gap: 8px; list-style: none; align-items: center; }
+.nav-links a { color: #cbd5e1; text-decoration: none; font-size: 14px; padding: 8px 14px; border-radius: 8px; transition: 0.3s; }
+.nav-links a:hover { background: rgba(255,255,255,0.05); color: white; }
+.nav-links a.active { background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; }
+.btn-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1); color: white; cursor: pointer; font-size: 18px; }
+.ai-hero { padding: 100px 0 20px; text-align: center; }
+.ai-hero h1 { font-size: 40px; font-weight: 800; margin-bottom: 8px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.ai-hero p { color: #94a3b8; }
+.tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px;
+  margin: 24px 0 30px; }
+.tool-card { padding: 18px 12px; border-radius: 14px; text-align: center; cursor: pointer;
+  background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.06); transition: 0.3s; }
+.tool-card:hover { transform: translateY(-4px); border-color: rgba(139,92,246,0.4);
+  background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(236,72,153,0.05)); }
+.tool-card.active { background: linear-gradient(135deg, #8b5cf6, #ec4899); border-color: transparent; }
+.tool-icon { font-size: 30px; margin-bottom: 6px; }
+.tool-name { font-weight: 700; font-size: 13px; }
+.chat-area { display: flex; flex-direction: column; height: 60vh; max-height: 600px;
+  padding: 20px; border-radius: 20px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.06); }
+.chat-messages { flex: 1; overflow-y: auto; padding-right: 10px; display: flex; flex-direction: column; gap: 14px; }
+.msg { max-width: 80%; padding: 12px 16px; border-radius: 14px; line-height: 1.5; }
+.msg.user { background: linear-gradient(135deg, #8b5cf6, #06b6d4); align-self: flex-end; }
+.msg.bot { background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.2); align-self: flex-start; }
+.msg.tool { background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2); align-self: flex-start; font-family: monospace; font-size: 13px; }
+.chat-input { display: flex; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.05); }
+.chat-input input { flex: 1; padding: 12px 18px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 100px; color: white; font-size: 14px; outline: none; }
+.chat-input input:focus { border-color: #8b5cf6; }
+.chat-send { padding: 0 24px; background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none; color: white;
+  border-radius: 100px; font-weight: 700; cursor: pointer; }
+.quick-prompts { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 20px 0; }
+.prompt { padding: 12px 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px; cursor: pointer; font-size: 13px; transition: 0.2s; }
+.prompt:hover { background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(236,72,153,0.1)); border-color: #8b5cf6; }
+</style>
+</head>
+<body>
+<nav>
+  <div class="container nav-inner">
+    <a href="index.html" class="logo">00o.uz</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Bosh sahifa</a></li>
+      <li><a href="startups.html">Startaplar</a></li>
+      <li><a href="freelancers.html">Frilanserlar</a></li>
+      <li><a href="community.html">Community</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="ai-chat.html" class="active">🤖 AI</a></li>
+      <li><a href="premium.html">Premium</a></li>
+    </ul>
+    <div style="display:flex;gap:8px;">
+      <button class="btn-icon" onclick="window.cmdPalette?.toggle()">⌘</button>
+      <a href="profile.html" class="btn-icon">👤</a>
+    </div>
+  </div>
+</nav>
+<section class="ai-hero container">
+  <h1>🤖 00o AI</h1>
+  <p>30 ta AI vosita · O'zbek tilida · 24/7 mavjud</p>
+</section>
+<section class="container">
+  <div class="tools-grid" id="toolsGrid"></div>
+  <div class="quick-prompts">
+    <div class="prompt" onclick="usePrompt('Menga startap g\'oyasi kerak')">💡 Startap g'oyasi topish</div>
+    <div class="prompt" onclick="usePrompt('Yangi CV yozib ber')">📄 CV yaratish</div>
+    <div class="prompt" onclick="usePrompt('Kod yozib ber - React komponenti')">💻 Kod yozish</div>
+    <div class="prompt" onclick="usePrompt('Matnni inglizchaga tarjima qil')">🌍 Tarjima qilish</div>
+  </div>
+  <div class="chat-area">
+    <div class="chat-messages" id="chatMsgs"></div>
+    <div class="chat-input">
+      <input id="chatInput" placeholder="Xabar yozing..." onkeydown="if(event.key==='Enter')sendChat()">
+      <button class="chat-send" onclick="sendChat()">➤</button>
+    </div>
+  </div>
+</section>
+<script src="/toast.js"></script>
+<script src="/confetti.js"></script>
+<script src="/animations.js"></script>
+<script src="/ai-chat.js"></script>
+<script src="/cmd-palette.js"></script>
+<script src="/sound-effects.js"></script>
+<script>
+const tools = [
+  {icon:'💬',name:'Chat'},
+  {icon:'💡',name:'G\'oya'},
+  {icon:'📊',name:'Biznes'},
+  {icon:'🎯',name:'Pitch'},
+  {icon:'💻',name:'Kod'},
+  {icon:'🐛',name:'Debug'},
+  {icon:'✍️',name:'Copy'},
+  {icon:'📝',name:'Maqola'},
+  {icon:'📧',name:'Email'},
+  {icon:'🌍',name:'Tarjima'},
+  {icon:'🎨',name:'Logo'},
+  {icon:'📄',name:'CV'},
+  {icon:'🎬',name:'Script'},
+  {icon:'📱',name:'SMM'},
+  {icon:'🔍',name:'SEO'},
+  {icon:'📊',name:'Analiz'},
+  {icon:'💼',name:'Kontrakt'},
+  {icon:'📋',name:'Resume'},
+  {icon:'🎤',name:'Nutq'},
+  {icon:'📚',name:'Dars'},
+  {icon:'🧮',name:'Matematika'},
+  {icon:'🔬',name:'Tadqiqot'},
+  {icon:'⚖️',name:'Yuridik'},
+  {icon:'💊',name:'Salomatlik'},
+  {icon:'🍳',name:'Retsept'},
+  {icon:'✈️',name:'Sayohat'},
+  {icon:'💪',name:'Mashq'},
+  {icon:'🧘',name:'Meditatsiya'},
+  {icon:'💎',name:'Investitsiya'},
+  {icon:'🎵',name:'Musiqa'},
+];
+let activeTool = 'Chat';
+function renderTools() {
+  document.getElementById('toolsGrid').innerHTML = tools.map(t =>
+    `<div class="tool-card ${t.name===activeTool?'active':''} oo-anim fade-up" onclick="selectTool('${t.name}', this)">
+      <div class="tool-icon">${t.icon}</div>
+      <div class="tool-name">${t.name}</div>
+    </div>`
+  ).join('');
+}
+function selectTool(name, el) {
+  activeTool = name;
+  document.querySelectorAll('.tool-card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  addMsg(`"${name}" vositasi tanlandi. Qanday savol bor?`, 'bot');
+  window.sfx?.click();
+}
+function addMsg(text, type) {
+  const m = document.createElement('div');
+  m.className = 'msg ' + type;
+  m.textContent = text;
+  document.getElementById('chatMsgs').appendChild(m);
+  m.scrollIntoView({ behavior: 'smooth' });
+}
+function typing() {
+  const t = document.createElement('div');
+  t.className = 'msg bot';
+  t.id = 'typing';
+  t.textContent = '...';
+  document.getElementById('chatMsgs').appendChild(t);
+}
+function sendChat() {
+  const inp = document.getElementById('chatInput');
+  const t = inp.value.trim();
+  if (!t) return;
+  addMsg(t, 'user');
+  inp.value = '';
+  typing();
+  setTimeout(() => {
+    document.getElementById('typing')?.remove();
+    const lower = t.toLowerCase();
+    let resp = 'Qiziqarli savol! 00o AI sizga yordam berishga tayyor. 🤖';
+    if (lower.includes('startap') || lower.includes('g\'oya')) resp = '💡 3 ta startap g\'oyasi:\n\n1. AI-powered tutor (EdTech)\n2. Local delivery marketplace\n3. Crypto education platform\n\nQaysi biri yoqdi?';
+    else if (lower.includes('cv') || lower.includes('resume')) resp = '📄 Sizning profilingizga asosan CV tayyorlayman:\n\n👤 Firdavs Abdumuminov\n💼 Full-stack Developer\n⭐ 5 yil tajriba\n🚀 50+ loyiha\n\nYuklab oling: oo.uz/cv/firdavs';
+    else if (lower.includes('kod') || lower.includes('react')) resp = '💻 Mana oddiy React komponent:\n\n```jsx\nexport function Card({title, children}) {\n  return (\n    <div className="card">\n      <h3>{title}</h3>\n      {children}\n    </div>\n  );\n}\n```\n\nBatafsil kerakmi?';
+    else if (lower.includes('tarjima') || lower.includes('translate')) resp = '🌍 Tarjima qilish uchun matnni yuboring. 10+ tilni qo\'llab-quvvatlayman!';
+    addMsg(resp, 'bot');
+    window.sfx?.notification();
+  }, 1000 + Math.random()*500);
+}
+function usePrompt(p) { document.getElementById('chatInput').value = p; sendChat(); }
+renderTools();
+addMsg('Salom! 👋 Men 00o AI yordamchisiman. 30 ta vosita bilan ishlayman. Qaysi birini sinab ko\'ramiz?', 'bot');
+</script>
+</body>
+</html>
