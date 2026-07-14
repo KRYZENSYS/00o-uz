@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bookmarks — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; padding: 100px 20px 60px; }
+.container { max-width: 800px; margin: 0 auto; }
+h1 { font-size: 28px; margin-bottom: 8px; background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.bar { padding: 16px; border-radius: 14px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); margin-bottom: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+.bar input, .bar select { padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(255,255,255,0.1); font-size: 14px; }
+.bar input { flex: 1; min-width: 200px; }
+.bar button { padding: 10px 20px; border-radius: 8px; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; border: none; font-weight: 700; cursor: pointer; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.card { padding: 16px; border-radius: 12px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); transition: 0.2s; }
+.card:hover { transform: translateY(-4px); border-color: rgba(139,92,246,0.4); }
+.card-i { font-size: 24px; margin-bottom: 8px; }
+.card-t { font-weight: 600; font-size: 14px; margin-bottom: 4px; word-break: break-all; }
+.card-u { font-size: 11px; color: #94a3b8; word-break: break-all; }
+.card-c { display: flex; gap: 4px; margin-top: 8px; }
+.card-c button { padding: 4px 8px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; cursor: pointer; font-size: 11px; }
+.tags-row { display: flex; gap: 4px; margin-top: 6px; flex-wrap: wrap; }
+.tag { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: rgba(139,92,246,0.2); color: #c4b5fd; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📚 Bookmarks</h1>
+  <p style="color:#94a3b8;margin-bottom:16px">Muhim sahifalarni saqlang</p>
+  <div class="bar">
+    <input id="t" placeholder="Sarlavha">
+    <input id="u" placeholder="https://...">
+    <select id="tg"><option>📂 Umumiy</option><option>💼 Ish</option><option>📚 Ta'lim</option><option>🎨 Dizayn</option><option>💻 Dasturlash</option><option>📰 Yangiliklar</option></select>
+    <button onclick="add()">+ Qo'shish</button>
+  </div>
+  <div class="grid" id="grid"></div>
+</div>
+<script>
+let items = JSON.parse(localStorage.getItem('oo-book') || '[]');
+if (!items.length) items = [
+  {t:'00o.uz', u:'https://00o.uz', c:'💼', tg:'💼 Ish'},
+  {t:'GitHub', u:'https://github.com', c:'🐙', tg:'💻 Dasturlash'},
+  {t:'MDN Docs', u:'https://developer.mozilla.org', c:'📚', tg:'💻 Dasturlash'},
+  {t:'Dribbble', u:'https://dribbble.com', c:'🎨', tg:'🎨 Dizayn'},
+];
+function save() { localStorage.setItem('oo-book', JSON.stringify(items)); render(); }
+function add() {
+  const t = document.getElementById('t').value.trim();
+  const u = document.getElementById('u').value.trim();
+  const tg = document.getElementById('tg').value;
+  if (!t || !u) return;
+  const c = u.includes('github')?'🐙':u.includes('youtube')?'📺':u.includes('twitter')?'🐦':u.includes('dribbble')?'🎨':'🌐';
+  items.unshift({t, u, c, tg});
+  document.getElementById('t').value = ''; document.getElementById('u').value = '';
+  save();
+}
+function del(i) { items.splice(i, 1); save(); }
+function render() {
+  document.getElementById('grid').innerHTML = items.map((b, i) => `<div class="card">
+    <div class="card-i">${b.c}</div>
+    <div class="card-t">${b.t}</div>
+    <div class="card-u">${b.u.substring(0,40)}${b.u.length>40?'...':''}</div>
+    <div class="tags-row"><span class="tag">${b.tg}</span></div>
+    <div class="card-c">
+      <button onclick="window.open('${b.u}','_blank')">↗ Ochish</button>
+      <button onclick="navigator.clipboard.writeText('${b.u}'); window.toast?.success('Nusxalandi!')">📋</button>
+      <button onclick="del(${i})">🗑</button>
+    </div>
+  </div>`).join('');
+}
+render();
+</script>
+</body>
+</html>
