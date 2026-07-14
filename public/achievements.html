@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Achievements — 00o.uz</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #0a0e1a; color: white; min-height: 100vh; }
+.container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+nav { position: fixed; top: 0; left: 0; right: 0;
+  background: rgba(10, 14, 26, 0.85); backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.05); z-index: 100; padding: 16px 0; }
+.nav-inner { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+.nav-links { display: flex; gap: 8px; list-style: none; align-items: center; }
+.nav-links a { color: #cbd5e1; text-decoration: none; font-size: 14px; padding: 8px 14px; border-radius: 8px; transition: 0.3s; }
+.nav-links a:hover { background: rgba(255,255,255,0.05); color: white; }
+.nav-links a.active { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: white; }
+.btn-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1); color: white; cursor: pointer; font-size: 18px; }
+.ach-hero { padding: 100px 0 20px; text-align: center; }
+.ach-hero h1 { font-size: 48px; font-weight: 800; margin-bottom: 8px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b, #ef4444);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.ach-hero p { color: #94a3b8; font-size: 18px; }
+.user-card { padding: 32px; border-radius: 24px; margin: 30px 0;
+  background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(251,191,36,0.08));
+  border: 2px solid rgba(139,92,246,0.3);
+  display: grid; grid-template-columns: auto 1fr auto; gap: 24px; align-items: center; }
+@media (max-width: 768px) { .user-card { grid-template-columns: 1fr; text-align: center; } }
+.user-avatar { width: 100px; height: 100px; border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #fbbf24); display: flex; align-items: center; justify-content: center; font-size: 48px;
+  border: 4px solid #fbbf24; box-shadow: 0 0 30px rgba(251,191,36,0.4); }
+.user-info h2 { font-size: 24px; margin-bottom: 4px; }
+.user-level { color: #fbbf24; font-weight: 700; font-size: 14px; }
+.user-xp { font-size: 14px; color: #94a3b8; margin-top: 8px; }
+.xp-bar { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px;
+  overflow: hidden; margin-top: 8px; }
+.xp-fill { height: 100%; background: linear-gradient(90deg, #8b5cf6, #fbbf24); border-radius: 4px; }
+.user-progress { text-align: center; }
+.progress-num { font-size: 36px; font-weight: 800;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.progress-lbl { color: #94a3b8; font-size: 13px; }
+.tabs { display: flex; gap: 4px; padding: 4px; background: rgba(255,255,255,0.05);
+  border-radius: 12px; width: fit-content; margin: 0 auto 30px; }
+.tab { padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; }
+.tab.active { background: linear-gradient(135deg, #8b5cf6, #06b6d4); }
+.ach-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px; padding: 0 0 60px; }
+.ach-card { padding: 24px; border-radius: 18px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.06); transition: 0.3s; cursor: pointer; position: relative; overflow: hidden; }
+.ach-card.unlocked { border-color: rgba(251,191,36,0.4); }
+.ach-card.unlocked::before { content: ''; position: absolute; top: -50%; right: -30%; width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(251,191,36,0.2), transparent 70%); pointer-events: none; }
+.ach-card.locked { opacity: 0.5; filter: grayscale(0.7); }
+.ach-card:hover { transform: translateY(-4px); border-color: rgba(139,92,246,0.4); }
+.ach-icon { width: 80px; height: 80px; border-radius: 20px; margin-bottom: 16px;
+  display: flex; align-items: center; justify-content: center; font-size: 40px;
+  position: relative; }
+.ach-icon.gold { background: linear-gradient(135deg, #fbbf24, #f59e0b); box-shadow: 0 8px 24px rgba(251,191,36,0.3); }
+.ach-icon.silver { background: linear-gradient(135deg, #cbd5e1, #94a3b8); }
+.ach-icon.bronze { background: linear-gradient(135deg, #f97316, #ea580c); }
+.ach-icon.purple { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
+.ach-icon.cyan { background: linear-gradient(135deg, #06b6d4, #3b82f6); }
+.ach-icon.green { background: linear-gradient(135deg, #22c55e, #10b981); }
+.ach-icon.locked { background: rgba(100,116,139,0.3); }
+.ach-rarity { position: absolute; top: 8px; right: 8px; padding: 3px 10px; border-radius: 12px;
+  font-size: 10px; font-weight: 700; text-transform: uppercase; }
+.rarity-legendary { background: linear-gradient(135deg, #fbbf24, #ef4444); color: white; }
+.rarity-epic { background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; }
+.rarity-rare { background: rgba(6,182,212,0.2); color: #06b6d4; }
+.rarity-common { background: rgba(100,116,139,0.3); color: #cbd5e1; }
+.ach-name { font-weight: 700; font-size: 16px; margin-bottom: 4px; }
+.ach-desc { color: #94a3b8; font-size: 13px; line-height: 1.5; margin-bottom: 12px; }
+.ach-progress { display: flex; justify-content: space-between; font-size: 12px; color: #94a3b8; margin-bottom: 4px; }
+.ach-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden; }
+.ach-bar-fill { height: 100%; background: linear-gradient(90deg, #8b5cf6, #06b6d4); border-radius: 3px; }
+.ach-locked { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  background: rgba(10,14,26,0.7); font-size: 48px; }
+</style>
+</head>
+<body>
+<nav>
+  <div class="container nav-inner">
+    <a href="index.html" class="logo">00o.uz</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Bosh sahifa</a></li>
+      <li><a href="startups.html">Startaplar</a></li>
+      <li><a href="freelancers.html">Frilanserlar</a></li>
+      <li><a href="community.html">Community</a></li>
+      <li><a href="leaderboard.html">🏆 Top</a></li>
+      <li><a href="achievements.html" class="active">🎖</a></li>
+      <li><a href="dashboard.html">📊</a></li>
+      <li><a href="admin.html">📞</a></li>
+    </ul>
+    <div style="display:flex;gap:8px;">
+      <button class="btn-icon" onclick="window.confetti({count:60})">🎉</button>
+      <a href="profile.html" class="btn-icon">👤</a>
+    </div>
+  </div>
+</nav>
+<section class="ach-hero container">
+  <h1>🎖 Yutuqlar</h1>
+  <p>Faollik ko'rsating, yutuqlar qo'lga kiriting va maxsus imkoniyatlarga ega bo'ling</p>
+</section>
+<section class="container">
+  <div class="user-card oo-anim fade-up">
+    <div class="user-avatar">👤</div>
+    <div class="user-info">
+      <h2>Firdavs Abdumuminov 👑</h2>
+      <div class="user-level">⭐ Level 12 · Pro Master</div>
+      <div class="user-xp">5,580 / 9,000 XP · Keyingi darajaga 3,420 XP</div>
+      <div class="xp-bar"><div class="xp-fill" style="width:62%"></div></div>
+    </div>
+    <div class="user-progress">
+      <div class="progress-num">14/30</div>
+      <div class="progress-lbl">Yutuqlar</div>
+    </div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="setTab(this, 'all')">🌐 Hammasi</div>
+    <div class="tab" onclick="setTab(this, 'unlocked')">✅ Qo'lga kiritilgan</div>
+    <div class="tab" onclick="setTab(this, 'locked')">🔒 Qulflangan</div>
+    <div class="tab" onclick="setTab(this, 'rare')">💎 Noyob</div>
+  </div>
+  <div class="ach-grid" id="achGrid"></div>
+</section>
+<script src="/toast.js"></script>
+<script src="/confetti.js"></script>
+<script src="/animations.js"></script>
+<script src="/i18n.js"></script>
+<script>
+const achievements = [
+  { id: 1, name: 'Birinchi qadam', desc: '00o.uz da ro\'yxatdan o\'tdingiz', icon: '🚀', color: 'cyan', rarity: 'common', unlocked: true, progress: 100 },
+  { id: 2, name: 'Profil to\'ldiruvchi', desc: 'Profilingizni 100% to\'ldiring', icon: '👤', color: 'green', rarity: 'common', unlocked: true, progress: 100 },
+  { id: 3, name: 'Ijtimoiy qush', desc: '10 kishini kuzating', icon: '🐦', color: 'cyan', rarity: 'common', unlocked: true, progress: 100 },
+  { id: 4, name: 'Ma\'lumot izlovchi', desc: '100 ta startapni ko\'rib chiqing', icon: '🔍', color: 'purple', rarity: 'rare', unlocked: true, progress: 100 },
+  { id: 5, name: 'Faol foydalanuvchi', desc: '7 kun ketma-ket kirish', icon: '🔥', color: 'gold', rarity: 'rare', unlocked: true, progress: 100 },
+  { id: 6, name: 'AI muxlisi', desc: '500 ta AI so\'rov bering', icon: '🤖', color: 'purple', rarity: 'rare', unlocked: true, progress: 100 },
+  { id: 7, name: 'Jamoa qahramoni', desc: '100 ta foydali comment yozing', icon: '🦸', color: 'silver', rarity: 'epic', unlocked: true, progress: 100 },
+  { id: 8, name: 'Yutuq yig\'uvchi', desc: '10 ta yutuq qo\'lga kiritish', icon: '🏆', color: 'gold', rarity: 'epic', unlocked: true, progress: 100 },
+  { id: 9, name: 'Pro investor', desc: '5 ta startapga investitsiya qiling', icon: '💰', color: 'gold', rarity: 'epic', unlocked: true, progress: 100 },
+  { id: 10, name: 'Networking ustasi', desc: '50 ta connection yarating', icon: '🤝', color: 'cyan', rarity: 'rare', unlocked: true, progress: 100 },
+  { id: 11, name: 'Konferentsiya ishtirokchisi', desc: '3 ta eventda qatnashing', icon: '🎤', color: 'purple', rarity: 'rare', unlocked: true, progress: 100 },
+  { id: 12, name: 'Mentor', desc: '5 kishiga yordam bering', icon: '🧑‍🏫', color: 'green', rarity: 'rare', unlocked: true, progress: 100 },
+  { id: 13, name: 'Yil foydalanuvchisi', desc: '365 kun faol bo\'ling', icon: '📅', color: 'gold', rarity: 'legendary', unlocked: true, progress: 100 },
+  { id: 14, name: 'VIP premium', desc: 'Pro tarifga o\'ting', icon: '👑', color: 'gold', rarity: 'legendary', unlocked: true, progress: 100 },
+  { id: 15, name: 'Influencer', desc: '1000 ta follower to\'plang', icon: '⭐', color: 'purple', rarity: 'epic', unlocked: false, progress: 24 },
+  { id: 16, name: 'Top 10', desc: 'Leaderboard Top 10 ga kiring', icon: '🥇', color: 'gold', rarity: 'legendary', unlocked: false, progress: 47 },
+  { id: 17, name: 'Master frilanser', desc: '50 ta buyurtma bajaring', icon: '💼', color: 'silver', rarity: 'epic', unlocked: false, progress: 12 },
+  { id: 18, name: 'Yulduz frilanser', desc: '5.0 reytingga erishing', icon: '🌟', color: 'gold', rarity: 'legendary', unlocked: false, progress: 49 },
+  { id: 19, name: 'Kontent qiroli', desc: '1000 ta like oling', icon: '❤️', color: 'cyan', rarity: 'epic', unlocked: false, progress: 8 },
+  { id: 20, name: 'Streamer', desc: '50 ta live stream qiling', icon: '🎥', color: 'purple', rarity: 'epic', unlocked: false, progress: 0 },
+  { id: 21, name: 'Til ustasi', desc: '3 ta til o\'rganing', icon: '🌍', color: 'green', rarity: 'rare', unlocked: false, progress: 1 },
+  { id: 22, name: 'Kitobxona', desc: '100 ta post o\'qing', icon: '📚', color: 'cyan', rarity: 'rare', unlocked: false, progress: 47 },
+  { id: 23, name: 'Kashfiyotchi', desc: '20 ta yangi startap toping', icon: '🗺️', color: 'green', rarity: 'rare', unlocked: false, progress: 60 },
+  { id: 24, name: 'Tadbirkor', desc: 'O\'z startapingizni yarating', icon: '🚀', color: 'gold', rarity: 'legendary', unlocked: false, progress: 0 },
+];
+let tab = 'all';
+function setTab(el, t) {
+  document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+  el.classList.add('active');
+  tab = t;
+  render();
+}
+function render() {
+  let list = achievements;
+  if (tab === 'unlocked') list = list.filter(a => a.unlocked);
+  if (tab === 'locked') list = list.filter(a => !a.unlocked);
+  if (tab === 'rare') list = list.filter(a => a.rarity === 'legendary' || a.rarity === 'epic');
+  document.getElementById('achGrid').innerHTML = list.map(a => `
+    <div class="ach-card ${a.unlocked ? 'unlocked' : 'locked'} oo-anim fade-up" onclick="claim(${a.id})">
+      <div class="ach-rarity rarity-${a.rarity}">${a.rarity === 'legendary' ? '💎 Legendary' : a.rarity === 'epic' ? '✨ Epic' : a.rarity === 'rare' ? '⭐ Rare' : 'Common'}</div>
+      <div class="ach-icon ${a.unlocked ? a.color : 'locked'}">${a.unlocked ? a.icon : '🔒'}</div>
+      <div class="ach-name">${a.name}</div>
+      <div class="ach-desc">${a.desc}</div>
+      ${!a.unlocked ? `
+        <div class="ach-progress"><span>Progress</span><span>${a.progress}%</span></div>
+        <div class="ach-bar"><div class="ach-bar-fill" style="width:${a.progress}%"></div></div>
+      ` : ''}
+    </div>
+  `).join('') || '<p style="color:#94a3b8;grid-column:1/-1;text-align:center;padding:40px;">Hech narsa topilmadi</p>';
+}
+function claim(id) {
+  const a = achievements.find(x => x.id === id);
+  if (a.unlocked) {
+    toast.achievement(`Yutuq: ${a.name}`, '🎖 Sizning yutuqlaringiz');
+    window.confetti({count:80, x: window.innerWidth/2, y: 200});
+  } else {
+    toast.info(`Yana ${100 - a.progress}% kerak`, '🔒 Hali qo\'lga kiritilmagan');
+  }
+}
+render();
+setTimeout(() => {
+  toast.achievement('Yangi yutuq mavjud: "Influencer"!', '🎖 Eslatma');
+  window.confetti({count: 50});
+}, 1500);
+</script>
+</body>
+</html>
