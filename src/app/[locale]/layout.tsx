@@ -1,31 +1,25 @@
-import type { Metadata } from "next";
-import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
-import { notFound } from "next/navigation";
-import { locales } from "@/i18n/request";
-import "../globals.css";
+"use client";
+import { ReactNode } from "react";
+import Navbar from "@/components/Navbar";
+import { TelegramWebApp } from "@/components/TelegramWebApp";
 
-export const metadata: Metadata = {
-  title: "00o.uz - AI Startup & Freelancer Hub",
-  description: "O'zbekistondagi eng katta startup, frilanser va investor platformasi",
-  keywords: ["startup", "freelancer", "investor", "AI", "O'zbekiston", "00o.uz"],
-};
-
-export function generateStaticParams() {
-  return locales.map((locale) => ({ locale }));
-}
-
-export default async function LocaleLayout({
-  children, params,
-}: { children: React.ReactNode; params: Promise<{ locale: string }>; }) {
-  const { locale } = await params;
-  if (!locales.includes(locale as any)) notFound();
-  const messages = await getMessages();
+export default function LocaleLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang={locale} suppressHydrationWarning>
-      <body className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950 text-white antialiased">
-        <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
-      </body>
-    </html>
+    <div className="min-h-screen">
+      <TelegramWebApp />
+      <Navbar />
+      <main>{children}</main>
+      <footer className="border-t border-white/10 bg-slate-900/50 backdrop-blur mt-20 py-8 px-4 text-center text-sm text-gray-400">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center justify-center gap-6 mb-3 flex-wrap">
+            <a href="/about" className="hover:text-white">Biz haqimizda</a>
+            <a href="/terms" className="hover:text-white">Foydalanish shartlari</a>
+            <a href="/privacy" className="hover:text-white">Maxfiylik</a>
+            <a href="https://t.me/oo0o_uz" className="hover:text-white">Telegram</a>
+          </div>
+          <div>© 2026 00o.uz — O'zbekistondagi eng katta AI platforma</div>
+        </div>
+      </footer>
+    </div>
   );
 }
