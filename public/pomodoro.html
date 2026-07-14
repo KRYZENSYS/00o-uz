@@ -1,91 +1,102 @@
 <!DOCTYPE html>
 <html lang="uz"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0e1a">
 <title>Pomodoro — 00o.uz</title>
 <script src="/global.js"></script>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white;
-  min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-.box { text-align: center; width: 400px; max-width: 100%; }
-h1 { font-size: 28px; margin-bottom: 8px; background: linear-gradient(135deg, #8b5cf6, #ec4899);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.tabs { display: flex; gap: 6px; justify-content: center; margin: 20px 0; }
-.tab { padding: 8px 16px; border-radius: 100px; background: rgba(255,255,255,0.05); cursor: pointer; font-size: 13px; }
-.tab.active { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
-.timer { position: relative; width: 280px; height: 280px; margin: 0 auto 24px; }
-svg { transform: rotate(-90deg); width: 100%; height: 100%; }
-circle.bg { fill: none; stroke: rgba(255,255,255,0.05); stroke-width: 8; }
-circle.fg { fill: none; stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
-.time { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; }
-.t-min { font-size: 64px; font-weight: 800; font-family: monospace;
-  background: linear-gradient(135deg, #8b5cf6, #ec4899);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.t-l { font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 4px; }
-.controls { display: flex; gap: 8px; justify-content: center; }
-.btn { padding: 12px 24px; border-radius: 100px; border: none; font-weight: 700; cursor: pointer; font-size: 14px; }
-.btn-p { background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; }
-.btn-s { background: rgba(255,255,255,0.05); color: white; }
-.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 24px; }
-.s { padding: 12px; border-radius: 10px; background: rgba(255,255,255,0.03); }
-.s-n { font-size: 24px; font-weight: 800; }
-.s-l { font-size: 11px; color: #94a3b8; }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,sans-serif;background:#0a0e1a;color:#f1f5f9;min-height:100vh;padding:60px 16px 100px;max-width:480px;margin:0 auto;display:flex;flex-direction:column;align-items:center}
+h1{font-size:clamp(24px,6vw,32px);font-weight:800;background:linear-gradient(135deg,#ef4444,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
+.sub{text-align:center;color:#94a3b8;font-size:14px;margin-bottom:20px}
+.circle{width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,0.03);border:8px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;position:relative;margin:20px auto}
+.circle-num{font-size:64px;font-weight:800;font-family:ui-monospace,monospace;color:white}
+.circle-l{position:absolute;bottom:60px;font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:2px}
+.circle-c{position:absolute;inset:-8px;border-radius:50%;background:conic-gradient(#ef4444 var(--p,0%), transparent 0);pointer-events:none;transition:--p 0.5s;-webkit-mask:radial-gradient(circle, transparent 60%, black 60.5%);mask:radial-gradient(circle, transparent 60%, black 60.5%)}
+.btns{display:flex;gap:8px;width:100%;margin-top:20px}
+.btns button{flex:1;padding:14px;border-radius:12px;background:linear-gradient(135deg,#ef4444,#fbbf24);color:white;border:none;font-weight:700;cursor:pointer;font-size:15px}
+.btns button.s{background:rgba(255,255,255,0.05)}
+.btns button:active{transform:scale(0.97)}
+.stats{display:flex;gap:8px;width:100%;margin-top:16px}
+.s{flex:1;padding:12px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);text-align:center}
+.s-n{font-size:22px;font-weight:800;color:#fbbf24}
+.s-l{font-size:10px;color:#94a3b8;text-transform:uppercase}
+.phase{text-align:center;padding:8px 16px;border-radius:100px;background:rgba(239,68,68,0.2);color:#fca5a5;margin-top:8px;font-weight:700;font-size:14px}
+.phase.break{background:rgba(34,197,94,0.2);color:#86efac}
 </style>
 </head>
 <body>
-<div class="box">
-  <h1>🍅 Pomodoro</h1>
-  <p style="color:#94a3b8">25 daqiqa ish, 5 daqiqa tanaffus</p>
-  <div class="tabs">
-    <div class="tab active" onclick="setMode('work', this)">📚 Ish</div>
-    <div class="tab" onclick="setMode('short', this)">☕ Qisqa</div>
-    <div class="tab" onclick="setMode('long', this)">🌴 Uzoq</div>
-  </div>
-  <div class="timer">
-    <svg viewBox="0 0 100 100">
-      <circle class="bg" cx="50" cy="50" r="45"></circle>
-      <circle class="fg" cx="50" cy="50" r="45" id="ring"></circle>
-    </svg>
-    <div class="time"><div class="t-min" id="time">25:00</div><div class="t-l" id="lbl">ISH</div></div>
-  </div>
-  <div class="controls">
-    <button class="btn btn-p" id="startBtn" onclick="toggle()">▶ Boshlash</button>
-    <button class="btn btn-s" onclick="reset()">⟲ Reset</button>
-  </div>
-  <div class="stats">
-    <div class="s"><div class="s-n" id="dToday">0</div><div class="s-l">Bugun</div></div>
-    <div class="s"><div class="s-n" id="dTotal">0</div><div class="s-l">Jami</div></div>
-    <div class="s"><div class="s-n" id="dTime">0m</div><div class="s-l">Vaqt</div></div>
+<h1>🍅 Pomodoro</h1>
+<p class="sub">25/5 fokus texnikasi</p>
+<div class="phase" id="ph">🔥 Ish vaqti</div>
+<div class="circle">
+  <div class="circle-c" id="cc"></div>
+  <div>
+    <div class="circle-num" id="d">25:00</div>
+    <div class="circle-l" id="dl">DAQIQA QOLDI</div>
   </div>
 </div>
+<div class="btns">
+  <button id="start" onclick="toggle()">▶ Boshlash</button>
+  <button class="s" onclick="reset()">⟲ Reset</button>
+</div>
+<div class="stats">
+  <div class="s"><div class="s-n" id="today">0</div><div class="s-l">Bugun</div></div>
+  <div class="s"><div class="s-n" id="total">0</div><div class="s-l">Jami</div></div>
+</div>
 <script>
-let mode='work', total=25*60, left=total, running=false, timer;
-let completed = parseInt(localStorage.getItem('oo-pomo-done') || '0');
-let todayCount = parseInt(localStorage.getItem('oo-pomo-today') || '0');
-let todayDate = localStorage.getItem('oo-pomo-date');
-if (todayDate !== new Date().toDateString()) { todayCount = 0; localStorage.setItem('oo-pomo-today', '0'); localStorage.setItem('oo-pomo-date', new Date().toDateString()); }
-function setMode(m, el) { document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active')); el.classList.add('active'); mode=m; reset(); }
-function reset() { running = false; clearInterval(timer); total = mode==='work'?25*60:mode==='short'?5*60:15*60; left = total; update(); }
-function toggle() { running = !running; document.getElementById('startBtn').textContent = running ? '⏸ To\'xtatish' : '▶ Boshlash'; if (running) tick(); else clearInterval(timer); }
-function tick() { timer = setInterval(() => { left--; if (left <= 0) { clearInterval(timer); running = false; completed++; todayCount++; localStorage.setItem('oo-pomo-done', completed); localStorage.setItem('oo-pomo-today', todayCount); if (mode==='work') { window.toast?.success('Ish tugadi! Tanaffus qiling', '🎉'); setMode('short', document.querySelectorAll('.tab')[1]); } else { window.toast?.success('Tanaffus tugadi!', '⏰'); setMode('work', document.querySelectorAll('.tab')[0]); } renderStats(); } update(); }, 1000); }
-function update() {
-  const m = Math.floor(left/60), s = left%60;
-  document.getElementById('time').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  const c = mode==='work'?'#ec4899':mode==='short'?'#22c55e':'#06b6d4';
-  const ring = document.getElementById('ring');
-  ring.style.stroke = c;
-  const off = 283 - (283 * (total-left)/total);
-  ring.setAttribute('stroke-dasharray', '283');
-  ring.setAttribute('stroke-dashoffset', off);
-  document.getElementById('lbl').textContent = mode==='work'?'ISH':mode==='short'?'TANAFFUS':'UZOQ';
-  document.title = `${m}:${String(s).padStart(2,'0')} - Pomodoro`;
+var work=25*60, br=5*60, phase='work', remain=work, run=false, t=null, today=0, total=parseInt(localStorage.getItem('oo-pomo-total')||'0');
+var todayD=new Date().toDateString();
+var todayCount=parseInt(localStorage.getItem('oo-pomo-today-'+todayD)||'0');
+document.getElementById('today').textContent=todayCount;
+document.getElementById('total').textContent=total;
+function upd(){
+  var m=Math.floor(remain/60), s=remain%60;
+  document.getElementById('d').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  var total=phase==='work'?work:br;
+  var pct=(1-remain/total)*100;
+  document.getElementById('cc').style.setProperty('--p',pct+'%');
 }
-function renderStats() {
-  document.getElementById('dToday').textContent = todayCount;
-  document.getElementById('dTotal').textContent = completed;
-  document.getElementById('dTime').textContent = (completed*25) + 'm';
+function tick(){
+  if(remain<=0){
+    try{navigator.vibrate&&navigator.vibrate([200,100,200,100,400);}catch(e){}
+    if(phase==='work'){
+      todayCount++; total++;
+      localStorage.setItem('oo-pomo-today-'+todayD,todayCount);
+      localStorage.setItem('oo-pomo-total',total);
+      document.getElementById('today').textContent=todayCount;
+      document.getElementById('total').textContent=total;
+      phase='break'; remain=br;
+      document.getElementById('ph').textContent='☕ Tanaffus'; document.getElementById('ph').className='phase break';
+      window.confetti({count:60});
+      toast.success('Ish vaqti tugadi! Tanaffus qiling ☕');
+    } else {
+      phase='work'; remain=work;
+      document.getElementById('ph').textContent='🔥 Ish vaqti'; document.getElementById('ph').className='phase';
+      toast.success('Tanaffus tugadi! Davom eting 💪');
+    }
+  } else {
+    remain--;
+  }
+  upd();
 }
-renderStats(); update();
+function toggle(){
+  if(run){
+    clearInterval(t); run=false;
+    document.getElementById('start').textContent='▶ Davom';
+  } else {
+    t=setInterval(tick,1000); run=true;
+    document.getElementById('start').textContent='⏸ To\'xtatish';
+  }
+}
+function reset(){
+  clearInterval(t); run=false;
+  phase='work'; remain=work;
+  document.getElementById('ph').textContent='🔥 Ish vaqti'; document.getElementById('ph').className='phase';
+  document.getElementById('start').textContent='▶ Boshlash';
+  upd();
+}
+upd();
 </script>
 </body>
 </html>
