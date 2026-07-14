@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lorem Ipsum — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; padding: 100px 20px; }
+.container { max-width: 800px; margin: 0 auto; }
+h1 { font-size: 32px; margin-bottom: 8px; text-align: center;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.box { padding: 24px; border-radius: 16px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); margin-bottom: 16px; }
+.row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 16px; }
+label { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 4px; }
+input, select { width: 100%; padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.4); color: white; border: 1px solid rgba(255,255,255,0.1); font-size: 14px; }
+.btn { padding: 12px 24px; border-radius: 10px; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; border: none; font-weight: 700; cursor: pointer; width: 100%; }
+.out { padding: 20px; border-radius: 12px; background: rgba(0,0,0,0.4); min-height: 200px; line-height: 1.8; max-height: 500px; overflow-y: auto; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📝 Lorem Ipsum Generator</h1>
+  <p style="color:#94a3b8;text-align:center;margin-bottom:20px">Demo matn, ism, email, random data yarating</p>
+  <div class="box">
+    <div class="row">
+      <div><label>Tur</label><select id="t"><option value="lorem">Lorem Ipsum</option><option value="names">Ismlar</option><option value="emails">Emails</option><option value="phones">Telefon</option><option value="address">Manzil</option><option value="company">Kompaniya</option><option value="uuid">UUID</option></select></div>
+      <div><label>Soni</label><input type="number" id="c" value="5" min="1" max="100"></div>
+    </div>
+    <button class="btn" onclick="gen()">✨ Yaratish</button>
+  </div>
+  <div class="box">
+    <div class="out" id="out"></div>
+    <button class="btn" style="margin-top:12px" onclick="cp()">📋 Nusxa olish</button>
+  </div>
+</div>
+<script>
+const lorem = `Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum.`.split(' ');
+const names = ['Firdavs Abdumuminov','Madina Karimova','Jasur Toshmatov','Nilufar Saidova','Aziz Rahimov','Saida Yusupova','Bobur Mahmudov','Zuhra Aliyeva','Ulug\'bek Najmiddinov','Dilfuza Tursunova','Sardor Ergashev','Malika Hasanova','Sherzod Mahmudov','Gulnora Rakhimova','Jamshid Yusupov'];
+const emails = ['demo@00o.uz','user@gmail.com','admin@kryzensys.uz','test@outlook.com','info@00o.uz','support@00o.uz'];
+const phones = ['+998 90 123 45 67','+998 91 234 56 78','+998 93 345 67 89','+998 94 456 78 90','+998 95 567 89 01','+998 97 678 90 12','+998 99 789 01 23','+998 71 234 56 78'];
+const companies = ['KRYZENSYS','Uzum Market','Yandex Go','Click','Payme','Telegram','Google','Microsoft','Apple','Meta','Amazon','Netflix','UzAuto','Artel','Coca-Cola'];
+const streets = ['Amir Temur','Mustaqillik','Bobur','Navoi','Mirzo Ulug\'bek','Beruniy','Yusuf Xos Hojib','Katta Xon Saroy','Registon','Bunyodkor'];
+function uuid() { return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random()*16|0; return (c==='x'?r:(r&0x3|0x8)).toString(16); }); }
+function gen() {
+  const t = document.getElementById('t').value;
+  const c = parseInt(document.getElementById('c').value);
+  let out = '';
+  if (t === 'lorem') {
+    for (let i = 0; i < c; i++) {
+      let para = '';
+      const words = 30 + Math.floor(Math.random() * 70);
+      for (let j = 0; j < words; j++) para += lorem[Math.floor(Math.random() * lorem.length)] + ' ';
+      out += para.trim().charAt(0).toUpperCase() + para.trim().slice(1) + '.\n\n';
+    }
+  } else if (t === 'names') {
+    for (let i = 0; i < c; i++) out += names[Math.floor(Math.random()*names.length)] + '\n';
+  } else if (t === 'emails') {
+    const fn = ['ali','vali','sara','john','test','demo','user','admin','info'];
+    for (let i = 0; i < c; i++) out += `${fn[Math.floor(Math.random()*fn.length)]}${Math.floor(Math.random()*100)}@${emails[Math.floor(Math.random()*emails.length)].split('@')[1]}\n`;
+  } else if (t === 'phones') {
+    for (let i = 0; i < c; i++) out += phones[Math.floor(Math.random()*phones.length)] + '\n';
+  } else if (t === 'address') {
+    for (let i = 0; i < c; i++) {
+      out += `Toshkent sh., ${streets[Math.floor(Math.random()*streets.length)]} ko'chasi, ${Math.floor(Math.random()*150)+1}-uy\n`;
+    }
+  } else if (t === 'company') {
+    for (let i = 0; i < c; i++) out += companies[Math.floor(Math.random()*companies.length)] + ' MChJ\n';
+  } else if (t === 'uuid') {
+    for (let i = 0; i < c; i++) out += uuid() + '\n';
+  }
+  document.getElementById('out').textContent = out.trim();
+}
+function cp() { navigator.clipboard.writeText(document.getElementById('out').textContent); window.toast?.success('Nusxalandi!'); }
+gen();
+</script>
+</body>
+</html>
