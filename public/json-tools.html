@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JSON Tools — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; padding: 100px 20px; }
+.container { max-width: 1200px; margin: 0 auto; }
+h1 { font-size: 32px; margin-bottom: 8px; text-align: center;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+@media (max-width:768px) { .grid { grid-template-columns: 1fr; } }
+.box { padding: 20px; border-radius: 16px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); }
+.box h3 { margin-bottom: 12px; }
+textarea { width: 100%; height: 400px; padding: 12px; border-radius: 8px; background: rgba(0,0,0,0.4); color: #10b981; border: 1px solid rgba(255,255,255,0.1); font-family: 'Courier New', monospace; font-size: 13px; resize: vertical; }
+.btn { padding: 10px 20px; border-radius: 8px; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; border: none; font-weight: 600; cursor: pointer; margin: 4px; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; }
+.status { padding: 8px 12px; border-radius: 6px; margin-top: 8px; font-size: 12px; }
+.status.ok { background: rgba(34,197,94,0.2); color: #86efac; }
+.status.err { background: rgba(239,68,68,0.2); color: #fca5a5; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📋 JSON Tools</h1>
+  <p style="color:#94a3b8;text-align:center;margin-bottom:20px">Formatlash, tekshirish, konvertatsiya</p>
+  <div class="grid">
+    <div class="box">
+      <h3>📥 Kiritish</h3>
+      <textarea id="inp" placeholder='{"name":"Ali","age":25}'>{
+  "platform": "00o.uz",
+  "version": "2.0.0",
+  "users": [
+    {"name": "Firdavs", "xp": 12480},
+    {"name": "Madina", "xp": 11200}
+  ],
+  "active": true
+}</textarea>
+      <div class="btn-row">
+        <button class="btn" onclick="format()">✨ Formatlash</button>
+        <button class="btn" onclick="minify()">📦 Minify</button>
+        <button class="btn" onclick="validate()">✓ Tekshirish</button>
+        <button class="btn" onclick="toCsv()">📊 CSV</button>
+        <button class="btn" onclick="toXml()">📄 XML</button>
+        <button class="btn" onclick="toYaml()">📝 YAML</button>
+        <button class="btn" onclick="clearAll()">🗑 Tozalash</button>
+      </div>
+      <div id="status"></div>
+    </div>
+    <div class="box">
+      <h3>📤 Natija</h3>
+      <textarea id="out" readonly></textarea>
+      <button class="btn" onclick="copy()">📋 Nusxa olish</button>
+    </div>
+  </div>
+</div>
+<script>
+function format() {
+  try {
+    const obj = JSON.parse(document.getElementById('inp').value);
+    document.getElementById('out').value = JSON.stringify(obj, null, 2);
+    status('✓ Formatlandi', 'ok');
+  } catch (e) { status('✗ Xato: ' + e.message, 'err'); }
+}
+function minify() {
+  try {
+    const obj = JSON.parse(document.getElementById('inp').value);
+    document.getElementById('out').value = JSON.stringify(obj);
+    status('✓ Minify qilindi', 'ok');
+  } catch (e) { status('✗ Xato: ' + e.message, 'err'); }
+}
+function validate() {
+  try {
+    JSON.parse(document.getElementById('inp').value);
+    status('✓ JSON to\'g\'ri', 'ok');
+  } catch (e) { status('✗ ' + e.message, 'err'); }
+}
+function toCsv() {
+  try {
+    const obj = JSON.parse(document.getElementById('inp').value);
+    if (!Array.isArray(obj) || !obj[0]) return status('CSV uchun array kerak', 'err');
+    const keys = Object.keys(obj[0]);
+    const csv = [keys.join(','), ...obj.map(r => keys.map(k => JSON.stringify(r[k] || '')).join(','))].join('\n');
+    document.getElementById('out').value = csv;
+    status('✓ CSV yaratildi', 'ok');
+  } catch (e) { status('✗ ' + e.message, 'err'); }
+}
+function toXml() {
+  try {
+    const obj = JSON.parse(document.getElementById('inp').value);
+    document.getElementById('out').value = jsonToXml(obj, 'root');
+    status('✓ XML yaratildi', 'ok');
+  } catch (e) { status('✗ ' + e.message, 'err'); }
+}
+function jsonToXml(obj, root) {
+  let xml = '<' + root + '>';
+  for (let k in obj) {
+    if (Array.isArray(obj[k])) xml += obj[k].map(i => jsonToXml(i, k)).join('');
+    else if (typeof obj[k] === 'object') xml += jsonToXml(obj[k], k);
+    else xml += '<' + k + '>' + obj[k] + '</' + k + '>';
+  }
+  return xml + '</' + root + '>';
+}
+function toYaml() {
+  try {
+    const obj = JSON.parse(document.getElementById('inp').value);
+    document.getElementById('out').value = jsonToYaml(obj, 0);
+    status('✓ YAML yaratildi', 'ok');
+  } catch (e) { status('✗ ' + e.message, 'err'); }
+}
+function jsonToYaml(obj, indent) {
+  const sp = '  '.repeat(indent);
+  if (typeof obj !== 'object' || obj === null) return JSON.stringify(obj);
+  if (Array.isArray(obj)) return obj.map(v => sp + '- ' + jsonToYaml(v, indent + 1).trim()).join('\n');
+  return Object.entries(obj).map(([k, v]) => sp + k + ': ' + (typeof v === 'object' ? '\n' + jsonToYaml(v, indent + 1) : jsonToYaml(v, 0))).join('\n');
+}
+function status(m, t) { document.getElementById('status').innerHTML = `<div class="status ${t}">${m}</div>`; }
+function copy() { navigator.clipboard.writeText(document.getElementById('out').value); window.toast?.success('Nusxalandi!'); }
+function clearAll() { document.getElementById('inp').value=''; document.getElementById('out').value=''; status('','ok'); }
+format();
+</script>
+</body>
+</html>
