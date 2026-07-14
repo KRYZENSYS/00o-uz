@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sozlamalar — 00o.uz</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; }
+.container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(10,14,26,0.85); backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.05); z-index: 100; padding: 16px 0; }
+.nav-inner { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+.btn-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1); color: white; cursor: pointer; }
+.layout { display: grid; grid-template-columns: 240px 1fr; gap: 24px; padding: 100px 0 60px; }
+.sidebar { padding: 20px; border-radius: 16px; height: fit-content;
+  background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.06); position: sticky; top: 90px; }
+.side-item { padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 14px;
+  display: flex; align-items: center; gap: 10px; transition: 0.2s; margin-bottom: 4px; }
+.side-item:hover { background: rgba(255,255,255,0.05); }
+.side-item.active { background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(236,72,153,0.1));
+  border: 1px solid rgba(139,92,246,0.3); }
+.content { padding: 30px; border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.06); }
+.section-title { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+.section-sub { color: #94a3b8; margin-bottom: 24px; }
+.row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05); }
+.row:last-child { border: none; }
+.row-info { flex: 1; }
+.row-title { font-weight: 600; margin-bottom: 4px; }
+.row-desc { color: #94a3b8; font-size: 13px; }
+.switch { width: 44px; height: 24px; border-radius: 12px; background: rgba(255,255,255,0.1);
+  position: relative; cursor: pointer; transition: 0.2s; }
+.switch::after { content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px;
+  border-radius: 50%; background: white; transition: 0.2s; }
+.switch.on { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
+.switch.on::after { left: 22px; }
+.btn { padding: 8px 16px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; font-size: 13px; }
+.btn-primary { background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; }
+.btn-danger { background: rgba(239,68,68,0.2); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
+</style>
+</head>
+<body>
+<nav>
+  <div class="container nav-inner">
+    <a href="index.html" class="logo">00o.uz</a>
+    <div style="display:flex;gap:8px;">
+      <a href="profile.html" class="btn-icon">👤</a>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <div class="layout">
+    <div class="sidebar">
+      <div class="side-item active" onclick="setSec(this, 'account')">👤 Hisob</div>
+      <div class="side-item" onclick="setSec(this, 'notifications')">🔔 Bildirishnomalar</div>
+      <div class="side-item" onclick="setSec(this, 'privacy')">🔒 Maxfiylik</div>
+      <div class="side-item" onclick="setSec(this, 'security')">🛡 Xavfsizlik</div>
+      <div class="side-item" onclick="setSec(this, 'appearance')">🎨 Ko'rinish</div>
+      <div class="side-item" onclick="setSec(this, 'language')">🌍 Til</div>
+      <div class="side-item" onclick="setSec(this, 'billing')">💳 To\'lov</div>
+      <div class="side-item" onclick="setSec(this, 'api')">🔌 API</div>
+      <div class="side-item" onclick="setSec(this, 'about')">ℹ️ Dastur haqida</div>
+    </div>
+    <div class="content" id="content">
+      <div class="section-title">👤 Hisob sozlamalari</div>
+      <div class="section-sub">Shaxsiy ma'lumotlaringizni boshqaring</div>
+      <div class="row">
+        <div class="row-info"><div class="row-title">Ism</div><div class="row-desc">Firdavs</div></div>
+        <button class="btn btn-primary">Tahrirlash</button>
+      </div>
+      <div class="row">
+        <div class="row-info"><div class="row-title">Email</div><div class="row-desc">demo@00o.uz</div></div>
+        <button class="btn btn-primary">O'zgartirish</button>
+      </div>
+      <div class="row">
+        <div class="row-info"><div class="row-title">Telefon</div><div class="row-desc">+998 90 123 45 67</div></div>
+        <button class="btn btn-primary">O'zgartirish</button>
+      </div>
+      <div class="row">
+        <div class="row-info"><div class="row-title">Foydalanuvchi nomi</div><div class="row-desc">@firdavs</div></div>
+        <button class="btn btn-primary">O'zgartirish</button>
+      </div>
+      <div class="row">
+        <div class="row-info"><div class="row-title">Bio</div><div class="row-desc">Senior Full-stack Developer</div></div>
+        <button class="btn btn-primary">Tahrirlash</button>
+      </div>
+      <div class="row" style="margin-top:30px">
+        <div class="row-info"><div class="row-title" style="color:#fca5a5">Hisobni o'chirish</div><div class="row-desc">Bu amalni qaytarib bo'lmaydi</div></div>
+        <button class="btn btn-danger">O'chirish</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="/toast.js"></script>
+<script src="/sound-effects.js"></script>
+<script>
+const data = {
+  account: {title:'👤 Hisob', sub:'Shaxsiy ma\'lumotlaringizni boshqaring', rows:[
+    {t:'Ism', d:'Firdavs', a:'Tahrirlash'},
+    {t:'Email', d:'demo@00o.uz', a:'O\'zgartirish'},
+    {t:'Telefon', d:'+998 90 123 45 67', a:'O\'zgartirish'},
+    {t:'Bio', d:'Senior Full-stack Developer', a:'Tahrirlash'},
+  ]},
+  notifications: {title:'🔔 Bildirishnomalar', sub:'Qanday bildirishnomalar olishni tanlang', rows:[
+    {t:'Email bildirishnomalar', d:'Yangi xabarlar, postlar', toggle:true, on:true},
+    {t:'Push bildirishnomalar', d:'Brauzer orqali', toggle:true, on:true},
+    {t:'Yangi follower', d:'Kimdir sizni follow qilsa', toggle:true, on:false},
+    {t:'Comment bildirishnomalar', d:'Postlaringizga izoh', toggle:true, on:true},
+    {t:'Marketing emaillari', d:'Maxsus takliflar', toggle:true, on:false},
+  ]},
+  privacy: {title:'🔒 Maxfiylik', sub:'Kim ko\'rishi mumkin', rows:[
+    {t:'Profil ochiq', d:'Hammaga ko\'rinadi', toggle:true, on:true},
+    {t:'Faollik ko\'rinadi', d:'Online status', toggle:true, on:false},
+    {t:'DM hamma uchun', d:'Har kim yoza oladi', toggle:true, on:false},
+    {t:'Search\'da ko\'rinish', d:'Qidiruv natijalarida', toggle:true, on:true},
+  ]},
+  security: {title:'🛡 Xavfsizlik', sub:'Hisobingizni himoyalang', rows:[
+    {t:'2FA autentifikatsiya', d:'Ikki bosqichli tasdiqlash', a:'Yoqish'},
+    {t:'Login tarixini ko\'rish', d:'Oxirgi faollik', a:'Ko\'rish'},
+    {t:'Parolni o\'zgartirish', d:'60 kunda bir marta', a:'O\'zgartirish'},
+    {t:'Faol sessiyalar', d:'2 ta qurilmada', a:'Boshqarish'},
+  ]},
+  appearance: {title:'🎨 Ko\'rinish', sub:'Tema va tillar', rows:[
+    {t:'Mavzu', d:'Dark / Light / Avtomatik', a:'Tanlash'},
+    {t:'Til', d:'O\'zbek / Rus / English', a:'O\'zgartirish'},
+    {t:'Shrift hajmi', d:'Kichik / O\'rta / Katta', a:'Tanlash'},
+  ]},
+  language: {title:'🌍 Til', sub:'Platforma tili', rows:[
+    {t:'🇺🇿 O\'zbek', d:'Default', toggle:true, on:true},
+    {t:'🇷🇺 Русский', d:'', toggle:true, on:false},
+    {t:'🇬🇧 English', d:'', toggle:true, on:false},
+  ]},
+  billing: {title:'💳 To\'lov', sub:'To\'lov usullari va tarix', rows:[
+    {t:'Premium tarif', d:'Hozir: Free', a:'Upgrade'},
+    {t:'To\'lov usuli', d:'Hech qanday', a:'Qo\'shish'},
+    {t:'Tanga balansi', d:'12,480 tanga', a:'-'},
+  ]},
+  api: {title:'🔌 API', sub:'Tashqi integratsiyalar', rows:[
+    {t:'API kalit', d:'oo_sk_*****', a:'Yangilash'},
+    {t:'Webhook', d:'3 ta faol', a:'Boshqarish'},
+    {t:'Rate limit', d:'1000/soat', a:'-'},
+  ]},
+  about: {title:'ℹ️ Dastur haqida', sub:'00o.uz v2.0.0', rows:[
+    {t:'Versiya', d:'2.0.0 (2026-07-14)', a:'-'},
+    {t:'GitHub', d:'KRYZENSYS/00o-uz', a:'Ochish'},
+    {t:'Litsenziya', d:'MIT', a:'-'},
+  ]},
+};
+function setSec(el, k) {
+  document.querySelectorAll('.side-item').forEach(x => x.classList.remove('active'));
+  el.classList.add('active');
+  render(k);
+  window.sfx?.click();
+}
+function render(k) {
+  const d = data[k];
+  document.getElementById('content').innerHTML = `
+    <div class="section-title">${d.title}</div>
+    <div class="section-sub">${d.sub}</div>
+    ${d.rows.map(r => `
+      <div class="row">
+        <div class="row-info"><div class="row-title">${r.t}</div>${r.d?`<div class="row-desc">${r.d}</div>`:''}</div>
+        ${r.toggle ? `<div class="switch ${r.on?'on':''}" onclick="this.classList.toggle('on')"></div>` : `<button class="btn btn-primary">${r.a}</button>`}
+      </div>
+    `).join('')}
+  `;
+}
+</script>
+</body>
+</html>
