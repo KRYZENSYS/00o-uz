@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Offline — 00o.uz</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white;
+  min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.box { text-align: center; max-width: 500px; }
+.emoji { font-size: 100px; animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+h1 { font-size: 36px; margin: 20px 0 12px; background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+p { color: #94a3b8; line-height: 1.6; margin-bottom: 24px; }
+.btn { display: inline-block; padding: 14px 28px; border-radius: 12px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white;
+  text-decoration: none; font-weight: 700; }
+.cached { margin-top: 32px; padding: 16px; border-radius: 12px;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
+.cached a { color: #c4b5fd; text-decoration: none; display: block; padding: 8px; border-radius: 6px; }
+.cached a:hover { background: rgba(255,255,255,0.05); }
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="emoji">📡</div>
+  <h1>Internet yo'q</h1>
+  <p>Siz oflaynsiz, lekin tashvishmang! Quyidagi sahifalar keshdan ishlaydi:</p>
+  <a href="/" class="btn">🏠 Bosh sahifa</a>
+  <div class="cached">
+    <a href="/dashboard.html">📊 Dashboard</a>
+    <a href="/community.html">👥 Community</a>
+    <a href="/ai-chat.html">🤖 AI Chat</a>
+    <a href="/profile.html">👤 Profil</a>
+    <a href="/settings.html">⚙️ Sozlamalar</a>
+  </div>
+</div>
+</body>
+</html>
