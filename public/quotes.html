@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iqtiboslar — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white;
+  min-height: 100vh; padding: 100px 20px 60px; display: flex; align-items: center; justify-content: center; }
+.container { max-width: 600px; width: 100%; }
+h1 { font-size: 32px; margin-bottom: 8px; text-align: center;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.cats { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-bottom: 16px; }
+.cat { padding: 8px 14px; border-radius: 100px; background: rgba(255,255,255,0.05); cursor: pointer; font-size: 13px; }
+.cat.active { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: white; }
+.quote-card { padding: 40px 30px; border-radius: 20px; background: linear-gradient(135deg, rgba(251,191,36,0.1), rgba(245,158,11,0.05));
+  border: 1px solid rgba(251,191,36,0.2); text-align: center; min-height: 280px; display: flex; flex-direction: column; justify-content: center; }
+.quote { font-size: 22px; line-height: 1.5; font-style: italic; margin-bottom: 16px; }
+.author { font-size: 16px; font-weight: 700; color: #fbbf24; }
+.btns { display: flex; gap: 8px; justify-content: center; margin-top: 16px; }
+.btn { padding: 12px 20px; border-radius: 100px; border: none; font-weight: 700; cursor: pointer; }
+.btn-p { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: white; }
+.btn-s { background: rgba(255,255,255,0.05); color: white; }
+.fav { background: rgba(255,255,255,0.05); color: white; }
+.fav.done { background: rgba(239,68,68,0.2); color: #fca5a5; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>💭 Iqtiboslar</h1>
+  <p style="color:#94a3b8;text-align:center;margin-bottom:20px">Har kuni yangi ilhom</p>
+  <div class="cats" id="cats"></div>
+  <div class="quote-card">
+    <div class="quote" id="q">"Hayot — bu sayohat, manzil emas."</div>
+    <div class="author" id="a">— Ralph Waldo Emerson</div>
+  </div>
+  <div class="btns">
+    <button class="btn btn-p" onclick="next()">🎲 Keyingi</button>
+    <button class="btn btn-s" onclick="cp()">📋 Nusxa</button>
+    <button class="btn fav" id="fb" onclick="fav()">❤️</button>
+    <button class="btn btn-s" onclick="share()">↗ Ulashish</button>
+  </div>
+</div>
+<script>
+const Q = {
+  '🌟 Umumiy': [
+    {q:'Hayot — bu sayohat, manzil emas.', a:'Ralph Waldo Emerson'},
+    {q:'Muvaffaqiyat — bu tayyor bo\'lgan imkoniyat bilan uchrashish.', a:'Bobby Unser'},
+    {q:'Siz qilolmaysiz deb o\'ylagan narsangiz — sizning eng katta kashfiyotingizdir.', a:'Anonym'},
+    {q:'Inson o\'zini eng ko\'p rivojlantiradigan narsa — qiyinchiliklardir.', a:'Anonym'},
+    {q:'Orzu qiling, ishoning, harakat qiling.', a:'Anonym'}
+  ],
+  '💼 Motivatsiya': [
+    {q:'Muvaffaqiyat — bu 99 foiz mehnat va 1 foiz ilhom.', a:'Thomas Edison'},
+    {q:'Eng yaxshi vaqt daraxt ekish 20 yil oldin edi. Ikkinchi eng yaxshi vaqt — bugun.', a:'Xitoy maqoli'},
+    {q:'Sizga qiyin tuyulgan har bir narsa sizni kuchliroq qiladi.', a:'Anonym'},
+    {q:'Orzular — bu sizning kelajakka yozgan xatlaringiz.', a:'Anonym'},
+    {q:'Ishonch — bu g\'alabaning boshi.', a:'Anonym'}
+  ],
+  '❤️ Sevgi': [
+    {q:'Sevgi — bu harakat so\'zi, his emas.', a:'Anonym'},
+    {q:'O\'zini sevgan inson hamma narsani sevgisi bilan to\'ldiradi.', a:'Buddha'},
+    {q:'Haqiqiy sevgi — bu ikki nuqsonning o\'zaro hurmatidir.', a:'Anonym'},
+    {q:'Sevgi berish — eng katta boylikdir.', a:'Anonym'}
+  ],
+  '🤔 Falsafa': [
+    {q:'Men bilaman, hech narsa bilmasligimni.', a:'Sokrat'},
+    {q:'O\'ylash — bu eng qiyin ish, shuning uchun kam odam buni qiladi.', a:'Anonym'},
+    {q:'Hayot savollarga javob berishda emas, savollarni boshqacha qo\'yishda.', a:'Anonym'}
+  ],
+  '😄 Hazil': [
+    {q:'Hayot — bu chizilgan rasm emas, balki o\'chib ketadigan whiteboard.', a:'Anonym'},
+    {q:'Men kechirim so\'rayman, agar siz mening fikrlarimga rozi bo\'lsangiz, biz ikkalamiz noto\'g\'rimiz.', a:'Anonym'}
+  ]
+};
+let cur = '🌟 Umumiy';
+let favs = JSON.parse(localStorage.getItem('oo-fav-quotes') || '[]');
+function init() { document.getElementById('cats').innerHTML = Object.keys(Q).map(c => `<div class="cat ${c===cur?'active':''}" onclick="setC('${c}', this)">${c}</div>`).join(''); next(); }
+function setC(c, el) { document.querySelectorAll('.cat').forEach(x=>x.classList.remove('active')); el.classList.add('active'); cur=c; next(); }
+function next() {
+  const list = Q[cur];
+  const q = list[Math.floor(Math.random() * list.length)];
+  document.getElementById('q').textContent = '"' + q.q + '"';
+  document.getElementById('a').textContent = '— ' + q.a;
+  document.getElementById('fb').classList.toggle('done', favs.some(f => f.q === q.q));
+  window.currentQuote = q;
+}
+function cp() { navigator.clipboard.writeText(`"${window.currentQuote.q}" — ${window.currentQuote.a}`); window.toast?.success('Nusxalandi!'); }
+function fav() {
+  const i = favs.findIndex(f => f.q === window.currentQuote.q);
+  if (i >= 0) favs.splice(i, 1);
+  else favs.push({q: window.currentQuote.q, a: window.currentQuote.a, c: cur});
+  localStorage.setItem('oo-fav-quotes', JSON.stringify(favs));
+  document.getElementById('fb').classList.toggle('done');
+  window.toast?.success(i >= 0 ? 'Sevimlilardan olib tashlandi' : 'Sevimlilarga qo\'shildi ❤️');
+}
+function share() {
+  if (navigator.share) navigator.share({text: `"${window.currentQuote.q}" — ${window.currentQuote.a}`});
+  else cp();
+}
+init();
+</script>
+</body>
+</html>
