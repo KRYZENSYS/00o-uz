@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalendar — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; padding: 100px 20px 60px; }
+.container { max-width: 800px; margin: 0 auto; }
+.h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.h h1 { font-size: 24px; background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.nb { padding: 8px 14px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; cursor: pointer; }
+.cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.dh { text-align: center; padding: 8px; font-size: 12px; color: #94a3b8; font-weight: 600; }
+.d { aspect-ratio: 1; padding: 6px; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.2s; position: relative; }
+.d:hover { background: rgba(139,92,246,0.15); }
+.d.t { background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; font-weight: 800; }
+.d.other { opacity: 0.3; }
+.d-d { font-size: 12px; }
+.d-e { font-size: 9px; background: #22c55e; color: white; border-radius: 3px; padding: 1px 4px; margin-top: 2px; display: inline-block; }
+.events { margin-top: 20px; }
+.ev { padding: 12px; border-radius: 10px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
+.ev-t { flex: 1; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="h">
+    <button class="nb" onclick="nav(-1)">‹ Oldingi</button>
+    <h1 id="mt">Iyul 2026</h1>
+    <button class="nb" onclick="nav(1)">Keyingi ›</button>
+  </div>
+  <div class="cal" id="cal"></div>
+  <div style="margin-top:20px">
+    <h3 id="selD" style="margin-bottom:12px">Bugungi tadbirlar</h3>
+    <button class="nb" onclick="addE()" style="margin-bottom:12px">+ Tadbir qo'shish</button>
+    <div class="events" id="evs"></div>
+  </div>
+</div>
+<script>
+let view = new Date();
+let sel = new Date().toISOString().split('T')[0];
+let events = JSON.parse(localStorage.getItem('oo-cal') || '{}');
+const mn = ['Yanvar','Fevral','Mart','Aprel','May','Iyun','Iyul','Avgust','Sentabr','Oktabr','Noyabr','Dekabr'];
+const dn = ['Yak','Du','Se','Ch','Pa','Ju','Sh'];
+function nav(d) { view = new Date(view.getFullYear(), view.getMonth() + d, 1); render(); }
+function render() {
+  const y = view.getFullYear(), m = view.getMonth();
+  document.getElementById('mt').textContent = `${mn[m]} ${y}`;
+  const first = new Date(y, m, 1).getDay();
+  const days = new Date(y, m + 1, 0).getDate();
+  const prev = new Date(y, m, 0).getDate();
+  const today = new Date().toISOString().split('T')[0];
+  let html = dn.map(d => `<div class="dh">${d}</div>`).join('');
+  for (let i = first - 1; i >= 0; i--) html += `<div class="d other"><div class="d-d">${prev-i}</div></div>`;
+  for (let d = 1; d <= days; d++) {
+    const dt = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const e = events[dt];
+    const isSel = dt === sel;
+    const isToday = dt === today;
+    html += `<div class="d ${isSel||isToday?'t':''}" onclick="sel='${dt}';render()">
+      <div class="d-d">${d}</div>
+      ${e && e.length ? `<div class="d-e">${e.length}</div>` : ''}
+    </div>`;
+  }
+  document.getElementById('cal').innerHTML = html;
+  document.getElementById('selD').textContent = sel + ' tadbirlari';
+  const evs = events[sel] || [];
+  document.getElementById('evs').innerHTML = evs.length ? evs.map((e,i) => `<div class="ev"><div style="font-size:24px">${e.i||'📅'}</div><div class="ev-t"><div style="font-weight:600">${e.t}</div><div style="font-size:12px;color:#94a3b8">${e.time||''}</div></div><button class="nb" onclick="delE(${i})">×</button></div>`).join('') : '<div style="text-align:center;color:#94a3b8;padding:20px">Tadbir yo\'q</div>';
+}
+function addE() {
+  const t = prompt('Tadbir nomi:');
+  if (!t) return;
+  if (!events[sel]) events[sel] = [];
+  events[sel].push({t, time: new Date().toLocaleTimeString('uz-UZ',{hour:'2-digit',minute:'2-digit'}), i:'📅'});
+  localStorage.setItem('oo-cal', JSON.stringify(events));
+  render();
+}
+function delE(i) { events[sel].splice(i, 1); localStorage.setItem('oo-cal', JSON.stringify(events)); render(); }
+render();
+</script>
+</body>
+</html>
