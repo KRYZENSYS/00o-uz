@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avatar Generator — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; padding: 100px 20px 60px; }
+.container { max-width: 700px; margin: 0 auto; }
+h1 { font-size: 32px; margin-bottom: 8px; text-align: center;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.controls { padding: 20px; border-radius: 16px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); margin-bottom: 16px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.controls input { width: 60px; padding: 6px; border-radius: 6px; background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
+.controls label { font-size: 13px; }
+.btn { padding: 10px 20px; border-radius: 10px; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; border: none; font-weight: 700; cursor: pointer; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; }
+.av { aspect-ratio: 1; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 50px; font-weight: 800; cursor: pointer; transition: 0.2s; }
+.av:hover { transform: scale(1.1); }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>👤 Avatar Generator</h1>
+  <p style="color:#94a3b8;text-align:center;margin-bottom:20px">Tasodifiy avatarlar yarating</p>
+  <div class="controls">
+    <label>Soni: <input type="number" id="c" value="12" min="1" max="50"></label>
+    <label>Rang: <input type="color" id="c1" value="#8b5cf6"></label>
+    <label> <input type="color" id="c2" value="#ec4899"></label>
+    <button class="btn" onclick="gen()">🎲 Yaratish</button>
+  </div>
+  <div class="grid" id="grid"></div>
+</div>
+<script>
+const em = ['👨‍💻','👩‍💼','👨‍🚀','👩‍🎨','🧑‍🔬','👨‍🎓','👩‍⚕️','🧑‍🍳','👨‍🎤','👩‍🏫','🧑‍💻','👨‍🔬','👩‍🚀','🧑‍🎨','👨‍⚕️','👩‍🍳','🐱','🐶','🐼','🦊','🐯','🦁'];
+function gen() {
+  const n = parseInt(document.getElementById('c').value);
+  const c1 = document.getElementById('c1').value;
+  const c2 = document.getElementById('c2').value;
+  let html = '';
+  for (let i = 0; i < n; i++) {
+    const e = em[Math.floor(Math.random() * em.length)];
+    const size = 100 + Math.floor(Math.random() * 60);
+    const angle = Math.floor(Math.random() * 360);
+    html += `<div class="av" style="background:linear-gradient(${angle}deg, ${c1}, ${c2}); font-size:${size}%; box-shadow: 0 0 20px ${c1}40" onclick="this.style.transform='scale(0.8)';setTimeout(()=>this.style.transform='',200)">${e}</div>`;
+  }
+  document.getElementById('grid').innerHTML = html;
+}
+gen();
+</script>
+</body>
+</html>
