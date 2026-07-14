@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guruhlar — 00o.uz</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(10,14,26,0.85); backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.05); z-index: 100; padding: 16px 0; }
+.nav-inner { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+.nav-links { display: flex; gap: 8px; list-style: none; }
+.nav-links a { color: #cbd5e1; text-decoration: none; font-size: 14px; padding: 8px 14px; border-radius: 8px; }
+.nav-links a:hover { background: rgba(255,255,255,0.05); }
+.nav-links a.active { background: linear-gradient(135deg, #22c55e, #06b6d4); }
+.btn-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1); color: white; cursor: pointer; }
+.g-hero { padding: 100px 0 20px; }
+.g-hero h1 { font-size: 40px; font-weight: 800; margin-bottom: 8px;
+  background: linear-gradient(135deg, #22c55e, #06b6d4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.search { width: 100%; padding: 14px 20px; border-radius: 14px;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  color: white; font-size: 14px; margin: 20px 0; }
+.search:focus { outline: none; border-color: #22c55e; }
+.categories { display: flex; gap: 8px; flex-wrap: wrap; margin: 20px 0 30px; }
+.cat { padding: 8px 16px; border-radius: 100px; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1); cursor: pointer; font-size: 13px; }
+.cat.active { background: linear-gradient(135deg, #22c55e, #06b6d4); border-color: transparent; }
+.groups-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px; padding-bottom: 60px; }
+.group { padding: 24px; border-radius: 18px; cursor: pointer;
+  background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.06); transition: 0.3s; }
+.group:hover { transform: translateY(-4px); border-color: rgba(34,197,94,0.4); }
+.group-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.group-avatar { width: 60px; height: 60px; border-radius: 16px; display: flex;
+  align-items: center; justify-content: center; font-size: 28px;
+  background: linear-gradient(135deg, var(--c1), var(--c2)); }
+.group-name { font-weight: 800; font-size: 16px; }
+.group-cat { color: #94a3b8; font-size: 12px; }
+.group-desc { color: #94a3b8; font-size: 13px; line-height: 1.5; margin-bottom: 16px; min-height: 40px; }
+.group-stats { display: flex; gap: 12px; margin-bottom: 16px; }
+.group-stat { font-size: 12px; color: #94a3b8; }
+.group-stat strong { color: white; }
+.group-btn { width: 100%; padding: 10px; border-radius: 10px; border: none;
+  background: linear-gradient(135deg, #22c55e, #06b6d4); color: white;
+  font-weight: 700; cursor: pointer; transition: 0.2s; }
+.group-btn:hover { transform: scale(1.02); }
+.group-btn.joined { background: rgba(34,197,94,0.2); border: 1px solid rgba(34,197,94,0.4); }
+</style>
+</head>
+<body>
+<nav>
+  <div class="container nav-inner">
+    <a href="index.html" class="logo">00o.uz</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Bosh</a></li>
+      <li><a href="community.html">Community</a></li>
+      <li><a href="groups.html" class="active">👥 Guruhlar</a></li>
+      <li><a href="events.html">📅 Events</a></li>
+    </ul>
+    <div style="display:flex;gap:8px;">
+      <button class="btn-icon">🔔</button>
+      <a href="profile.html" class="btn-icon">👤</a>
+    </div>
+  </div>
+</nav>
+<section class="g-hero container">
+  <h1>👥 Guruhlar</h1>
+  <p>Yo'nalishingiz bo'yicha jamiyatlarga qo'shiling</p>
+  <input class="search" placeholder="🔍 Guruh qidirish..." oninput="searchGroups(this.value)">
+  <div class="categories">
+    <div class="cat active" onclick="setCat(this, 'all')">🌐 Hammasi</div>
+    <div class="cat" onclick="setCat(this, 'tech')">💻 Texnologiya</div>
+    <div class="cat" onclick="setCat(this, 'business')">💼 Biznes</div>
+    <div class="cat" onclick="setCat(this, 'design')">🎨 Dizayn</div>
+    <div class="cat" onclick="setCat(this, 'marketing')">📈 Marketing</div>
+    <div class="cat" onclick="setCat(this, 'education')">📚 Ta'lim</div>
+  </div>
+</section>
+<section class="container">
+  <div class="groups-grid" id="grid"></div>
+</section>
+<script src="/toast.js"></script>
+<script src="/confetti.js"></script>
+<script src="/sound-effects.js"></script>
+<script>
+const groups = [
+  {avatar:'💻', name:'Uzbek Developers', cat:'tech', desc:'O\'zbek dasturchilari uchun eng katta community. 24/7 yordam.', members:'12.4K', posts:'1.2K', online:345, c1:'#06b6d4', c2:'#3b82f6', joined:true},
+  {avatar:'🚀', name:'Startup Founders UZ', cat:'business', desc:'Startapchilar uchun maxsus. Investorlar va networking.', members:'8.7K', posts:'890', online:189, c1:'#8b5cf6', c2:'#ec4899'},
+  {avatar:'🎨', name:'UI/UX Designers', cat:'design', desc:'Dizayn trendlari, portfolio baholash, Figma maslahatlar.', members:'6.2K', posts:'567', online:123, c1:'#f59e0b', c2:'#ef4444'},
+  {avatar:'📈', name:'Digital Marketing UZ', cat:'marketing', desc:'SMM, SEO, reklama strategiyalari va case studies.', members:'5.8K', posts:'432', online:98, c1:'#22c55e', c2:'#10b981'},
+  {avatar:'📚', name:'IT Ta\'lim', cat:'education', desc:'Kurslar, kitoblar, darsliklar va bepul materiallar.', members:'9.3K', posts:'1.5K', online:267, c1:'#3b82f6', c2:'#06b6d4'},
+  {avatar:'🤖', name:'AI & ML Community', cat:'tech', desc:'Sun\'iy intellekt va machine learning bo\'yicha suhbatlar.', members:'4.5K', posts:'345', online:78, c1:'#ec4899', c2:'#8b5cf6'},
+  {avatar:'💼', name:'Freelancers Hub', cat:'business', desc:'Frilanserlar uchun maslahatlar, ish topish, narxlar.', members:'7.1K', posts:'678', online:156, c1:'#fbbf24', c2:'#f59e0b'},
+  {avatar:'🎬', name:'Content Creators', cat:'marketing', desc:'YouTube, TikTok, Instagram kontent yaratuvchilari.', members:'11.2K', posts:'2.3K', online:289, c1:'#ef4444', c2:'#ec4899'},
+  {avatar:'🔐', name:'Cybersecurity UZ', cat:'tech', desc:'Xavfsizlik bo\'yicha mutaxassislar va yangi boshlovchilar.', members:'3.4K', posts:'234', online:67, c1:'#64748b', c2:'#94a3b8'},
+];
+let activeCat = 'all', query = '';
+function setCat(el, c) {
+  document.querySelectorAll('.cat').forEach(x => x.classList.remove('active'));
+  el.classList.add('active');
+  activeCat = c;
+  render();
+}
+function searchGroups(q) { query = q.toLowerCase(); render(); }
+function render() {
+  const list = groups.filter(g => 
+    (activeCat === 'all' || g.cat === activeCat) &&
+    (!query || g.name.toLowerCase().includes(query) || g.desc.toLowerCase().includes(query))
+  );
+  document.getElementById('grid').innerHTML = list.map((g, i) => `
+    <div class="group oo-anim fade-up" style="--c1:${g.c1};--c2:${g.c2};animation-delay:${i*0.04}s">
+      <div class="group-head">
+        <div class="group-avatar" style="background:linear-gradient(135deg,${g.c1},${g.c2})">${g.avatar}</div>
+        <div>
+          <div class="group-name">${g.name}</div>
+          <div class="group-cat">${g.cat}</div>
+        </div>
+      </div>
+      <div class="group-desc">${g.desc}</div>
+      <div class="group-stats">
+        <span class="group-stat"><strong>${g.members}</strong> a'zo</span>
+        <span class="group-stat"><strong>${g.posts}</strong> post</span>
+        <span class="group-stat">🟢 <strong>${g.online}</strong> onlayn</span>
+      </div>
+      <button class="group-btn ${g.joined?'joined':''}" onclick="join(event, this)">${g.joined?'✓ A\'zosiz':'Qo\'shilish'}</button>
+    </div>
+  `).join('');
+}
+function join(e, btn) {
+  e.stopPropagation();
+  window.sfx?.click();
+  if (btn.classList.contains('joined')) {
+    btn.classList.remove('joined');
+    btn.textContent = 'Qo\'shilish';
+    window.toast?.info('Guruhdan chiqdingiz', '👋');
+  } else {
+    btn.classList.add('joined');
+    btn.textContent = '✓ A\'zosiz';
+    window.confetti({count:60});
+    window.toast?.success('Guruhga qo\'shildingiz!', '👥');
+  }
+}
+render();
+</script>
+</body>
+</html>
