@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Startaplar — 00o.uz</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+  color: white; min-height: 100vh; }
+.container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+nav { position: fixed; top: 0; left: 0; right: 0;
+  background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 100; padding: 16px 0; }
+.nav-inner { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+.nav-links { display: flex; gap: 24px; list-style: none; align-items: center; }
+.nav-links a { color: #cbd5e1; text-decoration: none; font-size: 14px; transition: 0.3s; }
+.nav-links a:hover, .nav-links a.active { color: #8b5cf6; }
+.btn { padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer;
+  border: none; transition: 0.3s; text-decoration: none; display: inline-block; font-size: 14px; }
+.btn-primary { background: linear-gradient(135deg, #8b5cf6, #06b6d4); color: white; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(139,92,246,0.4); }
+.btn-outline { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.2); }
+.btn-outline:hover { background: rgba(255,255,255,0.05); }
+.page-hero { padding: 130px 0 40px; }
+.page-hero h1 { font-size: clamp(36px, 5vw, 52px); font-weight: 800; margin-bottom: 12px;
+  background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.page-hero p { color: #94a3b8; font-size: 18px; max-width: 600px; }
+
+.search-bar { display: flex; gap: 12px; margin: 32px 0; flex-wrap: wrap; }
+.search-input { flex: 1; min-width: 250px; padding: 14px 20px; border-radius: 12px;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  color: white; font-size: 15px; }
+.search-input:focus { outline: none; border-color: #8b5cf6; }
+.search-select { padding: 14px 20px; border-radius: 12px;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  color: white; font-size: 15px; cursor: pointer; }
+
+.filters { display: flex; gap: 8px; margin: 20px 0; flex-wrap: wrap; }
+.filter-chip { padding: 8px 16px; border-radius: 20px; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.3s; font-size: 14px; }
+.filter-chip:hover, .filter-chip.active { background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  border-color: transparent; }
+
+.startups-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px; padding: 20px 0 80px; }
+.startup-card { padding: 24px; border-radius: 20px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; cursor: pointer;
+  position: relative; overflow: hidden; }
+.startup-card:hover { transform: translateY(-8px); border-color: rgba(139,92,246,0.5);
+  box-shadow: 0 20px 60px rgba(139,92,246,0.2); }
+.startup-header { display: flex; gap: 16px; margin-bottom: 16px; }
+.startup-logo { width: 64px; height: 64px; border-radius: 16px;
+  background: linear-gradient(135deg, #8b5cf6, #06b6d4); display: flex; align-items: center;
+  justify-content: center; font-size: 32px; flex-shrink: 0; }
+.startup-info { flex: 1; min-width: 0; }
+.startup-name { font-size: 18px; font-weight: 700; margin-bottom: 4px;
+  display: flex; align-items: center; gap: 6px; }
+.verified { color: #06b6d4; font-size: 16px; }
+.startup-category { color: #94a3b8; font-size: 13px; }
+.startup-desc { color: #cbd5e1; font-size: 14px; line-height: 1.5; margin-bottom: 16px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.startup-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.tag { padding: 4px 10px; border-radius: 12px; font-size: 11px;
+  background: rgba(139,92,246,0.15); color: #c4b5fd; }
+.startup-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+  padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.05); }
+.stat-item { text-align: center; }
+.stat-val { font-size: 16px; font-weight: 700; color: #8b5cf6; }
+.stat-lbl { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+.save-btn { position: absolute; top: 16px; right: 16px; width: 36px; height: 36px;
+  border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px;
+  transition: 0.3s; }
+.save-btn:hover, .save-btn.saved { background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444; color: #ef4444; }
+.funding { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 12px;
+  font-weight: 600; background: rgba(34, 197, 94, 0.15); color: #86efac; margin-top: 8px; }
+
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
+.modal.open { display: flex; animation: fadeIn 0.2s; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.modal-content { background: linear-gradient(135deg, #1e293b, #0f172a);
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 40px;
+  max-width: 480px; width: 100%; position: relative; }
+.modal-close { position: absolute; top: 16px; right: 16px; width: 36px; height: 36px;
+  border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  color: white; font-size: 20px; cursor: pointer; }
+.modal h2 { font-size: 28px; margin-bottom: 8px; }
+.modal-sub { color: #94a3b8; font-size: 14px; margin-bottom: 24px; }
+.tabs { display: flex; gap: 4px; padding: 4px; background: rgba(255,255,255,0.05);
+  border-radius: 12px; margin-bottom: 24px; }
+.tab { flex: 1; padding: 10px; text-align: center; cursor: pointer; border-radius: 8px;
+  font-size: 14px; font-weight: 600; transition: 0.3s; }
+.tab.active { background: linear-gradient(135deg, #8b5cf6, #06b6d4); }
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: #cbd5e1; }
+.form-group input { width: 100%; padding: 12px 16px; border-radius: 10px;
+  background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(255,255,255,0.1);
+  color: white; font-size: 14px; }
+.form-group input:focus { outline: none; border-color: #8b5cf6; }
+.btn-submit { width: 100%; padding: 14px; border: none; border-radius: 10px;
+  font-size: 15px; font-weight: 700; cursor: pointer;
+  background: linear-gradient(135deg, #8b5cf6, #06b6d4); color: white; }
+.btn-submit:hover { transform: translateY(-2px); }
+.divider { display: flex; align-items: center; gap: 12px; margin: 20px 0;
+  color: #64748b; font-size: 12px; }
+.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.1); }
+.social-btn { width: 100%; padding: 12px; border-radius: 10px; margin-bottom: 8px;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  color: white; cursor: pointer; font-size: 14px; display: flex; align-items: center;
+  justify-content: center; gap: 8px; }
+.social-btn:hover { background: rgba(255,255,255,0.1); }
+</style>
+</head>
+<body>
+<nav>
+  <div class="container nav-inner">
+    <a href="index.html" class="logo">00o.uz</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Bosh sahifa</a></li>
+      <li><a href="startups.html" class="active">Startaplar</a></li>
+      <li><a href="freelancers.html">Frilanserlar</a></li>
+      <li><a href="jobs.html">Ish o'rinlari</a></li>
+      <li><a href="admin.html">📞 Aloqa</a></li>
+    </ul>
+    <button class="btn btn-primary" onclick="openModal('login')">Kirish</button>
+  </div>
+</nav>
+
+<section class="page-hero container">
+  <h1>🚀 Startaplar</h1>
+  <p>O'zbekistondagi eng yaxshi startaplarni kashf qiling. Investitsiya qiling, hamkor bo'ling yoki g'oyangizni qo'shing.</p>
+  <div class="search-bar">
+    <input type="text" class="search-input" id="searchInput" placeholder="🔍 Startap qidirish..." oninput="filterStartups()">
+    <select class="search-select" id="sortSelect" onchange="filterStartups()">
+      <option value="popular">Popular</option>
+      <option value="newest">Yangi</option>
+      <option value="funding">Investitsiya</option>
+    </select>
+  </div>
+  <div class="filters" id="filters">
+    <span class="filter-chip active" data-cat="all" onclick="setFilter(this)">🌐 Hammasi</span>
+    <span class="filter-chip" data-cat="fintech" onclick="setFilter(this)">💰 FinTech</span>
+    <span class="filter-chip" data-cat="edtech" onclick="setFilter(this)">📚 EdTech</span>
+    <span class="filter-chip" data-cat="healthtech" onclick="setFilter(this)">🏥 HealthTech</span>
+    <span class="filter-chip" data-cat="ecommerce" onclick="setFilter(this)">🛒 E-commerce</span>
+    <span class="filter-chip" data-cat="ai" onclick="setFilter(this)">🤖 AI/ML</span>
+    <span class="filter-chip" data-cat="logistics" onclick="setFilter(this)">🚚 Logistika</span>
+    <span class="filter-chip" data-cat="agritech" onclick="setFilter(this)">🌾 AgriTech</span>
+  </div>
+</section>
+
+<section class="container">
+  <div class="startups-grid" id="startupsGrid"></div>
+</section>
+
+<div class="modal" id="loginModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('login')">×</button>
+    <h2>Kirish</h2>
+    <p class="modal-sub">00o.uz hisobingizga kiring</p>
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab(this, 'login')">Kirish</div>
+      <div class="tab" onclick="switchTab(this, 'register')">Ro'yxatdan o'tish</div>
+    </div>
+    <div id="loginForm">
+      <div class="form-group"><label>Email</label><input type="email" placeholder="example@mail.com"></div>
+      <div class="form-group"><label>Parol</label><input type="password" placeholder="••••••••"></div>
+      <button class="btn-submit" onclick="fakeLogin()">Kirish →</button>
+      <div class="divider">yoki</div>
+      <button class="social-btn">📱 Telegram orqali kirish</button>
+      <button class="social-btn">🔍 Google orqali</button>
+    </div>
+    <div id="registerForm" style="display:none">
+      <div class="form-group"><label>Ism</label><input type="text" placeholder="Firdavs"></div>
+      <div class="form-group"><label>Email</label><input type="email" placeholder="example@mail.com"></div>
+      <div class="form-group"><label>Parol</label><input type="password" placeholder="Kamida 8 belgi"></div>
+      <button class="btn-submit" onclick="fakeRegister()">Ro'yxatdan o'tish →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const startups = [
+  { id: 1, name: 'PayUz', cat: 'fintech', icon: '💳', desc: 'O\'zbekistondagi birinchi mobil to\'lov platformasi. P2P, merchant va crypto.', tags: ['Mobile', 'Fintech', 'P2P'], users: '500K+', rating: 4.8, funding: '$2.5M', verified: true },
+  { id: 2, name: 'EduPro', cat: 'edtech', icon: '🎓', desc: 'Onlayn ta\'lim platformasi. Kurslar, mentorlar va sertifikatlar.', tags: ['Online', 'Education'], users: '120K+', rating: 4.7, funding: '$800K', verified: true },
+  { id: 3, name: 'MedLink', cat: 'healthtech', icon: '🏥', desc: 'Shifokor bilan onlayn konsultatsiya. AI yordamida tashxis.', tags: ['Health', 'AI', 'Telemed'], users: '85K+', rating: 4.9, funding: '$1.2M', verified: true },
+  { id: 4, name: 'Bozor.uz', cat: 'ecommerce', icon: '🛒', desc: 'O\'zbekistondagi eng katta onlayn bozor. 50K+ mahsulot.', tags: ['E-commerce', 'Marketplace'], users: '1M+', rating: 4.6, funding: '$5M', verified: true },
+  { id: 5, name: 'AgroAI', cat: 'agritech', icon: '🌾', desc: 'Fermerlar uchun AI yordamchi. Ob-havo, kasallik va hosil bashorati.', tags: ['AI', 'Agriculture'], users: '45K+', rating: 4.8, funding: '$600K', verified: true },
+  { id: 6, name: 'TaksiPro', cat: 'logistics', icon: '🚕', desc: 'Yangi avlod taksi xizmati. AI marshrut va adolatli narxlar.', tags: ['Transport', 'AI'], users: '300K+', rating: 4.5, funding: '$3.2M', verified: true },
+  { id: 7, name: 'CodeUz', cat: 'edtech', icon: '💻', desc: 'Dasturlashni o\'rganish platformasi. Amaliy mashg\'ulotlar va portfolio.', tags: ['Coding', 'Bootcamp'], users: '65K+', rating: 4.9, funding: '$400K', verified: true },
+  { id: 8, name: 'SmartHome', cat: 'ai', icon: '🏠', desc: 'IoT asosidagi uy boshqaruv tizimi. O\'zbekiston uchun maxsus.', tags: ['IoT', 'Smart Home'], users: '15K+', rating: 4.7, funding: '$350K', verified: false },
+  { id: 9, name: 'LogiTrans', cat: 'logistics', icon: '🚚', desc: 'Yuk tashish va logistika platformasi. Real-time tracking.', tags: ['Logistics', 'B2B'], users: '25K+', rating: 4.6, funding: '$900K', verified: true },
+  { id: 10, name: 'InvestUz', cat: 'fintech', icon: '💎', desc: 'Investitsiya platformasi. Startaplar va investorlarni birlashtiradi.', tags: ['Investment', 'P2P'], users: '40K+', rating: 4.8, funding: '$1.5M', verified: true },
+  { id: 11, name: 'Foody', cat: 'ecommerce', icon: '🍔', desc: 'Ovqat yetkazib berish. 1000+ restoran va 30 daqiqa kafolat.', tags: ['Food', 'Delivery'], users: '250K+', rating: 4.4, funding: '$1.8M', verified: true },
+  { id: 12, name: 'AIHelper', cat: 'ai', icon: '🤖', desc: 'Biznes uchun AI yordamchi. Chatbot, analitika va avtomatlashtirish.', tags: ['AI', 'B2B', 'SaaS'], users: '8K+', rating: 4.9, funding: '$250K', verified: false },
+];
+
+let saved = JSON.parse(localStorage.getItem('00o_saved_startups') || '[]');
+let currentFilter = 'all';
+
+function render() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const filtered = startups.filter(s => {
+    const matchSearch = s.name.toLowerCase().includes(search) || s.desc.toLowerCase().includes(search);
+    const matchCat = currentFilter === 'all' || s.cat === currentFilter;
+    return matchSearch && matchCat;
+  });
+
+  document.getElementById('startupsGrid').innerHTML = filtered.map(s => `
+    <div class="startup-card">
+      <div class="save-btn ${saved.includes(s.id) ? 'saved' : ''}" onclick="toggleSave(event, ${s.id})">
+        ${saved.includes(s.id) ? '❤️' : '🤍'}
+      </div>
+      <div class="startup-header">
+        <div class="startup-logo">${s.icon}</div>
+        <div class="startup-info">
+          <div class="startup-name">${s.name} ${s.verified ? '<span class="verified">✓</span>' : ''}</div>
+          <div class="startup-category">${s.cat.toUpperCase()}</div>
+        </div>
+      </div>
+      <p class="startup-desc">${s.desc}</p>
+      <div class="startup-tags">${s.tags.map(t => `<span class="tag">#${t}</span>`).join('')}</div>
+      <span class="funding">💰 ${s.funding}</span>
+      <div class="startup-stats">
+        <div class="stat-item"><div class="stat-val">${s.users}</div><div class="stat-lbl">Foydalanuvchi</div></div>
+        <div class="stat-item"><div class="stat-val">⭐ ${s.rating}</div><div class="stat-lbl">Reyting</div></div>
+        <div class="stat-item"><div class="stat-val">#${s.id}</div><div class="stat-lbl">ID</div></div>
+      </div>
+    </div>
+  `).join('') || '<p style="color:#94a3b8;grid-column:1/-1;text-align:center;padding:40px;">Hech narsa topilmadi</p>';
+}
+
+function filterStartups() { render(); }
+function setFilter(el) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  currentFilter = el.dataset.cat;
+  render();
+}
+function toggleSave(e, id) {
+  e.stopPropagation();
+  if (saved.includes(id)) saved = saved.filter(s => s !== id);
+  else saved.push(id);
+  localStorage.setItem('00o_saved_startups', JSON.stringify(saved));
+  render();
+}
+function openModal(type) { document.getElementById('loginModal').classList.add('open'); }
+function closeModal(type) { document.getElementById('loginModal').classList.remove('open'); }
+function switchTab(el, type) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('loginForm').style.display = type === 'login' ? 'block' : 'none';
+  document.getElementById('registerForm').style.display = type === 'register' ? 'block' : 'none';
+}
+function fakeLogin() { alert('✅ Demo: Muvaffaqiyatli kirdingiz!\n\nReal versiyada backend bilan ishlaydi.'); closeModal('login'); }
+function fakeRegister() { alert('✅ Demo: Ro\'yxatdan o\'tdingiz!\n\nEmail tasdiqlash xabari yuborildi.'); closeModal('login'); }
+
+document.getElementById('loginModal').onclick = (e) => { if (e.target.id === 'loginModal') closeModal('login'); };
+render();
+console.log('%c🚀 Startaplar sahifasi', 'font-size:24px;font-weight:bold;color:#8b5cf6;');
+</script>
+</body>
+</html>
