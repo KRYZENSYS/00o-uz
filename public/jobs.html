@@ -16,7 +16,7 @@ nav { position: fixed; top: 0; left: 0; right: 0;
 .nav-inner { display: flex; justify-content: space-between; align-items: center; }
 .logo { font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #8b5cf6, #06b6d4);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
-.nav-links { display: flex; gap: 24px; list-style: none; align-items: center; }
+.nav-links { display: flex; gap: 20px; list-style: none; align-items: center; }
 .nav-links a { color: #cbd5e1; text-decoration: none; font-size: 14px; transition: 0.3s; }
 .nav-links a:hover, .nav-links a.active { color: #8b5cf6; }
 .btn { padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer;
@@ -36,7 +36,6 @@ nav { position: fixed; top: 0; left: 0; right: 0;
 .search-select { padding: 14px 20px; border-radius: 12px;
   background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
   color: white; font-size: 15px; cursor: pointer; }
-
 .jobs-list { display: flex; flex-direction: column; gap: 16px; padding: 20px 0 80px; }
 .job-card { padding: 24px; border-radius: 20px;
   background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
@@ -79,12 +78,12 @@ nav { position: fixed; top: 0; left: 0; right: 0;
       <li><a href="startups.html">Startaplar</a></li>
       <li><a href="freelancers.html">Frilanserlar</a></li>
       <li><a href="jobs.html" class="active">Ish o'rinlari</a></li>
-      <li><a href="admin.html">📞 Aloqa</a></li>
+      <li><a href="premium.html">Premium</a></li>
+      <li><a href="admin.html">📞</a></li>
     </ul>
     <a href="#" class="btn btn-primary" onclick="event.preventDefault();alert('Demo rejim')">Kirish</a>
   </div>
 </nav>
-
 <section class="page-hero container">
   <h1>💼 Ish o'rinlari</h1>
   <p>O'zbekistondagi eng yaxshi kompaniyalar va startaplarda ish toping. 500+ yangi vakansiya har kuni.</p>
@@ -99,11 +98,9 @@ nav { position: fixed; top: 0; left: 0; right: 0;
     </select>
   </div>
 </section>
-
 <section class="container">
   <div class="jobs-list" id="jobsList"></div>
 </section>
-
 <script>
 const jobs = [
   { id: 1, title: 'Senior Frontend Developer', company: 'PayUz', icon: '💳', type: 'fulltime', remote: true, urgent: true, salary: '25-40 mln', experience: '3+ yil', location: 'Toshkent', tags: ['React', 'Next.js', 'TypeScript'] },
@@ -119,7 +116,6 @@ const jobs = [
   { id: 11, title: 'Product Manager', company: 'AIHelper', icon: '🤖', type: 'fulltime', remote: true, urgent: true, salary: '30-50 mln', experience: '4+ yil', location: 'Toshkent', tags: ['PM', 'Agile', 'SaaS'] },
   { id: 12, title: 'Full-stack Developer', company: 'LogiTrans', icon: '🚚', type: 'fulltime', remote: false, urgent: false, salary: '20-35 mln', experience: '2+ yil', location: 'Toshkent', tags: ['React', 'Node.js', 'MongoDB'] },
 ];
-
 function render() {
   const search = document.getElementById('searchInput').value.toLowerCase();
   const type = document.getElementById('typeSelect').value;
@@ -128,7 +124,6 @@ function render() {
     const mt = type === 'all' || j.type === type || (type === 'remote' && j.remote);
     return ms && mt;
   });
-
   document.getElementById('jobsList').innerHTML = filtered.map(j => `
     <div class="job-card">
       <div class="job-icon">${j.icon}</div>
@@ -153,10 +148,9 @@ function render() {
     </div>
   `).join('') || '<p style="color:#94a3b8;text-align:center;padding:40px;">Hech qanday vakansiya topilmadi</p>';
 }
-
 function filterJobs() { render(); }
 render();
-console.log('%c💼 Ish o\'rinlari', 'font-size:24px;font-weight:bold;color:#8b5cf6;');
 </script>
+<script src="/i18n.js"></script>
 </body>
 </html>
