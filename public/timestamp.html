@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vaqt konverter — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; padding: 100px 20px; }
+.container { max-width: 800px; margin: 0 auto; }
+h1 { font-size: 32px; margin-bottom: 8px; text-align: center;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.box { padding: 24px; border-radius: 16px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); margin-bottom: 16px; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+@media (max-width:640px) { .row { grid-template-columns: 1fr; } }
+label { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 4px; }
+input, select { width: 100%; padding: 12px; border-radius: 8px; background: rgba(0,0,0,0.4); color: white; border: 1px solid rgba(255,255,255,0.1); font-size: 14px; }
+.btn { padding: 10px 20px; border-radius: 8px; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; border: none; font-weight: 600; cursor: pointer; }
+.now { padding: 32px; text-align: center; border-radius: 14px; background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(236,72,153,0.2)); margin-bottom: 16px; }
+.now-time { font-size: 48px; font-weight: 800; font-family: monospace;
+  background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.zones { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px; }
+.zone { padding: 12px; border-radius: 10px; background: rgba(255,255,255,0.03); }
+.zone-name { font-size: 12px; color: #94a3b8; }
+.zone-time { font-family: monospace; font-size: 18px; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>⏰ Vaqt konverter</h1>
+  <p style="color:#94a3b8;text-align:center;margin-bottom:20px">Timestamp, timezone, vaqt mintaqalari</p>
+  <div class="now">
+    <div style="color:#94a3b8;margin-bottom:8px">⏱ Hozirgi vaqt</div>
+    <div class="now-time" id="now">--:--:--</div>
+    <div style="margin-top:8px;font-size:14px" id="nowFull">--</div>
+  </div>
+  <div class="box">
+    <h3 style="margin-bottom:12px">🔄 Konvertatsiya</h3>
+    <div class="row">
+      <div><label>Timestamp (Unix)</label><input id="ts" type="number" oninput="convert()"></div>
+      <div><label>Sana va vaqt</label><input id="dt" type="datetime-local" oninput="convert()"></div>
+    </div>
+    <div class="row">
+      <div><label>From TZ</label><select id="from" onchange="convert()"><option>UTC</option><option selected>Asia/Tashkent</option><option>Europe/Moscow</option><option>America/New_York</option><option>Europe/London</option><option>Asia/Tokyo</option></select></div>
+      <div><label>To TZ</label><select id="to" onchange="convert()"><option selected>UTC</option><option>Asia/Tashkent</option><option>Europe/Moscow</option><option>America/New_York</option><option>Europe/London</option><option>Asia/Tokyo</option></select></div>
+    </div>
+  </div>
+  <div class="box">
+    <h3 style="margin-bottom:12px">🌍 Vaqt mintaqalari</h3>
+    <div class="zones" id="zones"></div>
+  </div>
+</div>
+<script>
+const zones = [
+  {n:'🇺🇿 Toshkent', tz:'Asia/Tashkent'},
+  {n:'🇷🇺 Moskva', tz:'Europe/Moscow'},
+  {n:'🇺🇸 New York', tz:'America/New_York'},
+  {n:'🇬🇧 London', tz:'Europe/London'},
+  {n:'🇯🇵 Tokyo', tz:'Asia/Tokyo'},
+  {n:'🇩🇪 Berlin', tz:'Europe/Berlin'},
+  {n:'🇨🇳 Pekin', tz:'Asia/Shanghai'},
+  {n:'🇦🇪 Dubai', tz:'Asia/Dubai'},
+];
+function tick() {
+  const d = new Date();
+  document.getElementById('now').textContent = d.toLocaleTimeString('uz-UZ');
+  document.getElementById('nowFull').textContent = d.toLocaleString('uz-UZ', {dateStyle:'full', timeStyle:'medium'});
+  document.getElementById('zones').innerHTML = zones.map(z => `<div class="zone"><div class="zone-name">${z.n}</div><div class="zone-time">${d.toLocaleTimeString('uz-UZ', {timeZone:z.tz})}</div></div>`).join('');
+  if (!document.getElementById('ts').value) document.getElementById('ts').value = Math.floor(d.getTime()/1000);
+}
+setInterval(tick, 1000); tick();
+function convert() {
+  const ts = parseInt(document.getElementById('ts').value) * 1000;
+  if (!isNaN(ts)) {
+    const d = new Date(ts);
+    document.getElementById('dt').value = d.toISOString().slice(0,16);
+  }
+}
+convert();
+</script>
+</body>
+</html>
