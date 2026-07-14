@@ -1,110 +1,128 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
-import { Send, Sparkles, Loader2, Wand2, Code, Languages, FileText, BarChart3, Lightbulb, Briefcase, Image as ImageIcon, Music, Mic, Paperclip, Copy, Check, Trash2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Sparkles, Send, History, Crown, Wand2, Languages, Briefcase, Code2, FileText, Megaphone, Wrench, BarChart3, Mic } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 const TOOLS = [
-  { id: "chat", name: "AI Chat", icon: Sparkles, color: "from-blue-500 to-cyan-500", desc: "Erkin suhbat" },
-  { id: "business-plan", name: "Biznes reja", icon: FileText, color: "from-purple-500 to-pink-500", desc: "To'liq reja" },
-  { id: "pitch-deck", name: "Pitch deck", icon: BarChart3, color: "from-orange-500 to-red-500", desc: "Investorlar uchun" },
-  { id: "startup-ideas", name: "G'oyalar", icon: Lightbulb, color: "from-yellow-500 to-orange-500", desc: "10 ta g'oya" },
-  { id: "code", name: "Kod", icon: Code, color: "from-green-500 to-emerald-500", desc: "Kod generatori" },
-  { id: "translate", name: "Tarjimon", icon: Languages, color: "from-pink-500 to-rose-500", desc: "100+ til" },
-  { id: "resume", name: "Resume", icon: Briefcase, color: "from-indigo-500 to-purple-500", desc: "CV builder" },
-  { id: "marketing", name: "Marketing", icon: Wand2, color: "from-teal-500 to-cyan-500", desc: "Strategiya" },
-  { id: "image", name: "Rasm", icon: ImageIcon, color: "from-fuchsia-500 to-pink-500", desc: "AI image" },
-  { id: "music", name: "Musiqa", icon: Music, color: "from-amber-500 to-yellow-500", desc: "AI music" },
-  { id: "voice", name: "Ovoz", icon: Mic, color: "from-violet-500 to-purple-500", desc: "Voice AI" },
-  { id: "summarize", name: "Xulosa", icon: FileText, color: "from-sky-500 to-blue-500", desc: "Qisqartirish" },
+  { id: "chat", name: "AI Chat", icon: Wand2, color: "from-purple-500 to-pink-500", desc: "Umumiy suhbat" },
+  { id: "business-plan", name: "Biznes reja", icon: Briefcase, color: "from-blue-500 to-cyan-500", desc: "Professional reja" },
+  { id: "pitch-deck", name: "Pitch deck", icon: FileText, color: "from-green-500 to-emerald-500", desc: "Investorlar uchun" },
+  { id: "startup-ideas", name: "Startap g'oyalar", icon: Sparkles, color: "from-yellow-500 to-orange-500", desc: "Kreativ g'oyalar" },
+  { id: "resume", name: "Resume", icon: FileText, color: "from-indigo-500 to-purple-500", desc: "Professional CV" },
+  { id: "cover-letter", name: "Cover Letter", icon: FileText, color: "from-pink-500 to-rose-500", desc: "Ish uchun" },
+  { id: "marketing", name: "Marketing", icon: Megaphone, color: "from-red-500 to-pink-500", desc: "Strategiya" },
+  { id: "seo", name: "SEO", icon: BarChart3, color: "from-cyan-500 to-blue-500", desc: "Qidiruv optimallashtirish" },
+  { id: "blog", name: "Blog post", icon: FileText, color: "from-emerald-500 to-green-500", desc: "Maqola yozish" },
+  { id: "code", name: "Kod", icon: Code2, color: "from-slate-500 to-slate-700", desc: "Dasturlash" },
+  { id: "fix-bug", name: "Bug fix", icon: Wrench, color: "from-red-500 to-orange-500", desc: "Xatolarni tuzatish" },
+  { id: "sql", name: "SQL", icon: Code2, color: "from-blue-600 to-indigo-600", desc: "Database so'rovlar" },
+  { id: "translate", name: "Tarjimon", icon: Languages, color: "from-violet-500 to-purple-500", desc: "100+ til" },
+  { id: "summarize", name: "Xulosa", icon: FileText, color: "from-teal-500 to-cyan-500", desc: "Matn qisqartirish" },
+  { id: "brainstorm", name: "Brainstorm", icon: Sparkles, color: "from-amber-500 to-yellow-500", desc: "G'oyalar generatsiyasi" },
+  { id: "planner", name: "Planner", icon: FileText, color: "from-rose-500 to-pink-500", desc: "Loyiha rejasi" },
+  { id: "financial", name: "Moliyaviy", icon: BarChart3, color: "from-green-600 to-emerald-600", desc: "Tahlil" },
+  { id: "competitor", name: "Raqobatchi", icon: BarChart3, color: "from-orange-500 to-red-500", desc: "Tahlil" },
+  { id: "swot", name: "SWOT", icon: BarChart3, color: "from-fuchsia-500 to-pink-500", desc: "Tahlil" },
+  { id: "legal", name: "Yuridik", icon: FileText, color: "from-gray-500 to-slate-600", desc: "Maslahat" }
 ];
 
 export default function AIPage() {
-  const [messages, setMessages] = useState([{ role: "assistant", content: "👋 Salom! Men 00o.uz AI yordamchiman. 30+ vosita orqali yordam bera olaman. Qaysi birini sinab ko'ramiz?", tool: "chat" }]);
-  const [input, setInput] = useState("");
-  const [selectedTool, setSelectedTool] = useState("chat");
+  const params = useSearchParams();
+  const initialTool = params.get("tool") || "chat";
+  const initialInput = params.get("input") || "";
+  
+  const [tool, setTool] = useState(initialTool);
+  const [input, setInput] = useState(initialInput);
+  const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const [history, setHistory] = useState<any[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
 
-  useEffect(() => { scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" }); }, [messages]);
+  useEffect(() => { loadHistory(); }, []);
 
-  const send = async () => {
+  const loadHistory = async () => {
+    const t = localStorage.getItem("token");
+    if (!t) return;
+    try { const r = await fetch(`${API_URL}/api/v1/ai/history?limit=20`, { headers: { Authorization: `Bearer ${t}` } }); if (r.ok) setHistory(await r.json()); } catch {}
+  };
+
+  const run = async () => {
     if (!input.trim() || loading) return;
-    const userMsg = { role: "user", content: input, tool: selectedTool };
-    setMessages(m => [...m, userMsg]);
-    const cur = input; setInput(""); setLoading(true);
+    const t = localStorage.getItem("token");
+    if (!t) return alert("Avval kiring");
+    setLoading(true); setOutput("");
     try {
       const r = await fetch(`${API_URL}/api/v1/ai/execute`, {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tool: selectedTool, input: cur, language: "uz" })
+        method: "POST", headers: { Authorization: `Bearer ${t}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ tool, input, language: "uz" })
       });
       const d = await r.json();
-      setMessages(m => [...m, { role: "assistant", content: d.content || "Xatolik", tool: selectedTool }]);
-    } catch {
-      setMessages(m => [...m, { role: "assistant", content: "❌ Xatolik yuz berdi.", tool: selectedTool }]);
-    }
+      setOutput(d.output || d.error || "Xatolik");
+      loadHistory();
+    } catch { setOutput("Ulanish xatoligi"); }
     setLoading(false);
   };
 
-  const copy = (t: string, i: number) => { navigator.clipboard.writeText(t); setCopiedIdx(i); setTimeout(() => setCopiedIdx(null), 2000); };
-  const clear = () => setMessages([{ role: "assistant", content: "Chat tozalandi!", tool: "chat" }]);
-  const currentTool = TOOLS.find(t => t.id === selectedTool)!;
+  const activeTool = TOOLS.find(t => t.id === tool) || TOOLS[0];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900 text-white">
-      <div className="max-w-7xl mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-4 h-screen">
-        <aside className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-4 overflow-y-auto">
-          <h2 className="font-bold text-lg mb-3 flex items-center gap-2"><Sparkles className="w-5 h-5 text-purple-400" /> AI Vositalar</h2>
-          <div className="space-y-2">
-            {TOOLS.map(t => {
-              const Icon = t.icon;
-              return (
-                <button key={t.id} onClick={() => setSelectedTool(t.id)}
-                  className={`w-full text-left p-3 rounded-xl transition flex items-center gap-3 ${selectedTool === t.id ? `bg-gradient-to-r ${t.color}` : "bg-white/5 hover:bg-white/10"}`}>
-                  <Icon className="w-5 h-5" />
-                  <div><div className="font-medium text-sm">{t.name}</div><div className="text-xs opacity-70">{t.desc}</div></div>
-                </button>
-              );
-            })}
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white p-4 md:p-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-3xl font-bold flex items-center gap-3"><Sparkles className="w-8 h-8 text-purple-400" /> AI Yordamchi</h1>
+            <p className="text-gray-400 mt-1">30+ AI vosita — tez, kuchli, professional</p>
           </div>
-        </aside>
+          <button onClick={() => setShowHistory(!showHistory)} className="px-4 py-2 bg-white/10 rounded-xl flex items-center gap-2"><History className="w-4 h-4" /> Tarix</button>
+        </div>
 
-        <main className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl flex flex-col overflow-hidden">
-          <div className={`p-4 border-b border-white/10 bg-gradient-to-r ${currentTool.color}`}>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <currentTool.icon className="w-7 h-7" />
-                <div><h1 className="font-bold text-xl">{currentTool.name}</h1><p className="text-sm opacity-80">{currentTool.desc}</p></div>
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-2 mb-6">
+          {TOOLS.map(t => { const Icon = t.icon; return (
+            <button key={t.id} onClick={() => setTool(t.id)} className={`p-3 rounded-xl text-left transition ${tool === t.id ? `bg-gradient-to-br ${t.color}` : "bg-white/5 hover:bg-white/10"}`}>
+              <Icon className="w-5 h-5 mb-1" />
+              <div className="text-sm font-medium">{t.name}</div>
+            </button>
+          );})}
+        </div>
+
+        <div className="grid lg:grid-cols-3 gap-4">
+          <div className="lg:col-span-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5">
+            <div className="flex items-center gap-3 mb-3 pb-3 border-b border-white/10">
+              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${activeTool.color} flex items-center justify-center`}><activeTool.icon className="w-5 h-5" /></div>
+              <div>
+                <div className="font-bold">{activeTool.name}</div>
+                <div className="text-xs text-gray-400">{activeTool.desc}</div>
               </div>
-              <button onClick={clear} className="p-2 hover:bg-white/10 rounded-lg"><Trash2 className="w-5 h-5" /></button>
             </div>
-          </div>
-
-          <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4">
-            {messages.map((m, i) => (
-              <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
-                <div className={`max-w-[85%] rounded-2xl p-4 ${m.role === "user" ? "bg-gradient-to-r from-purple-600 to-pink-600" : "bg-white/10 border border-white/10"}`}>
-                  <div className="whitespace-pre-wrap text-sm leading-relaxed">{m.content}</div>
-                  {m.role === "assistant" && <button onClick={() => copy(m.content, i)} className="mt-2 text-xs opacity-60 hover:opacity-100">{copiedIdx === i ? "✓ Nusxalandi" : "📋 Nusxalash"}</button>}
-                </div>
+            <textarea value={input} onChange={(e) => setInput(e.target.value)} rows={6} placeholder="Savolingizni yozing..." className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-purple-500 resize-none" />
+            <button onClick={run} disabled={loading} className="w-full mt-3 py-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl font-bold disabled:opacity-50 flex items-center justify-center gap-2">
+              {loading ? <><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> AI ishlayapti...</> : <><Send className="w-5 h-5" /> Yuborish</>}
+            </button>
+            {output && (
+              <div className="mt-5 pt-5 border-t border-white/10">
+                <div className="text-sm text-gray-400 mb-2 flex items-center gap-2"><Sparkles className="w-4 h-4" /> Natija:</div>
+                <div className="bg-black/30 rounded-xl p-4 text-sm whitespace-pre-wrap max-h-[500px] overflow-y-auto">{output}</div>
               </div>
-            ))}
-            {loading && <div className="flex justify-start"><div className="bg-white/10 rounded-2xl p-4 flex items-center gap-2"><Loader2 className="w-4 h-4 animate-spin" /><span className="text-sm">Yozilmoqda...</span></div></div>}
+            )}
           </div>
 
-          <div className="p-4 border-t border-white/10">
-            <div className="flex items-end gap-2">
-              <button className="p-3 hover:bg-white/10 rounded-xl"><Paperclip className="w-5 h-5" /></button>
-              <button className="p-3 hover:bg-white/10 rounded-xl"><Mic className="w-5 h-5" /></button>
-              <textarea value={input} onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } }}
-                placeholder={`${currentTool.name} uchun savol yozing...`} rows={1}
-                className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:border-purple-500 focus:outline-none resize-none max-h-32" />
-              <button onClick={send} disabled={loading || !input.trim()} className="p-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl disabled:opacity-50"><Send className="w-5 h-5" /></button>
+          {showHistory && (
+            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 max-h-[700px] overflow-y-auto">
+              <h3 className="font-bold mb-3 flex items-center gap-2"><History className="w-4 h-4" /> Tarix</h3>
+              {history.length === 0 ? <p className="text-sm text-gray-400">Tarix bo'sh</p> :
+                <div className="space-y-2">
+                  {history.map((h: any) => (
+                    <div key={h.id} onClick={() => { setTool(h.tool); setInput(h.input); setOutput(h.output); }} className="p-3 bg-white/5 rounded-lg cursor-pointer hover:bg-white/10 text-sm">
+                      <div className="font-medium text-purple-300">{h.tool}</div>
+                      <div className="text-gray-400 line-clamp-2 text-xs mt-1">{h.input}</div>
+                    </div>
+                  ))}
+                </div>}
             </div>
-          </div>
-        </main>
+          )}
+        </div>
       </div>
     </div>
   );
