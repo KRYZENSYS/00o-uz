@@ -1,96 +1,79 @@
 <!DOCTYPE html>
 <html lang="uz"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Qaydlar — 00o.uz</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0e1a">
+<title>Notes — 00o.uz</title>
 <script src="/global.js"></script>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; }
-.layout { display: grid; grid-template-columns: 280px 1fr; height: 100vh; }
-@media (max-width:768px) { .layout { grid-template-columns: 1fr; } .sidebar { display: none; } }
-.sidebar { background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border-right: 1px solid rgba(255,255,255,0.05); padding: 16px; display: flex; flex-direction: column; }
-.new { padding: 12px; border-radius: 10px; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; border: none; font-weight: 700; cursor: pointer; margin-bottom: 12px; }
-.search { padding: 10px; border-radius: 10px; background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 12px; font-size: 13px; }
-.list { flex: 1; overflow-y: auto; }
-.note-item { padding: 12px; border-radius: 10px; cursor: pointer; margin-bottom: 6px; background: rgba(255,255,255,0.02); border: 1px solid transparent; }
-.note-item:hover, .note-item.active { background: rgba(139,92,246,0.15); border-color: rgba(139,92,246,0.3); }
-.note-t { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
-.note-d { font-size: 11px; color: #94a3b8; }
-.main { display: flex; flex-direction: column; }
-.toolbar { padding: 12px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 8px; align-items: center; }
-.tbtn { padding: 6px 10px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; cursor: pointer; font-size: 12px; }
-.tbtn:hover { background: rgba(255,255,255,0.1); }
-.title-in { flex: 1; padding: 10px; background: transparent; border: none; color: white; font-size: 18px; font-weight: 700; outline: none; }
-.editor { flex: 1; padding: 20px 40px; overflow-y: auto; }
-textarea { width: 100%; height: 100%; min-height: 500px; padding: 20px; background: transparent; border: none; color: white; font-size: 15px; line-height: 1.7; resize: none; outline: none; font-family: inherit; }
-.empty { text-align: center; color: #94a3b8; padding: 100px 20px; }
-.empty-emoji { font-size: 80px; margin-bottom: 16px; }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,sans-serif;background:#0a0e1a;color:#f1f5f9;min-height:100vh;padding:60px 16px 100px;max-width:720px;margin:0 auto}
+h1{font-size:clamp(24px,6vw,32px);font-weight:800;text-align:center;background:linear-gradient(135deg,#8b5cf6,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
+.sub{text-align:center;color:#94a3b8;font-size:14px;margin-bottom:20px}
+.list-item{padding:14px;border-radius:12px;background:linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.06);margin-bottom:8px;cursor:pointer;transition:transform 0.15s}
+.list-item:active{transform:scale(0.98)}
+.n-title{font-weight:700;margin-bottom:4px;font-size:15px}
+.n-preview{font-size:13px;color:#94a3b8;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.n-date{font-size:11px;color:#64748b;margin-top:4px}
+textarea,input{width:100%;padding:12px 14px;border-radius:10px;background:rgba(0,0,0,0.4);color:white;border:1px solid rgba(255,255,255,0.1);font-size:16px;font-family:inherit;resize:none}
+textarea{min-height:300px;line-height:1.5}
+input:focus,textarea:focus{outline:none;border-color:#8b5cf6}
+button{padding:12px 20px;border-radius:10px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:white;border:none;font-weight:700;cursor:pointer;font-size:15px;width:100%;margin-top:8px}
+button:active{transform:scale(0.97)}
+button.s{background:rgba(255,255,255,0.05)}
+.row{display:flex;gap:8px}
+.row button{flex:1;margin-top:8px}
+.fab{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:white;border:none;font-size:28px;cursor:pointer;box-shadow:0 8px 24px rgba(139,92,246,0.4);z-index:100}
+.empty{text-align:center;color:#64748b;padding:60px 20px}
+.search{width:100%;padding:12px 14px;border-radius:10px;background:rgba(0,0,0,0.4);color:white;border:1px solid rgba(255,255,255,0.1);font-size:15px;margin-bottom:12px}
+.search:focus{outline:none;border-color:#8b5cf6}
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;padding:60px 16px;overflow-y:auto}
+.ov.on{display:block}
+.ov-box{max-width:720px;margin:0 auto}
 </style>
 </head>
 <body>
-<div class="layout">
-  <div class="sidebar">
-    <button class="new" onclick="newNote()">+ Yangi qayd</button>
-    <input class="search" id="search" placeholder="🔍 Qidirish..." oninput="render()">
-    <div class="list" id="list"></div>
-  </div>
-  <div class="main">
-    <div class="toolbar">
-      <input class="title-in" id="title" placeholder="Sarlavha..." oninput="autosave()">
-      <button class="tbtn" onclick="togglePin()">📌</button>
-      <button class="tbtn" onclick="toggleColor()">🎨</button>
-      <button class="tbtn" onclick="del()">🗑</button>
-      <span style="color:#94a3b8;font-size:11px;margin-left:auto" id="saved">Saqlandi</span>
-    </div>
-    <div class="editor">
-      <textarea id="content" placeholder="Yozishni boshlang..." oninput="autosave()"></textarea>
+<h1>📝 Notes</h1>
+<p class="sub" id="sub">Notelaringizni saqlang</p>
+<input type="text" class="search" id="srch" placeholder="🔍 Qidirish..." oninput="render()">
+<div id="list"></div>
+<button class="fab" onclick="newN()">+</button>
+<div class="ov" id="ov">
+  <div class="ov-box">
+    <input id="ti" placeholder="Sarlavha..." style="margin-bottom:8px">
+    <textarea id="tx" placeholder="Yozing..."></textarea>
+    <div class="row">
+      <button class="s" onclick="closeN()">Bekor</button>
+      <button onclick="saveN()">Saqlash</button>
     </div>
   </div>
 </div>
 <script>
-let notes = JSON.parse(localStorage.getItem('oo-notes') || '[]');
-if (!notes.length) notes.push({id:Date.now(), title:'Salom! 👋', content:'Bu sizning birinchi qaydingiz. Yozishni boshlang!', color:'default', pin:false, date:Date.now()});
-let cur = notes[0].id;
-const colors = ['default','#fbbf24','#f87171','#34d399','#60a5fa','#a78bfa','#f472b6'];
-function save() { localStorage.setItem('oo-notes', JSON.stringify(notes)); render(); }
-function newNote() {
-  const n = {id:Date.now(), title:'', content:'', color:'default', pin:false, date:Date.now()};
-  notes.unshift(n); cur = n.id; save(); load();
+var notes = oo.load('notes', []);
+var editing = -1;
+var search = '';
+function save(){ oo.save('notes', notes); }
+function render(){
+  var q = document.getElementById('srch').value.toLowerCase();
+  var f = notes.filter(function(n){
+    return !q || n.t.toLowerCase().indexOf(q)>=0 || (n.x||'').toLowerCase().indexOf(q)>=0;
+  });
+  document.getElementById('sub').textContent = notes.length + ' ta nota';
+  document.getElementById('list').innerHTML = f.length ? f.map(function(n, i){
+    return '<div class="list-item" onclick="edit('+i+')"><div class="n-title">'+(n.t||'Nomsiz')+'</div><div class="n-preview">'+(n.x||'')+'</div><div class="n-date">'+new Date(n.ts).toLocaleString('uz-UZ',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})+'</div></div>';
+  }).join('') : '<div class="empty">📝<br>Hech qanday nota yo\'q<br><br>+ tugmasini bosing</div>';
 }
-function del() {
-  if (!confirm('O\'chirilsinmi?')) return;
-  notes = notes.filter(n => n.id !== cur);
-  if (notes.length) cur = notes[0].id; else newNote();
-  save(); load();
+function newN(){ editing = -1; document.getElementById('ti').value=''; document.getElementById('tx').value=''; document.getElementById('ov').classList.add('on'); setTimeout(function(){document.getElementById('ti').focus();},100); }
+function edit(i){ editing = i; document.getElementById('ti').value = notes[i].t||''; document.getElementById('tx').value = notes[i].x||''; document.getElementById('ov').classList.add('on'); }
+function closeN(){ document.getElementById('ov').classList.remove('on'); }
+function saveN(){
+  var t = document.getElementById('ti').value.trim();
+  var x = document.getElementById('tx').value.trim();
+  if (!t && !x) { closeN(); return; }
+  if (editing < 0) notes.unshift({t: t, x: x, ts: Date.now()});
+  else { notes[editing].t = t; notes[editing].x = x; notes[editing].ts = Date.now(); }
+  save(); closeN(); render(); toast.success('Saqlandi');
 }
-function togglePin() { const n = notes.find(x=>x.id===cur); n.pin=!n.pin; save(); }
-function toggleColor() { const n = notes.find(x=>x.id===cur); n.color = colors[(colors.indexOf(n.color)+1) % colors.length]; document.body.style.background = n.color==='default'?'#0a0e1a':n.color+'22'; save(); }
-function autosave() {
-  const n = notes.find(x=>x.id===cur);
-  if (!n) return;
-  n.title = document.getElementById('title').value;
-  n.content = document.getElementById('content').value;
-  n.date = Date.now();
-  document.getElementById('saved').textContent = 'Saqlanmoqda...';
-  clearTimeout(window.st);
-  window.st = setTimeout(() => { save(); document.getElementById('saved').textContent = 'Saqlandi ✓'; }, 500);
-}
-function load() {
-  const n = notes.find(x=>x.id===cur) || notes[0];
-  document.getElementById('title').value = n.title;
-  document.getElementById('content').value = n.content;
-  document.body.style.background = n.color==='default'?'#0a0e1a':n.color+'22';
-}
-function render() {
-  const q = document.getElementById('search').value.toLowerCase();
-  const f = notes.filter(n => !q || n.title.toLowerCase().includes(q) || n.content.toLowerCase().includes(q));
-  f.sort((a,b) => (b.pin?1:0) - (a.pin?1:0) || b.date - a.date);
-  document.getElementById('list').innerHTML = f.map(n => `<div class="note-item ${n.id===cur?'active':''}" onclick="cur=${n.id};load();render()">
-    <div class="note-t">${n.pin?'📌 ':''}${n.title || 'Sarlavhasiz'}</div>
-    <div class="note-d">${new Date(n.date).toLocaleString('uz-UZ',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</div>
-  </div>`).join('');
-}
-load(); render();
+render();
 </script>
 </body>
 </html>
