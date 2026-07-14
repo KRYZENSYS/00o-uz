@@ -1,182 +1,196 @@
-# 00o.uz — O'zbekistondagi eng katta AI platforma 🇺🇿
+# 🚀 00o.uz — O'zbekistondagi eng katta AI platforma
 
-> AI yordamchi, startaplar, ish o'rinlari, freelance xizmatlar — barchasi bir joyda.
+> **300+ funksiyali, to'liq ishlab chiqarishga tayyor professional web va bot platforma**
 
-![00o.uz](https://img.shields.io/badge/00o.uz-Live-blueviolet)
-![Status](https://img.shields.io/badge/Status-Production%20Ready-success)
-![License](https://img.shields.io/badge/License-Proprietary-red)
+## ✨ Asosiy xususiyatlar
 
-## ✨ Xususiyatlar
+### 🤖 AI (30+ vosita)
+- Chat, Business Plan, Pitch Deck, Resume, Cover Letter
+- Code Generation, Bug Fix, SQL, UI Components
+- Marketing, SEO, Blog, Email
+- Translator (100+ til), Summarizer, Brainstorm
+- AI Image, Logo, Avatar, Thumbnail, Video, Voice
 
-### 🤖 30+ AI vosita
-- **Biznes**: biznes-reja, pitch-deck, SWOT, g'oyalar, marketing-strategiya
-- **Kontent**: blog, SEO, social-media, email, copywriter
-- **Karyera**: resume, cover-letter, job-description
-- **Kod**: generator, bug-fix, code-review, API-docs, SQL, UI
-- **Tahlil**: financial, market, competitor, legal
-- **Yaratish**: image, music, voice, translate (100+ til)
-- **Utilita**: chat, summarize, brainstorm, planner
+### 🏢 Platformalar
+- **Startaplar** — boshlovchilar uchun
+- **Ish o'rinlari** — vakansiyalar va rezyume
+- **Xizmatlar** — freelance marketplace
+- **Kurslar** — video ta'lim platformasi
+- **Investorlar** — sarmoya izlash
+- **Jamoalar** — co-founder topish
+- **Market** — e-commerce marketplace
+- **Events** — tadbirlar va uchrashuvlar
 
-### 🚀 Startaplar
-- CRUD, filter, qidiruv
-- Like, view counter
-- Featured/Verified badge
-- Trending algorithm
+### 💬 Communication
+- Real-time chat (WebSocket)
+- Voice/Video calls (WebRTC)
+- Group calls (50+ odam)
+- Screen sharing
+- File sharing (50MB)
+- Live streaming + donations
 
-### 💼 Ish o'rinlari
-- Full-time, Part-time, Remote, Contract
-- Salary filter (min-max)
-- Apply tracking
-- Featured jobs
+### 🎮 Gamification
+- 10 ta level, 15+ badge
+- Daily missions, Streak
+- XP, Leaderboard
+- Achievements system
 
-### 🛠️ Freelance
-- 3-tier pricing (Basic, Standard, Premium)
-- Rating, orders, delivery days
-- Tags, category filter
+### 🔐 Security
+- Email/Phone verification
+- KYC (Passport, ID)
+- 2FA (Google Authenticator)
+- Biometric login (WebAuthn)
+- Device management
+- Login history
+- Block/Report users
 
-### 💎 Premium
-- 49,000 so'm/oy
-- Limitsiz AI
-- Reklama yo'q
-- Featured
+### 💳 To'lov
+- Payme, Click, Uzum, Stripe
+- TON, Crypto (tez kunda)
+- 3 ta Premium tarif
+- Token tizimi
+- Referral dasturi
+- Coupon codes
 
-### 🤖 Telegram Bot
-- 30+ buyruq
-- Web App integration
-- Push notifications
-- Auto registration
+### 🌐 Integrations (40+)
+- Google (Drive, Calendar, Sheets, Meet, Analytics)
+- Slack, Discord, Telegram, Zoom
+- GitHub, GitLab, Jira, Linear
+- Stripe, Mailchimp, SendGrid, Twilio
+- Webhooks, API keys, OAuth 2.0
 
-### 🛡️ Admin Panel
-- User management (ban/unban)
-- Premium grants
-- Broadcast
-- Analytics
+### 📊 Admin Panel
+- Dashboard, Analytics, Charts
+- User management (ban, role, verify)
+- Content moderation (AI)
+- Broadcast, Push notifications
+- Email campaigns
+- Coupons, Coupons, Landing pages
+- System logs, Health check
 
-### 💳 To'lov tizimlari
-- Payme, Click, Uzum
-- Stripe (Visa/Mastercard)
-- TON blockchain
-- Telegram Stars
+### 🤖 Telegram Bot (60+ buyruq)
+- Asosiy: /start, /help, /profile
+- AI: /ai, /image, /translate, /code
+- Utility: /qr, /currency, /weather, /prayer, /calc
+- Fun: /dice, /coin, /quiz, /leaderboard
+- Business: /stats, /achievements, /daily
 
-### 🔐 Xavfsizlik
-- JWT (access + refresh)
-- 2FA (TOTP)
-- Email + SMS verification
-- Rate limiting
-- CSRF protection
+### 🎨 Frontend
+- 30+ sahifa (Next.js 14, App Router)
+- 3 til (UZ, RU, EN) — i18n
+- Glassmorphism design
+- PWA, SEO, Mobile-first
+- Dark mode
+- Real-time WebSocket
 
-## 🏗️ Texnologiyalar
+## 🛠 Texnologiyalar
 
-### Frontend
-- **Next.js 14** (App Router, SSR, RSC)
-- **TypeScript** (100% typed)
-- **TailwindCSS** + Custom CSS
-- **Lucide React** (icons)
-- **NextAuth** (auth)
-- **i18n** (UZ, RU, EN)
+**Backend:**
+- FastAPI (async)
+- SQLAlchemy 2.0 + PostgreSQL
+- Redis, WebSocket, WebRTC
+- JWT, OAuth 2.0
+- OpenAI, DALL-E 3, Whisper
 
-### Backend
-- **FastAPI** (async, fast)
-- **PostgreSQL 16** + **AsyncPG**
-- **Redis 7** (cache, sessions)
-- **SQLAlchemy 2.0** (ORM)
-- **Alembic** (migrations)
-- **Groq API** (LLM: Llama 3.3 70B)
-- **Pydantic** v2
-- **JWT (jose)** + **Bcrypt**
+**Frontend:**
+- Next.js 14 (App Router)
+- TypeScript, Tailwind CSS
+- Lucide icons, Framer Motion
+- i18next, PWA
 
-### AI
-- **Groq** (Llama 3.3 70B, Mixtral 8x7B)
-- **OpenAI** (fallback)
-- **Replicate** (image, music)
-- **ElevenLabs** (voice)
-- **Google Translate** (100+ til)
+**Bot:**
+- aiogram 3
+- PostgreSQL + Redis
+- Webhook + Polling
 
-### DevOps
-- **Docker** + **Docker Compose**
-- **Nginx** (reverse proxy + SSL)
-- **GitHub Actions** (CI/CD)
-- **Prometheus** + **Grafana** (monitoring)
+**DevOps:**
+- Docker, Docker Compose
+- Nginx, SSL
+- GitHub Actions CI/CD
+- Sentry, Prometheus, Grafana
 
-### Payments
-- **Payme API**
-- **Click API**
-- **Uzum API**
-- **Stripe SDK**
-- **TON Connect**
+## 📁 Struktura
 
-## 📦 O'rnatish
-
-### Local development
-```bash
-# 1. Clone
-git clone https://github.com/KRYZENSYS/00o-uz.git
-cd 00o-uz
-
-# 2. Backend
-cd backend
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-cp .env.example .env  # Sozlamalarni kiriting
-alembic upgrade head
-uvicorn app.main:app --reload --port 8000
-
-# 3. Frontend (yangi terminal)
-cd ..
-npm install
-cp .env.example .env.local
-npm run dev
-
-# 4. Bot (yangi terminal)
-cd backend
-python bot/main.py
 ```
+00o-uz/
+├── backend/          # FastAPI backend
+│   ├── app/
+│   │   ├── api/v1/  # 20+ API moduli
+│   │   ├── core/    # Config, DB, Security
+│   │   ├── models/  # 50+ SQLAlchemy model
+│   │   ├── services/ # AI, Payment, Email, Bot
+│   │   ├── ai/      # 30+ AI tool
+│   │   └── main.py
+│   ├── tests/       # pytest
+│   └── requirements.txt
+├── src/             # Next.js frontend
+│   ├── app/[locale] # 30+ sahifa
+│   ├── components/  # Reusable components
+│   ├── i18n/        # Translations
+│   └── lib/         # Utils, API client
+├── bot/             # Telegram bot
+│   ├── handlers/    # 60+ buyruq
+│   ├── services/    # AI, DB
+│   └── main.py
+└── docker-compose.yml
+```
+
+## 🚀 Ishga tushirish
 
 ### Docker
 ```bash
 docker-compose up -d
 ```
 
-### Production deploy
-```bash
-# Vercel (frontend)
-vercel --prod
+### Manual
 
-# Railway/Render (backend)
-# See DEPLOYMENT.md
+**Backend:**
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
 ```
 
-## 🌐 Demo
+**Frontend:**
+```bash
+npm install
+npm run dev  # http://localhost:3000
+```
 
-- **Web**: https://00o.uz
-- **Telegram**: [@oo0o_uz_bot](https://t.me/oo0o_uz_bot)
-- **API**: https://api.00o.uz/docs
-- **Admin**: https://00o.uz/admin
+**Bot:**
+```bash
+cd bot
+pip install -r requirements.txt
+python main.py
+```
 
 ## 📊 Statistika
 
-- 150+ fayl
-- 15,000+ qator kod
-- 50+ API endpoint
-- 30+ AI vosita
-- 15+ sahifa
-- 3 til (UZ, RU, EN)
-- 5+ to'lov tizimi
-- 10+ xavfsizlik
-- 100% production-ready
+- **Backend:** 70+ API endpoint
+- **Models:** 50+ jadval
+- **Frontend:** 30+ sahifa
+- **Bot:** 60+ buyruq
+- **AI Tools:** 30+ vosita
+- **Integrations:** 40+ service
+- **Languages:** 3+ (UZ, RU, EN)
+- **Jami fayllar:** 300+
 
-## 📜 License
+## 🌐 Demo
 
-Proprietary © 2026 00o.uz
-Barcha huquqlar himoyalangan.
+- **Web:** [https://00o.uz](https://00o.uz)
+- **Bot:** [@oo0o_uz_bot](https://t.me/oo0o_uz_bot)
+- **API Docs:** [https://api.00o.uz/docs](https://api.00o.uz/docs)
 
-## 📞 Aloqa
+## 📝 License
 
-- **Email**: info@00o.uz
-- **Telegram**: [@oo0o_uz](https://t.me/oo0o_uz)
-- **Website**: https://00o.uz
+MIT
+
+## 👥 Team
+
+**KRYZENSYS** — [github.com/KRYZENSYS](https://github.com/KRYZENSYS)
 
 ---
 
-Made with ❤️ in Uzbekistan 🇺🇿
+⭐️ Agar yoqsa, star bering!
