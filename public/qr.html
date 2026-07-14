@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR Generator — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; padding: 100px 20px; }
+.container { max-width: 600px; margin: 0 auto; }
+h1 { font-size: 32px; margin-bottom: 8px; text-align: center;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.box { padding: 24px; border-radius: 16px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); margin-bottom: 20px; }
+input, select, textarea { width: 100%; padding: 12px; border-radius: 10px; background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 12px; font-size: 14px; font-family: inherit; }
+.btn { width: 100%; padding: 14px; border-radius: 10px; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; border: none; font-weight: 700; cursor: pointer; }
+.qr { background: white; padding: 20px; border-radius: 12px; text-align: center; margin-top: 20px; }
+.qr canvas, .qr img { max-width: 100%; }
+.types { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 16px; }
+.type { padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); text-align: center; cursor: pointer; font-size: 12px; }
+.type.active { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📱 QR Generator</h1>
+  <p style="color:#94a3b8;text-align:center;margin-bottom:20px">Matn, URL, kontakt va Wi-Fi uchun QR yarating</p>
+  <div class="box">
+    <div class="types">
+      <div class="type active" onclick="setT('text',this)">📝 Matn</div>
+      <div class="type" onclick="setT('url',this)">🔗 URL</div>
+      <div class="type" onclick="setT('wifi',this)">📶 WiFi</div>
+      <div class="type" onclick="setT('email',this)">📧 Email</div>
+      <div class="type" onclick="setT('sms',this)">💬 SMS</div>
+      <div class="type" onclick="setT('vcard',this)">👤 vCard</div>
+    </div>
+    <div id="inputs"></div>
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <select id="size" style="flex:1"><option value="200">200x200</option><option value="300" selected>300x300</option><option value="400">400x400</option></select>
+      <select id="fg" style="flex:1;background:rgba(0,0,0,0.3)"><option value="#000000">Qora</option><option value="#8b5cf6">Binafsha</option><option value="#ec4899">Pushti</option></select>
+      <select id="bg" style="flex:1;background:rgba(0,0,0,0.3)"><option value="#ffffff">Oq</option><option value="#fef3c7">Sariq</option></select>
+    </div>
+    <button class="btn" onclick="gen()">✨ QR Yaratish</button>
+    <div class="qr" id="qr"></div>
+    <button class="btn" id="dl" style="display:none;margin-top:8px" onclick="download()">⬇️ Yuklab olish</button>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<script>
+let curType = 'text';
+const templates = {
+  text: () => `<textarea id="val" placeholder="Matn kiriting..." rows="3"></textarea>`,
+  url: () => `<input id="val" placeholder="https://example.com">`,
+  wifi: () => `<input id="val" placeholder="WiFi nomi"><input id="val2" placeholder="Parol" type="text"><select id="val3"><option>WPA</option><option>WEP</option><option>None</option></select>`,
+  email: () => `<input id="val" placeholder="email@example.com" type="email"><input id="val2" placeholder="Mavzu"><textarea id="val3" placeholder="Xabar" rows="2"></textarea>`,
+  sms: () => `<input id="val" placeholder="+998901234567" type="tel"><textarea id="val2" placeholder="SMS matni" rows="2"></textarea>`,
+  vcard: () => `<input id="val" placeholder="Ism"><input id="val2" placeholder="Telefon"><input id="val3" placeholder="Email"><input id="val4" placeholder="Kompaniya">`
+};
+function setT(t, el) { curType = t; document.querySelectorAll('.type').forEach(x=>x.classList.remove('active')); el.classList.add('active'); document.getElementById('inputs').innerHTML = templates[t](); }
+function getData() {
+  if (curType === 'text' || curType === 'url') return document.getElementById('val').value || 'demo';
+  if (curType === 'wifi') return `WIFI:T:${document.getElementById('val3').value};S:${document.getElementById('val').value};P:${document.getElementById('val2').value};;`;
+  if (curType === 'email') return `mailto:${document.getElementById('val').value}?subject=${encodeURIComponent(document.getElementById('val2').value)}&body=${encodeURIComponent(document.getElementById('val3').value)}`;
+  if (curType === 'sms') return `sms:${document.getElementById('val').value}?body=${encodeURIComponent(document.getElementById('val2').value)}`;
+  if (curType === 'vcard') return `BEGIN:VCARD\nVERSION:3.0\nFN:${document.getElementById('val').value}\nTEL:${document.getElementById('val2').value}\nEMAIL:${document.getElementById('val3').value}\nORG:${document.getElementById('val4').value}\nEND:VCARD`;
+}
+function gen() {
+  const data = getData();
+  const size = parseInt(document.getElementById('size').value);
+  const qr = qrcode(0, 'M');
+  qr.addData(data);
+  qr.make();
+  const moduleCount = qr.getModuleCount();
+  const cellSize = Math.floor(size / moduleCount);
+  const canvas = document.createElement('canvas');
+  canvas.width = canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = document.getElementById('bg').value;
+  ctx.fillRect(0, 0, size, size);
+  ctx.fillStyle = document.getElementById('fg').value;
+  for (let r = 0; r < moduleCount; r++) for (let c = 0; c < moduleCount; c++) if (qr.isDark(r, c)) ctx.fillRect(c*cellSize, r*cellSize, cellSize, cellSize);
+  document.getElementById('qr').innerHTML = '';
+  document.getElementById('qr').appendChild(canvas);
+  document.getElementById('dl').style.display = 'block';
+}
+function download() {
+  const c = document.querySelector('#qr canvas');
+  const a = document.createElement('a');
+  a.download = 'qr-' + Date.now() + '.png';
+  a.href = c.toDataURL();
+  a.click();
+}
+setT('text');
+gen();
+</script>
+</body>
+</html>
