@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Odat tracker — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; padding: 100px 20px 60px; }
+.container { max-width: 700px; margin: 0 auto; }
+h1 { font-size: 28px; margin-bottom: 8px; background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.bar { padding: 16px; border-radius: 14px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); margin-bottom: 16px; display: flex; gap: 8px; }
+.bar input { flex: 1; padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(255,255,255,0.1); }
+.bar button { padding: 10px 20px; border-radius: 8px; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; border: none; font-weight: 700; cursor: pointer; }
+.habit { padding: 16px; border-radius: 14px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); margin-bottom: 12px; }
+.h-t { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.h-n { font-weight: 700; }
+.streak { padding: 4px 12px; border-radius: 100px; background: rgba(245,158,11,0.2); color: #fcd34d; font-size: 12px; font-weight: 600; }
+.days { display: grid; grid-template-columns: repeat(14, 1fr); gap: 3px; }
+.day { aspect-ratio: 1; border-radius: 4px; background: rgba(255,255,255,0.05); cursor: pointer; transition: 0.2s; }
+.day.done { background: linear-gradient(135deg, #22c55e, #10b981); }
+.day.today { box-shadow: 0 0 0 2px #8b5cf6; }
+.day:hover { transform: scale(1.2); }
+.del { background: rgba(239,68,68,0.2); color: #fca5a5; border: none; width: 24px; height: 24px; border-radius: 4px; cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🎯 Odat tracker</h1>
+  <p style="color:#94a3b8;margin-bottom:16px">Yangi odatlar shakllantiring · 14 kunlik ko'rinish</p>
+  <div class="bar">
+    <input id="n" placeholder="Masalan: ertalabki mashqlar..." onkeydown="if(event.key==='Enter')add()">
+    <button onclick="add()">+ Qo'shish</button>
+  </div>
+  <div id="list"></div>
+</div>
+<script>
+let habits = JSON.parse(localStorage.getItem('oo-habits') || '[]');
+if (!habits.length) habits = [{id:1, n:'Ertalabki mashqlar', done:[]}, {id:2, n:'10,000 qadam', done:[]}, {id:3, n:'Kitob o\'qish', done:[]}];
+function save() { localStorage.setItem('oo-habits', JSON.stringify(habits)); render(); }
+function add() {
+  const n = document.getElementById('n').value.trim();
+  if (!n) return;
+  habits.push({id:Date.now(), n, done:[]});
+  document.getElementById('n').value = '';
+  save();
+}
+function del(id) { habits = habits.filter(h => h.id !== id); save(); }
+function toggle(habitId, date) {
+  const h = habits.find(x => x.id === habitId);
+  if (h.done.includes(date)) h.done = h.done.filter(d => d !== date);
+  else h.done.push(date);
+  save();
+}
+function streak(habit) {
+  let s = 0, d = new Date();
+  while (habit.done.includes(d.toISOString().split('T')[0])) { s++; d.setDate(d.getDate() - 1); }
+  return s;
+}
+function render() {
+  const today = new Date();
+  const dates = [];
+  for (let i = 13; i >= 0; i--) { const d = new Date(today); d.setDate(d.getDate() - i); dates.push(d.toISOString().split('T')[0]); }
+  document.getElementById('list').innerHTML = habits.map(h => `<div class="habit">
+    <div class="h-t"><div class="h-n">${h.n}</div><div style="display:flex;gap:6px"><span class="streak">🔥 ${streak(h)}</span><button class="del" onclick="del(${h.id})">×</button></div></div>
+    <div class="days">${dates.map(d => `<div class="day ${h.done.includes(d)?'done':''} ${d===dates[dates.length-1]?'today':''}" onclick="toggle(${h.id}, '${d}')" title="${d}"></div>`).join('')}</div>
+  </div>`).join('');
+}
+render();
+</script>
+</body>
+</html>
