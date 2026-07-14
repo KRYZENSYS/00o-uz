@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emoji Search — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; padding: 100px 20px 60px; }
+.container { max-width: 800px; margin: 0 auto; }
+h1 { font-size: 32px; margin-bottom: 8px; text-align: center;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+input { width: 100%; padding: 14px; border-radius: 12px; background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(255,255,255,0.1); font-size: 15px; margin-bottom: 16px; }
+.cats { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.cat { padding: 8px 14px; border-radius: 100px; background: rgba(255,255,255,0.05); cursor: pointer; font-size: 13px; }
+.cat.active { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 8px; }
+.em { aspect-ratio: 1; font-size: 32px; display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px;
+  cursor: pointer; transition: 0.2s; }
+.em:hover { background: rgba(139,92,246,0.2); transform: scale(1.1); }
+.em.copied { animation: pop 0.3s; }
+@keyframes pop { 50% { transform: scale(1.3); } }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>😀 Emoji Qidirish</h1>
+  <p style="color:#94a3b8;text-align:center;margin-bottom:20px">1000+ emoji · bir bosishda nusxa oling</p>
+  <input id="s" placeholder="🔍 Emoji yoki kategoriya qidiring..." oninput="search()">
+  <div class="cats" id="cats"></div>
+  <div class="grid" id="grid"></div>
+</div>
+<script>
+const data = {
+  '😀 Smileys': ['😀','😃','😄','😁','😆','😅','🤣','😂','🙂','🙃','😉','😊','😇','🥰','😍','🤩','😘','😗','😙','😚','😋','😛','😜','🤪','😝','🤑','🤗','🤭','🤫','🤔','🤐','🤨','😐','😑','😶','😏','😒','🙄','😬','🤥','😌','😔','😪','🤤','😴','😷','🤒','🤕','🤢','🤮','🤧','🥵','🥶','🥴','😵','🤯','🤠','🥳','😎','🤓','🧐','😕','😟','🙁','☹️','😮','😯','😲','😳','🥺','😦','😧','😨','😰','😥','😢','😭','😱','😖','😣','😞','😓','😩','😫','🥱','😤','😡','😠','🤬','😈','👿','💀','💩','🤡','👹','👺','👻','👽','👾','🤖'],
+  '🐾 Animals': ['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯','🦁','🐮','🐷','🐽','🐸','🐵','🙈','🙉','🙊','🐒','🐔','🐧','🐦','🐤','🐣','🐥','🦆','🦅','🦉','🦇','🐺','🐗','🐴','🦄','🐝','🪱','🐛','🦋','🐌','🐞','🐜','🪰','🪲','🪳','🦟','🦗','🕷','🕸','🦂','🐢','🐍','🦎','🦖','🦕','🐙','🦑','🦐','🦞','🦀','🐡','🐠','🐟','🐬','🐳','🐋','🦈'],
+  '🍎 Food': ['🍏','🍎','🍐','🍊','🍋','🍌','🍉','🍇','🍓','🫐','🍈','🍒','🍑','🥭','🍍','🥥','🥝','🍅','🍆','🥑','🥦','🥬','🥒','🌶','🫑','🌽','🥕','🫒','🧄','🧅','🥔','🍠','🥐','🥯','🍞','🥖','🥨','🧀','🥚','🍳','🧈','🥞','🧇','🥓','🥩','🍗','🍖','🦴','🌭','🍔','🍟','🍕'],
+  '⚽ Sports': ['⚽','🏀','🏈','⚾','🥎','🎾','🏐','🏉','🥏','🎱','🪀','🏓','🏸','🏒','🏑','🥍','🏏','🪃','🥅','⛳','🪁','🏹','🎣','🤿','🥊','🥋','🎽','🛹','🛼','🛷','⛸','🥌','🎿','⛷','🏂','🪂','🏋️','🤼','🤸','⛹️','🤺','🤾','🏌️','🏇','🧘'],
+  '🚗 Travel': ['🚗','🚕','🚙','🚌','🚎','🏎','🚓','🚑','🚒','🚐','🛻','🚚','🚛','🚜','🦯','🦽','🦼','🛴','🚲','🛵','🏍','🛺','🚨','🚔','🚍','🚘','🚖','🚡','🚠','🚟','🚃','🚋','🚞','🚝','🚄','🚅','🚈','🚂','🚆','🚇','🚊','🚉','✈️','🛫','🛬','🛩','💺','🛰','🚀','🛸','🚁','🛶','⛵','🚤','🛥','🛳','⛴','🚢'],
+  '💖 Hearts': ['❤️','🧡','💛','💚','💙','💜','🖤','🤍','🤎','💔','❣️','💕','💞','💓','💗','💖','💘','💝','💟','☮️','✝️','☪️','🕉','☸️','✡️','🔯','🕎','☯️','☦️','🛐','⛎','♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓','🆔'],
+  '🎉 Party': ['🎉','🎊','🎈','🎂','🎁','🎄','🎃','🎀','🎗','🎟','🎫','🎖','🏆','🏅','🥇','🥈','🥉','⚽','🏀','🎯','🎳','🎮','🎰','🧩']
+};
+let cat = '😀 Smileys';
+function init() {
+  document.getElementById('cats').innerHTML = Object.keys(data).map(c => `<div class="cat ${c===cat?'active':''}" onclick="setCat('${c}', this)">${c}</div>`).join('');
+  render(data[cat]);
+}
+function setCat(c, el) { document.querySelectorAll('.cat').forEach(x=>x.classList.remove('active')); el.classList.add('active'); cat = c; render(data[c]); }
+function search() { const q = document.getElementById('s').value.toLowerCase(); let all = Object.values(data).flat(); render(q ? all.filter(e => e.includes(q)) : data[cat]); }
+function render(list) { document.getElementById('grid').innerHTML = list.map(e => `<div class="em" onclick="cp('${e}', this)">${e}</div>`).join(''); }
+function cp(e, el) { navigator.clipboard.writeText(e); el.classList.add('copied'); setTimeout(()=>el.classList.remove('copied'), 300); window.toast?.success('Nusxalandi: ' + e, '✓'); }
+init();
+</script>
+</body>
+</html>
