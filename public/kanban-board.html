@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kanban — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; padding: 100px 16px 60px; }
+h1 { font-size: 28px; margin-bottom: 16px; text-align: center;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.boards { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 12px; }
+.col { min-width: 280px; width: 280px; padding: 12px; border-radius: 14px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; max-height: 70vh; }
+.col-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.col-t { font-weight: 700; font-size: 14px; }
+.col-c { background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 100px; font-size: 11px; }
+.cards { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+.card { padding: 12px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); cursor: grab; }
+.card:active { cursor: grabbing; }
+.card-t { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+.card-d { font-size: 11px; color: #94a3b8; margin-bottom: 8px; }
+.card-f { display: flex; gap: 6px; align-items: center; }
+.tag { font-size: 10px; padding: 2px 6px; border-radius: 4px; }
+.tag.b { background: rgba(59,130,246,0.2); color: #93c5fd; }
+.tag.r { background: rgba(239,68,68,0.2); color: #fca5a5; }
+.tag.g { background: rgba(34,197,94,0.2); color: #86efac; }
+.avt { width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #8b5cf6, #ec4899); display: flex; align-items: center; justify-content: center; font-size: 11px; margin-left: auto; }
+.add-c { padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px dashed rgba(255,255,255,0.2); color: #94a3b8; cursor: pointer; font-size: 13px; margin-top: 8px; }
+.add-c:hover { background: rgba(255,255,255,0.08); }
+</style>
+</head>
+<body>
+<h1>📋 Kanban Board</h1>
+<div class="boards" id="boards"></div>
+<script>
+const data = [
+  {id:'todo', t:'📋 Rejalashtirilgan', cards:[
+    {t:'Landing page dizayni', d:'2026-07-20', tags:['design']},
+    {t:'API dokumentatsiya', d:'2026-07-22', tags:['dev']},
+    {t:'Marketing strategiyasi', d:'2026-07-25', tags:['design']}
+  ]},
+  {id:'prog', t:'⚡ Jarayonda', cards:[
+    {t:'Login sahifasi', d:'2026-07-15', tags:['dev','urgent'], avt:'F'},
+    {t:'Database schema', d:'2026-07-16', tags:['dev'], avt:'M'},
+    {t:'Mobile responsive', d:'2026-07-17', tags:['dev'], avt:'J'}
+  ]},
+  {id:'rev', t:'👀 Tekshiruvda', cards:[
+    {t:'AI chat integratsiya', d:'2026-07-14', tags:['dev','urgent'], avt:'A'}
+  ]},
+  {id:'done', t:'✅ Bajarildi', cards:[
+    {t:'Loyiha sozlamalari', d:'2026-07-10', tags:['dev']},
+    {t:'GitHub repo yaratish', d:'2026-07-11', tags:['dev']},
+    {t:'Vercel deploy', d:'2026-07-12', tags:['dev']}
+  ]}
+];
+const tagColors = {design:'b', dev:'g', urgent:'r'};
+function render() {
+  document.getElementById('boards').innerHTML = data.map(col => `
+    <div class="col">
+      <div class="col-h"><div class="col-t">${col.t}</div><div class="col-c">${col.cards.length}</div></div>
+      <div class="cards" ondragover="event.preventDefault()" ondrop="drop(event,'${col.id}')">
+        ${col.cards.map((c,i) => `<div class="card" draggable="true" ondragstart="drag(event, '${col.id}', ${i})">
+          <div class="card-t">${c.t}</div>
+          <div class="card-d">📅 ${c.d}</div>
+          <div class="card-f">${c.tags.map(t=>`<span class="tag ${tagColors[t]||'b'}">${t}</span>`).join('')}${c.avt?`<div class="avt">${c.avt}</div>`:''}</div>
+        </div>`).join('')}
+      </div>
+      <div class="add-c" onclick="addCard('${col.id}')">+ Karta qo'shish</div>
+    </div>
+  `).join('');
+}
+let dragData = null;
+function drag(e, col, idx) { dragData = {col, idx}; e.dataTransfer.effectAllowed = 'move'; }
+function drop(e, col) {
+  e.preventDefault();
+  if (!dragData) return;
+  const src = data.find(c => c.id === dragData.col);
+  const dst = data.find(c => c.id === col);
+  const card = src.cards.splice(dragData.idx, 1)[0];
+  dst.cards.push(card);
+  dragData = null;
+  render();
+}
+function addCard(col) {
+  const t = prompt('Karta matni:');
+  if (t) {
+    data.find(c => c.id === col).cards.push({t, d: new Date().toISOString().split('T')[0], tags:[]});
+    render();
+  }
+}
+render();
+</script>
+</body>
+</html>
