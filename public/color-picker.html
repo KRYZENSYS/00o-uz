@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rang tanlagich — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; padding: 100px 20px; }
+.container { max-width: 900px; margin: 0 auto; }
+h1 { font-size: 32px; margin-bottom: 8px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.box { padding: 24px; border-radius: 16px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); margin-bottom: 20px; }
+.preview { height: 200px; border-radius: 14px; margin-bottom: 20px; transition: 0.2s; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 800; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+.row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.field label { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 4px; }
+.field input { width: 100%; padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(255,255,255,0.1); font-family: monospace; }
+.field input[type=color] { height: 44px; padding: 4px; cursor: pointer; }
+.copy { padding: 8px 12px; border-radius: 8px; background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none; color: white; font-weight: 600; cursor: pointer; margin-left: 8px; }
+.palette { display: grid; grid-template-columns: repeat(auto-fit, minmax(40px, 1fr)); gap: 6px; }
+.swatch { aspect-ratio: 1; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+.swatch:hover { transform: scale(1.1); }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🎨 Rang tanlagich</h1>
+  <p style="color:#94a3b8;margin-bottom:20px">HEX, RGB, HSL formatlarida ishlash</p>
+  <div class="box">
+    <div class="preview" id="prev" style="background:#8b5cf6">#8B5CF6</div>
+    <div class="row">
+      <div class="field"><label>HEX</label><input id="hex" value="#8b5cf6" oninput="fromHex()"></div>
+      <div class="field"><label>RGB</label><input id="rgb" value="139, 92, 246" oninput="fromRgb()"></div>
+      <div class="field"><label>HSL</label><input id="hsl" value="258, 90%, 66%" oninput="fromHsl()"></div>
+      <div class="field"><label>Tanlash</label><input type="color" id="cp" value="#8b5cf6" oninput="fromCp()"></div>
+    </div>
+  </div>
+  <div class="box">
+    <h3 style="margin-bottom:12px">📚 Tez palitra</h3>
+    <div class="palette" id="pal"></div>
+  </div>
+  <div class="box">
+    <h3 style="margin-bottom:12px">🎨 Gradient generator</h3>
+    <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+      <input type="color" id="g1" value="#8b5cf6" oninput="makeGrad()" style="width:60px;height:44px;border:none;border-radius:8px;cursor:pointer">
+      <input type="color" id="g2" value="#06b6d4" oninput="makeGrad()" style="width:60px;height:44px;border:none;border-radius:8px;cursor:pointer">
+      <select id="gtype" onchange="makeGrad()" style="padding:10px;border-radius:8px;background:rgba(0,0,0,0.3);color:white;border:1px solid rgba(255,255,255,0.1)">
+        <option value="linear">Linear</option><option value="radial">Radial</option>
+      </select>
+    </div>
+    <div id="gprev" style="height:120px;border-radius:12px;background:linear-gradient(135deg,#8b5cf6,#06b6d4)"></div>
+    <input id="gcss" readonly style="width:100%;margin-top:8px;padding:8px;border-radius:8px;background:rgba(0,0,0,0.3);color:white;border:1px solid rgba(255,255,255,0.1);font-family:monospace;font-size:12px">
+  </div>
+</div>
+<script>
+function hexToRgb(h) { h=h.replace('#',''); return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]; }
+function rgbToHex(r,g,b) { return '#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join(''); }
+function rgbToHsl(r,g,b) { r/=255;g/=255;b/=255; const mx=Math.max(r,g,b),mn=Math.min(r,g,b); let h,s,l=(mx+mn)/2; if(mx===mn) h=s=0; else { const d=mx-mn; s=l>0.5?d/(2-mx-mn):d/(mx+mn); switch(mx){case r:h=(g-b)/d+(g<b?6:0);break;case g:h=(b-r)/d+2;break;case b:h=(r-g)/d+4;} h/=6; } return [Math.round(h*360),Math.round(s*100),Math.round(l*100)]; }
+function hslToRgb(h,s,l) { s/=100;l/=100; const c=(1-Math.abs(2*l-1))*s,x=c*(1-Math.abs((h/60)%2-1)),m=l-c/2; let r,g,b; if(h<60){r=c;g=x;b=0;}else if(h<120){r=x;g=c;b=0;}else if(h<180){r=0;g=c;b=x;}else if(h<240){r=0;g=x;b=c;}else if(h<300){r=x;g=0;b=c;}else{r=c;g=0;b=x;} return [Math.round((r+m)*255),Math.round((g+m)*255),Math.round((b+m)*255)]; }
+function update(c) {
+  document.getElementById('prev').style.background = c;
+  document.getElementById('prev').textContent = c.toUpperCase();
+  const [r,g,b] = hexToRgb(c);
+  const [h,s,l] = rgbToHsl(r,g,b);
+  document.getElementById('hex').value = c.toUpperCase();
+  document.getElementById('rgb').value = `${r}, ${g}, ${b}`;
+  document.getElementById('hsl').value = `${h}, ${s}%, ${l}%`;
+  document.getElementById('cp').value = c;
+}
+function fromHex() { update(document.getElementById('hex').value); }
+function fromRgb() { const [r,g,b] = document.getElementById('rgb').value.split(',').map(x=>parseInt(x)); update(rgbToHex(r,g,b)); }
+function fromHsl() { const [h,s,l] = document.getElementById('hsl').value.split(',').map(x=>parseInt(x)); const [r,g,b]=hslToRgb(h,s,l); update(rgbToHex(r,g,b)); }
+function fromCp() { update(document.getElementById('cp').value); }
+function makeGrad() {
+  const c1 = document.getElementById('g1').value;
+  const c2 = document.getElementById('g2').value;
+  const t = document.getElementById('gtype').value;
+  const css = t === 'linear' ? `linear-gradient(135deg, ${c1}, ${c2})` : `radial-gradient(circle, ${c1}, ${c2})`;
+  document.getElementById('gprev').style.background = css;
+  document.getElementById('gcss').value = 'background: ' + css + ';';
+}
+const pal = ['#ef4444','#f59e0b','#fbbf24','#84cc16','#22c55e','#10b981','#14b8a6','#06b6d4','#3b82f6','#6366f1','#8b5cf6','#a855f7','#d946ef','#ec4899','#f43f5e','#64748b','#0a0e1a','#ffffff'];
+document.getElementById('pal').innerHTML = pal.map(c => `<div class="swatch" style="background:${c}" onclick="update('${c}')"></div>`).join('');
+makeGrad();
+</script>
+</body>
+</html>
