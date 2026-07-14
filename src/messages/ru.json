@@ -1,0 +1,86 @@
+{
+  "common": {
+    "appName": "00o.uz",
+    "appDescription": "AI Платформа стартапов и фрилансеров",
+    "tagline": "Крупнейшая платформа стартапов и фрилансеров в Узбекистане",
+    "search": "Поиск...",
+    "loading": "Загрузка...",
+    "error": "Произошла ошибка",
+    "success": "Успешно",
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "delete": "Удалить",
+    "edit": "Редактировать",
+    "create": "Создать",
+    "submit": "Отправить",
+    "back": "Назад",
+    "next": "Далее",
+    "previous": "Предыдущий",
+    "yes": "Да",
+    "no": "Нет",
+    "getStarted": "Начать",
+    "signUp": "Регистрация",
+    "signIn": "Войти",
+    "signOut": "Выйти",
+    "profile": "Профиль",
+    "settings": "Настройки",
+    "dashboard": "Панель управления",
+    "notifications": "Уведомления",
+    "messages": "Сообщения"
+  },
+  "nav": {
+    "home": "Главная",
+    "startups": "Стартапы",
+    "freelancers": "Фрилансеры",
+    "investors": "Инвесторы",
+    "jobs": "Вакансии",
+    "teams": "Команды",
+    "ai": "AI Помощник",
+    "blog": "Блог",
+    "community": "Сообщество",
+    "messages": "Сообщения",
+    "admin": "Админ панель"
+  },
+  "auth": {
+    "signInTitle": "Войдите в аккаунт",
+    "signUpTitle": "Создайте новый аккаунт",
+    "email": "Email",
+    "password": "Пароль",
+    "fullName": "Полное имя",
+    "username": "Имя пользователя",
+    "forgotPassword": "Забыли пароль?",
+    "signInWithTelegram": "Войти через Telegram",
+    "signInWithGoogle": "Войти через Google",
+    "signInWithEmail": "Войти через Email",
+    "verify": "Подтвердить"
+  },
+  "landing": {
+    "hero": {
+      "title": "Представьте свой стартап миру",
+      "subtitle": "00o.uz — крупнейшая платформа стартапов, фрилансеров и инвесторов в Узбекистане",
+      "searchPlaceholder": "Поиск стартапа, фрилансера или услуги..."
+    },
+    "stats": {
+      "startups": "Активных стартапов",
+      "freelancers": "Фрилансеров",
+      "investors": "Инвесторов",
+      "jobs": "Вакансий"
+    },
+    "trending": "Трендовые стартапы",
+    "topFreelancers": "Лучшие фрилансеры",
+    "latestJobs": "Последние вакансии"
+  },
+  "ai": {
+    "title": "AI Помощник",
+    "subtitle": "Мощные инструменты на GroqCloud AI",
+    "chat": "AI Чат",
+    "input": "Напишите ваш вопрос...",
+    "send": "Отправить",
+    "thinking": "Думаю..."
+  },
+  "errors": {
+    "required": "Это поле обязательно",
+    "email": "Неверный email",
+    "invalidCredentials": "Неверный логин или пароль"
+  }
+}
