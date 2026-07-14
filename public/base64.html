@@ -1,70 +1,64 @@
 <!DOCTYPE html>
 <html lang="uz"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0e1a">
 <title>Base64 — 00o.uz</title>
 <script src="/global.js"></script>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; padding: 100px 20px; }
-.container { max-width: 900px; margin: 0 auto; }
-h1 { font-size: 32px; margin-bottom: 8px; text-align: center;
-  background: linear-gradient(135deg, #8b5cf6, #ec4899);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.box { padding: 20px; border-radius: 16px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); margin-bottom: 16px; }
-label { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 4px; }
-textarea, input { width: 100%; padding: 12px; border-radius: 8px; background: rgba(0,0,0,0.4); color: white; border: 1px solid rgba(255,255,255,0.1); font-family: monospace; font-size: 13px; resize: vertical; }
-.btn { padding: 10px 20px; border-radius: 8px; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; border: none; font-weight: 600; cursor: pointer; margin: 4px; }
-.tabs { display: flex; gap: 4px; margin-bottom: 16px; flex-wrap: wrap; }
-.tab { padding: 8px 14px; border-radius: 8px; background: rgba(255,255,255,0.05); cursor: pointer; font-size: 13px; }
-.tab.active { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,sans-serif;background:#0a0e1a;color:#f1f5f9;min-height:100vh;padding:60px 16px 100px;max-width:720px;margin:0 auto}
+h1{font-size:clamp(24px,6vw,32px);font-weight:800;text-align:center;background:linear-gradient(135deg,#8b5cf6,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
+.sub{text-align:center;color:#94a3b8;font-size:14px;margin-bottom:20px}
+.bar{padding:16px;border-radius:14px;background:linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.06);margin-bottom:12px}
+label{display:block;font-size:13px;color:#cbd5e1;margin-bottom:6px}
+textarea{width:100%;padding:12px;border-radius:10px;background:rgba(0,0,0,0.4);color:white;border:1px solid rgba(255,255,255,0.1);font-size:14px;font-family:ui-monospace,monospace;resize:vertical;min-height:120px;line-height:1.5}
+textarea:focus{outline:none;border-color:#8b5cf6}
+button{padding:12px 20px;border-radius:10px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:white;border:none;font-weight:700;cursor:pointer;font-size:15px;width:100%;margin-top:8px}
+button.s{background:rgba(255,255,255,0.05)}
+.row{display:flex;gap:8px}
+.row button{flex:1;margin-top:8px}
+.swap{background:rgba(251,191,36,0.2);color:#fcd34d;width:48px;height:48px;border-radius:50%;border:none;font-size:20px;cursor:pointer;margin:8px auto;display:block}
+.tabs{display:flex;gap:4px;margin-bottom:8px;background:rgba(255,255,255,0.03);padding:4px;border-radius:10px}
+.tab{flex:1;padding:8px;border-radius:8px;text-align:center;cursor:pointer;font-size:13px;color:#94a3b8}
+.tab.act{background:linear-gradient(135deg,#8b5cf6,#ec4899);color:white;font-weight:700}
 </style>
 </head>
 <body>
-<div class="container">
-  <h1>🔤 Base64 & URL Encoder</h1>
+<h1>🔤 Base64</h1>
+<p class="sub">Matnni Base64'ga va aksincha o'zgartiring</p>
+<div class="bar">
   <div class="tabs">
-    <div class="tab active" onclick="setT('b64',this)">Base64</div>
-    <div class="tab" onclick="setT('url',this)">URL Encode</div>
-    <div class="tab" onclick="setT('html',this)">HTML Entity</div>
-    <div class="tab" onclick="setT('jwt',this)">JWT Decode</div>
+    <div class="tab act" onclick="setD('enc',this)">Shifrlash</div>
+    <div class="tab" onclick="setD('dec',this)">Deshifrlash</div>
   </div>
-  <div id="main"></div>
+  <label>Kirish:</label>
+  <textarea id="in" placeholder="Matn kiriting..." oninput="proc()">Salom dunyo!</textarea>
+  <div style="text-align:center"><button class="swap" onclick="swap()">⇅</button></div>
+  <label>Natija:</label>
+  <textarea id="out" placeholder="Natija shu yerda..." readonly></textarea>
+  <div class="row">
+    <button class="s" onclick="cp()">📋 Nusxa</button>
+    <button onclick="clr()">🗑 Tozalash</button>
+  </div>
 </div>
 <script>
-const templates = {
-  b64: () => `<div class="box"><label>Kiritish</label><textarea id="i" rows="4" placeholder="Matn yoki Base64..."></textarea>
-    <div><button class="btn" onclick="b64e()">Encode →</button><button class="btn" onclick="b64d()">← Decode</button><button class="btn" onclick="cp('i')">📋</button></div></div>
-    <div class="box"><label>Natija</label><textarea id="o" rows="4" readonly></textarea>
-    <div><button class="btn" onclick="cp('o')">📋 Nusxa</button></div></div>`,
-  url: () => `<div class="box"><label>Kiritish</label><textarea id="i" rows="4" placeholder="URL yoki matn..."></textarea>
-    <div><button class="btn" onclick="urle()">Encode →</button><button class="btn" onclick="urld()">← Decode</button></div></div>
-    <div class="box"><label>Natija</label><textarea id="o" rows="4" readonly></textarea></div>`,
-  html: () => `<div class="box"><label>Kiritish</label><textarea id="i" rows="4" placeholder="<h1>Salom</h1>"></textarea>
-    <div><button class="btn" onclick="htmle()">Escape →</button><button class="btn" onclick="htmld()">← Unescape</button></div></div>
-    <div class="box"><label>Natija</label><textarea id="o" rows="4" readonly></textarea></div>`,
-  jwt: () => `<div class="box"><label>JWT Token</label><textarea id="i" rows="3" placeholder="eyJ..."></textarea>
-    <div><button class="btn" onclick="jwt()">🔍 Decode</button></div></div>
-    <div class="box"><label>Header</label><textarea id="o" rows="3" readonly></textarea></div>
-    <div class="box"><label>Payload</label><textarea id="o2" rows="5" readonly></textarea></div>`
-};
-function setT(t, el) { document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active')); el.classList.add('active'); document.getElementById('main').innerHTML = templates[t](); }
-function b64e() { document.getElementById('o').value = btoa(unescape(encodeURIComponent(document.getElementById('i').value))); }
-function b64d() { try { document.getElementById('o').value = decodeURIComponent(escape(atob(document.getElementById('i').value))); } catch(e) { document.getElementById('o').value = 'Xato: ' + e.message; } }
-function urle() { document.getElementById('o').value = encodeURIComponent(document.getElementById('i').value); }
-function urld() { document.getElementById('o').value = decodeURIComponent(document.getElementById('i').value); }
-function htmle() { document.getElementById('o').value = document.getElementById('i').value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function htmld() { document.getElementById('o').value = document.getElementById('i').value.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&amp;/g,'&'); }
-function jwt() {
-  const t = document.getElementById('i').value;
-  const p = t.split('.');
-  if (p.length !== 3) return document.getElementById('o').value = 'Noto\'g\'ri JWT';
+var dir='enc';
+function setD(d,el){ dir=d; document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('act');}); el.classList.add('act'); proc(); }
+function proc(){
+  var v=document.getElementById('in').value;
+  if(!v){ document.getElementById('out').value=''; return; }
   try {
-    document.getElementById('o').value = JSON.stringify(JSON.parse(atob(p[0].replace(/-/g,'+').replace(/_/g,'/'))), null, 2);
-    document.getElementById('o2').value = JSON.stringify(JSON.parse(atob(p[1].replace(/-/g,'+').replace(/_/g,'/'))), null, 2);
-  } catch(e) { document.getElementById('o').value = 'Xato: ' + e.message; }
+    if(dir==='enc') document.getElementById('out').value=btoa(unescape(encodeURIComponent(v)));
+    else document.getElementById('out').value=decodeURIComponent(escape(atob(v)));
+  } catch(e){ document.getElementById('out').value='Xato: noto\'g\'ri Base64'; }
 }
-function cp(id) { navigator.clipboard.writeText(document.getElementById(id).value); window.toast?.success('Nusxalandi!'); }
-setT('b64');
+function swap(){
+  document.getElementById('in').value=document.getElementById('out').value;
+  proc();
+}
+function cp(){ var v=document.getElementById('out').value; if(!v)return; try{navigator.clipboard.writeText(v);toast.success('Nusxalandi!');}catch(e){toast.error('Xato');} }
+function clr(){ document.getElementById('in').value=''; document.getElementById('out').value=''; }
+proc();
 </script>
 </body>
 </html>
