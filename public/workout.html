@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workout — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; padding: 100px 20px 60px; }
+.container { max-width: 700px; margin: 0 auto; }
+h1 { font-size: 32px; margin-bottom: 8px; text-align: center;
+  background: linear-gradient(135deg, #22c55e, #10b981);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.today { padding: 20px; border-radius: 16px; background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(16,185,129,0.05));
+  border: 1px solid rgba(34,197,94,0.3); margin-bottom: 20px; text-align: center; }
+.big { font-size: 80px; font-weight: 800; font-family: monospace;
+  background: linear-gradient(135deg, #22c55e, #10b981);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.ex { padding: 16px; border-radius: 12px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.06); margin-bottom: 8px; display: flex; align-items: center; gap: 12px; transition: 0.2s; }
+.ex:hover { background: rgba(34,197,94,0.1); }
+.ex.done { opacity: 0.5; }
+.ex-i { font-size: 36px; }
+.ex-info { flex: 1; }
+.ex-n { font-weight: 700; }
+.ex-d { font-size: 12px; color: #94a3b8; }
+.ex-btn { width: 44px; height: 44px; border-radius: 50%; border: 2px solid #22c55e; background: transparent; color: #22c55e; cursor: pointer; font-size: 20px; }
+.ex.done .ex-btn { background: #22c55e; color: white; }
+.cat { padding: 8px 16px; border-radius: 100px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; cursor: pointer; font-size: 13px; margin-bottom: 16px; }
+.cat.active { background: linear-gradient(135deg, #22c55e, #10b981); border-color: transparent; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>💪 Workout</h1>
+  <p style="color:#94a3b8;text-align:center;margin-bottom:20px">Kunlik mashqlar rejasi</p>
+  <div class="today">
+    <div style="color:#94a3b8;margin-bottom:8px">📅 Bugungi natija</div>
+    <div class="big" id="prog">0/0</div>
+    <div style="margin-top:8px">🔥 <span id="cal">0</span> kaloriya</div>
+  </div>
+  <div id="cats" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+  <div id="exs"></div>
+</div>
+<script>
+const db = {
+  'Tana': [
+    {n:'Push-up', d:'3x15', c:50, i:'💪'},
+    {n:'Squat', d:'3x20', c:80, i:'🦵'},
+    {n:'Plank', d:'3x60s', c:40, i:'🧘'},
+    {n:'Lunge', d:'3x12', c:60, i:'🏃'},
+    {n:'Burpee', d:'3x10', c:100, i:'⚡'},
+    {n:'Sit-up', d:'3x25', c:70, i:'🧎'},
+    {n:'Mountain Climber', d:'3x30s', c:60, i:'⛰'},
+    {n:'Jumping Jack', d:'3x30', c:90, i:'🤸'}
+  ],
+  'Qo\'l': [
+    {n:'Bicep Curl', d:'3x12', c:40, i:'💪'},
+    {n:'Tricep Dip', d:'3x15', c:50, i:'🦾'},
+    {n:'Shoulder Press', d:'3x10', c:45, i:'🏋️'},
+    {n:'Pull-up', d:'3x8', c:80, i:'🆙'}
+  ],
+  'Cardio': [
+    {n:'Yugurish', d:'30 min', c:300, i:'🏃'},
+    {n:'Velosiped', d:'30 min', c:250, i:'🚴'},
+    {n:'Suzish', d:'30 min', c:350, i:'🏊'},
+    {n:'Yoga', d:'30 min', d2:'20 min', c:150, i:'🧘'},
+    {n:'Sakrash', d:'15 min', c:200, i:'🦘'}
+  ],
+  'Qorin': [
+    {n:'Crunch', d:'3x20', c:60, i:'🧎'},
+    {n:'Russian Twist', d:'3x30', c:50, i:'🔄'},
+    {n:'Leg Raise', d:'3x15', c:55, i:'🦵'},
+    {n:'Bicycle', d:'3x30', c:70, i:'🚲'}
+  ]
+};
+let done = JSON.parse(localStorage.getItem('oo-workout') || '{}');
+let today = new Date().toDateString();
+let cur = 'Tana';
+if (done.date !== today) { done = {date: today, items: []}; }
+function save() { localStorage.setItem('oo-workout', JSON.stringify(done)); render(); }
+function init() { document.getElementById('cats').innerHTML = Object.keys(db).map(c => `<div class="cat ${c===cur?'active':''}" onclick="setCat('${c}')">${c}</div>`).join(''); render(); }
+function setCat(c) { cur = c; init(); }
+function toggle(i) { const k = cur + '_' + i; if (done.items.includes(k)) done.items = done.items.filter(x=>x!==k); else done.items.push(k); save(); }
+function render() {
+  const exs = db[cur];
+  document.getElementById('exs').innerHTML = exs.map((e, i) => `<div class="ex ${done.items.includes(cur+'_'+i)?'done':''}">
+    <div class="ex-i">${e.i}</div>
+    <div class="ex-info"><div class="ex-n">${e.n}</div><div class="ex-d">${e.d} · ${e.c} kal</div></div>
+    <button class="ex-btn" onclick="toggle(${i})">${done.items.includes(cur+'_'+i)?'✓':'+'}</button>
+  </div>`).join('');
+  const total = Object.values(db).flat().length;
+  document.getElementById('prog').textContent = `${done.items.length}/${total}`;
+  let cal = 0;
+  Object.keys(db).forEach(c => db[c].forEach((e, i) => { if (done.items.includes(c+'_'+i)) cal += e.c; }));
+  document.getElementById('cal').textContent = cal;
+}
+init();
+</script>
+</body>
+</html>
