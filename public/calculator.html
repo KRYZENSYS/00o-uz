@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalkulyator — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white;
+  min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.calc { width: 380px; max-width: 100%; padding: 20px; border-radius: 20px;
+  background: linear-gradient(135deg, rgba(30,41,59,0.6), rgba(15,23,42,0.6));
+  border: 1px solid rgba(255,255,255,0.1); }
+.tabs { display: flex; gap: 4px; margin-bottom: 16px; }
+.tab { flex: 1; padding: 8px; border-radius: 8px; background: rgba(255,255,255,0.05); cursor: pointer; text-align: center; font-size: 12px; }
+.tab.active { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
+.display { padding: 24px; border-radius: 14px; background: rgba(0,0,0,0.3);
+  text-align: right; margin-bottom: 16px; min-height: 100px; display: flex; flex-direction: column; justify-content: flex-end; }
+.expr { font-size: 16px; color: #94a3b8; min-height: 24px; word-wrap: break-word; }
+.result { font-size: 36px; font-weight: 800; word-wrap: break-word; }
+.row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.btn { padding: 18px; border-radius: 12px; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08); color: white; font-size: 18px; font-weight: 600;
+  cursor: pointer; transition: 0.15s; }
+.btn:hover { background: rgba(255,255,255,0.1); }
+.btn.op { background: linear-gradient(135deg, rgba(139,92,246,0.3), rgba(236,72,153,0.3)); }
+.btn.eq { background: linear-gradient(135deg, #8b5cf6, #ec4899); grid-column: span 2; }
+.btn.fn { background: rgba(255,255,255,0.02); font-size: 14px; }
+h1 { text-align: center; margin-bottom: 16px; font-size: 20px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+</style>
+</head>
+<body>
+<div class="calc">
+  <h1>🧮 Kalkulyator</h1>
+  <div class="tabs">
+    <div class="tab active" onclick="setMode('basic', this)">Oddiy</div>
+    <div class="tab" onclick="setMode('sci', this)">Ilmiy</div>
+    <div class="tab" onclick="setMode('unit', this)">Konverter</div>
+  </div>
+  <div id="mainArea">
+    <div class="display"><div class="expr" id="expr"></div><div class="result" id="result">0</div></div>
+    <div class="row" id="keys"></div>
+  </div>
+</div>
+<script>
+let mode='basic', expr='';
+function setMode(m, el) { document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active')); el.classList.add('active'); mode=m; render(); }
+function render() {
+  const main = document.getElementById('mainArea');
+  if (mode === 'unit') {
+    main.innerHTML = `<div class="display" style="min-height:auto;padding:16px"><h3 style="text-align:center;margin-bottom:12px">📏 Konverter</h3>
+      <select id="ut" style="width:100%;padding:10px;border-radius:8px;background:rgba(0,0,0,0.3);color:white;border:1px solid rgba(255,255,255,0.1);margin-bottom:8px">
+        <option value="m">Uzunlik (m)</option><option value="kg">Og'irlik (kg)</option><option value="l">Hajm (l)</option>
+        <option value="c">Harorat (°C)</option>
+      </select>
+      <input id="uv" type="number" placeholder="Qiymat" oninput="convert()" style="width:100%;padding:12px;border-radius:8px;background:rgba(0,0,0,0.3);color:white;border:1px solid rgba(255,255,255,0.1);font-size:18px">
+      <div id="ures" style="margin-top:12px;padding:12px;border-radius:8px;background:rgba(0,0,0,0.2);font-size:14px;line-height:1.8"></div>
+    </div>`;
+    return;
+  }
+  const sci = mode === 'sci';
+  const keys = sci ? [
+    ['sin','cos','tan','π'],['log','ln','√','x²'],['(',')','^','!'],
+    ['7','8','9','÷'],['4','5','6','×'],['1','2','3','-'],['0','.','=','+']
+  ] : [
+    ['C','(',')','÷'],['7','8','9','×'],['4','5','6','-'],['1','2','3','+'],['0','.','=','⌫']
+  ];
+  main.innerHTML = `<div class="display"><div class="expr" id="expr"></div><div class="result" id="result">0</div></div>
+    <div class="row" id="keys">${keys.flat().map(k => {
+      let cls='btn';
+      if ('÷×-+=⌫'.includes(k)) cls+=' op';
+      if ('=⌫'.includes(k) || k==='C') cls+=' fn';
+      if (k==='=') cls+=' eq';
+      if (sci && 'sin cos tan π log ln √ x² ( ) ^ !'.includes(k)) cls+=' fn';
+      return `<button class="${cls}" onclick="press('${k}')">${k}</button>`;
+    }).join('')}</div>`;
+}
+function press(k) {
+  if (k==='C') { expr=''; update(); return; }
+  if (k==='⌫') { expr=expr.slice(0,-1); update(); return; }
+  if (k==='=') { try { expr=String(eval(expr.replace(/×/g,'*').replace(/÷/g,'/').replace(/π/g,'Math.PI').replace(/√/g,'Math.sqrt').replace(/\^/g,'**').replace(/sin/g,'Math.sin').replace(/cos/g,'Math.cos').replace(/tan/g,'Math.tan').replace(/log/g,'Math.log10').replace(/ln/g,'Math.log').replace(/x²/g,'**2'))); } catch(e) { expr='Xato'; } update(); return; }
+  expr += k;
+  update();
+}
+function update() {
+  document.getElementById('expr').textContent = expr;
+  try {
+    const r = expr ? eval(expr.replace(/×/g,'*').replace(/÷/g,'/').replace(/π/g,'Math.PI').replace(/√/g,'Math.sqrt').replace(/\^/g,'**').replace(/sin/g,'Math.sin').replace(/cos/g,'Math.cos').replace(/tan/g,'Math.tan').replace(/log/g,'Math.log10').replace(/ln/g,'Math.log')) : '0';
+    document.getElementById('result').textContent = r;
+  } catch(e) { document.getElementById('result').textContent = '0'; }
+}
+function convert() {
+  const t = document.getElementById('ut').value;
+  const v = parseFloat(document.getElementById('uv').value) || 0;
+  let html = '';
+  if (t==='m') html = `${v}m = ${(v*100).toFixed(2)}cm = ${(v*1000).toFixed(2)}mm = ${(v/1000).toFixed(4)}km`;
+  else if (t==='kg') html = `${v}kg = ${(v*1000).toFixed(0)}g = ${(v*1000000).toFixed(0)}mg = ${(v*2.2046).toFixed(2)}lb`;
+  else if (t==='l') html = `${v}l = ${(v*1000).toFixed(0)}ml = ${(v*0.001).toFixed(6)}m³`;
+  else if (t==='c') html = `${v}°C = ${(v*9/5+32).toFixed(1)}°F = ${(v+273.15).toFixed(1)}K`;
+  document.getElementById('ures').innerHTML = html;
+}
+render();
+</script>
+</body>
+</html>
