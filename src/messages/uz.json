@@ -1,0 +1,92 @@
+{
+  "common": {
+    "appName": "00o.uz",
+    "appDescription": "AI Startup va Frilanser Platformasi",
+    "tagline": "O'zbekistondagi eng katta startup va frilanser platformasi",
+    "search": "Qidirish...",
+    "loading": "Yuklanmoqda...",
+    "error": "Xatolik yuz berdi",
+    "success": "Muvaffaqiyat",
+    "save": "Saqlash",
+    "cancel": "Bekor qilish",
+    "delete": "O'chirish",
+    "edit": "Tahrirlash",
+    "create": "Yaratish",
+    "submit": "Yuborish",
+    "back": "Orqaga",
+    "next": "Keyingi",
+    "previous": "Oldingi",
+    "yes": "Ha",
+    "no": "Yo'q",
+    "or": "yoki",
+    "and": "va",
+    "showMore": "Ko'proq ko'rsatish",
+    "showLess": "Kamroq ko'rsatish",
+    "viewAll": "Barchasini ko'rish",
+    "learnMore": "Batafsil",
+    "getStarted": "Boshlash",
+    "signUp": "Ro'yxatdan o'tish",
+    "signIn": "Kirish",
+    "signOut": "Chiqish",
+    "profile": "Profil",
+    "settings": "Sozlamalar",
+    "dashboard": "Boshqaruv paneli",
+    "notifications": "Bildirishnomalar",
+    "messages": "Xabarlar"
+  },
+  "nav": {
+    "home": "Bosh sahifa",
+    "startups": "Startaplar",
+    "freelancers": "Frilanserlar",
+    "investors": "Investorlar",
+    "jobs": "Ish o'rinlari",
+    "teams": "Jamoalar",
+    "ai": "AI Yordamchi",
+    "blog": "Blog",
+    "community": "Jamiyat",
+    "messages": "Xabarlar",
+    "admin": "Admin panel"
+  },
+  "auth": {
+    "signInTitle": "Hisobingizga kiring",
+    "signUpTitle": "Yangi hisob yarating",
+    "email": "Email",
+    "password": "Parol",
+    "fullName": "To'liq ism",
+    "username": "Foydalanuvchi nomi",
+    "forgotPassword": "Parolni unutdingizmi?",
+    "signInWithTelegram": "Telegram orqali kirish",
+    "signInWithGoogle": "Google orqali kirish",
+    "signInWithEmail": "Email orqali kirish",
+    "verify": "Tasdiqlash"
+  },
+  "landing": {
+    "hero": {
+      "title": "Startapingizni dunyoga tanishtiring",
+      "subtitle": "00o.uz — O'zbekistondagi eng katta startup, frilanser va investor platformasi",
+      "searchPlaceholder": "Startap, frilanser yoki xizmat qidiring..."
+    },
+    "stats": {
+      "startups": "Faol startaplar",
+      "freelancers": "Frilanserlar",
+      "investors": "Investorlar",
+      "jobs": "Ish o'rinlari"
+    },
+    "trending": "Trendagi startaplar",
+    "topFreelancers": "Eng yaxshi frilanserlar",
+    "latestJobs": "So'nggi ish o'rinlari"
+  },
+  "ai": {
+    "title": "AI Yordamchi",
+    "subtitle": "GroqCloud AI bilan kuchli vositalar",
+    "chat": "AI Chat",
+    "input": "Savolingizni yozing...",
+    "send": "Yuborish",
+    "thinking": "O'ylanmoqda..."
+  },
+  "errors": {
+    "required": "Bu maydon to'ldirilishi shart",
+    "email": "Noto'g'ri email",
+    "invalidCredentials": "Noto'g'ri login yoki parol"
+  }
+}
