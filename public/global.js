@@ -1,8 +1,31 @@
-// 00o.uz Global Bundle - barcha sahifalarga avtomatik ulanadi
+// 00o.uz Global Bundle - RESPONSIVE EDITION
+// Avtomatik ravishda hamma sahifalarga ulanadi
 (function() {
-  // === DARK MODE & THEMES ===
+  // === RESPONSIVE CSS AUTO-LOAD ===
+  if (!document.getElementById('oo-responsive')) {
+    const link = document.createElement('link');
+    link.id = 'oo-responsive';
+    link.rel = 'stylesheet';
+    link.href = '/responsive.css';
+    document.head.appendChild(link);
+  }
+  // === MOBILE NAV AUTO-LOAD ===
+  if (!document.getElementById('oo-mobile-nav')) {
+    const s = document.createElement('script');
+    s.id = 'oo-mobile-nav';
+    s.src = '/mobile-nav.js';
+    document.head.appendChild(s);
+  }
+  // === VIEWPORT META FIX ===
+  if (!document.querySelector('meta[name="viewport"]')) {
+    const m = document.createElement('meta');
+    m.name = 'viewport';
+    m.content = 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes';
+    document.head.appendChild(m);
+  }
+  // === THEME SWITCHER ===
   const dmStyle = document.createElement('style');
-  dmStyle.textContent = `.theme-switcher{position:fixed;bottom:20px;left:20px;z-index:99998;background:rgba(15,23,42,0.9);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:100px;padding:6px;display:flex;gap:4px;box-shadow:0 10px 40px rgba(0,0,0,0.3)}.theme-btn{width:32px;height:32px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:0.2s;font-size:14px;display:flex;align-items:center;justify-content:center;background:transparent;color:white}.theme-btn:hover{transform:scale(1.15)}.theme-btn.active{border-color:white}`;
+  dmStyle.textContent = `.theme-switcher{position:fixed;bottom:20px;left:20px;z-index:99998;background:rgba(15,23,42,0.9);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:100px;padding:6px;display:flex;gap:4px;box-shadow:0 10px 40px rgba(0,0,0,0.3)}.theme-btn{width:32px;height:32px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:0.2s;font-size:14px;display:flex;align-items:center;justify-content:center;background:transparent;color:white}.theme-btn:hover{transform:scale(1.15)}.theme-btn.active{border-color:white}@media (max-width:480px){.theme-switcher{left:12px;bottom:12px;padding:4px}.theme-btn{width:28px;height:28px;font-size:12px}}`;
   document.head.appendChild(dmStyle);
   const themes = [
     {id:'dark',icon:'🌙'},{id:'light',icon:'☀️'},{id:'synth',icon:'🌸'},
@@ -13,22 +36,32 @@
   ts.className = 'theme-switcher';
   ts.innerHTML = themes.map(t => `<button class="theme-btn ${t.id===curTheme?'active':''}" data-t="${t.id}" title="${t.id}">${t.icon}</button>`).join('');
   document.body.appendChild(ts);
+  function applyTheme(id) {
+    const body = document.body;
+    const presets = {
+      dark: {bg:'', c:''},
+      light: {bg:'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f8fafc 100%)', c:'#0f172a'},
+      synth: {bg:'linear-gradient(135deg, #1a0033 0%, #330066 50%, #660033 100%)', c:'#fff'},
+      ocean: {bg:'linear-gradient(135deg, #001f3f 0%, #003366 50%, #001a33 100%)', c:'#fff'},
+      sunset: {bg:'linear-gradient(135deg, #2d1b69 0%, #6b2d5b 50%, #b06a5b 100%)', c:'#fff'},
+      forest: {bg:'linear-gradient(135deg, #0a2e1a 0%, #1a4d2e 50%, #0a2e1a 100%)', c:'#fff'},
+      royal: {bg:'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)', c:'#fff'}
+    };
+    const p = presets[id] || presets.dark;
+    body.style.background = p.bg;
+    body.style.color = p.c;
+  }
+  applyTheme(curTheme);
   ts.querySelectorAll('.theme-btn').forEach(b => b.onclick = () => {
     curTheme = b.dataset.t;
     localStorage.setItem('oo-theme', curTheme);
-    if (curTheme === 'light') {
-      document.body.style.background = 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f8fafc 100%)';
-      document.body.style.color = '#0f172a';
-    } else {
-      document.body.style.background = '';
-      document.body.style.color = '';
-    }
+    applyTheme(curTheme);
     ts.querySelectorAll('.theme-btn').forEach(x => x.classList.toggle('active', x.dataset.t === curTheme));
   });
 
   // === AI CHAT BUBBLE ===
   const aiStyle = document.createElement('style');
-  aiStyle.textContent = `.ai-bubble{position:fixed;bottom:20px;right:90px;z-index:99998;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#ec4899);border:none;color:white;font-size:28px;cursor:pointer;box-shadow:0 10px 30px rgba(139,92,246,0.5);animation:aiPulse 3s ease-in-out infinite}@keyframes aiPulse{0%,100%{box-shadow:0 10px 30px rgba(139,92,246,0.5)}50%{box-shadow:0 10px 50px rgba(139,92,246,0.8),0 0 0 10px rgba(139,92,246,0.1)}}.ai-panel{position:fixed;bottom:90px;right:20px;z-index:99999;width:380px;max-width:calc(100vw - 40px);height:540px;max-height:calc(100vh - 120px);background:linear-gradient(135deg,rgba(30,41,59,0.98),rgba(15,23,42,0.98));backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:20px;display:none;flex-direction:column;box-shadow:0 20px 80px rgba(0,0,0,0.5);transform:scale(0.8) translateY(20px);opacity:0;transition:0.3s cubic-bezier(0.16,1,0.3,1);transform-origin:bottom right}.ai-panel.open{display:flex;transform:scale(1) translateY(0);opacity:1}.ai-head{padding:16px;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;gap:12px}.ai-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#ec4899);display:flex;align-items:center;justify-content:center;font-size:20px}.ai-name{font-weight:700}.ai-st{color:#22c55e;font-size:12px}.ai-close{margin-left:auto;background:rgba(255,255,255,0.05);border:none;color:white;width:30px;height:30px;border-radius:50%;cursor:pointer}.ai-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}.ai-msg{max-width:85%;padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.4}.ai-msg.bot{background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.2);align-self:flex-start}.ai-msg.user{background:linear-gradient(135deg,#8b5cf6,#06b6d4);align-self:flex-end}.ai-input{padding:12px;border-top:1px solid rgba(255,255,255,0.05);display:flex;gap:8px}.ai-input input{flex:1;padding:10px 14px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:100px;color:white;font-size:13px;outline:none}.ai-send{padding:0 16px;background:linear-gradient(135deg,#8b5cf6,#ec4899);border:none;color:white;border-radius:100px;font-weight:600;cursor:pointer}`;
+  aiStyle.textContent = `.ai-bubble{position:fixed;bottom:20px;right:90px;z-index:99998;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#ec4899);border:none;color:white;font-size:28px;cursor:pointer;box-shadow:0 10px 30px rgba(139,92,246,0.5);animation:aiPulse 3s ease-in-out infinite}@keyframes aiPulse{0%,100%{box-shadow:0 10px 30px rgba(139,92,246,0.5)}50%{box-shadow:0 10px 50px rgba(139,92,246,0.8),0 0 0 10px rgba(139,92,246,0.1)}}.ai-panel{position:fixed;bottom:90px;right:20px;z-index:99999;width:380px;max-width:calc(100vw - 40px);height:540px;max-height:calc(100vh - 120px);background:linear-gradient(135deg,rgba(30,41,59,0.98),rgba(15,23,42,0.98));backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1);border-radius:20px;display:none;flex-direction:column;box-shadow:0 20px 80px rgba(0,0,0,0.5);transform:scale(0.8) translateY(20px);opacity:0;transition:0.3s cubic-bezier(0.16,1,0.3,1);transform-origin:bottom right}.ai-panel.open{display:flex;transform:scale(1) translateY(0);opacity:1}.ai-head{padding:16px;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;gap:12px}.ai-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#ec4899);display:flex;align-items:center;justify-content:center;font-size:20px}.ai-name{font-weight:700}.ai-st{color:#22c55e;font-size:12px}.ai-close{margin-left:auto;background:rgba(255,255,255,0.05);border:none;color:white;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:18px}.ai-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}.ai-msg{max-width:85%;padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.4;white-space:pre-wrap;word-wrap:break-word}.ai-msg.bot{background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.2);align-self:flex-start}.ai-msg.user{background:linear-gradient(135deg,#8b5cf6,#06b6d4);align-self:flex-end;color:white}.ai-input{padding:12px;border-top:1px solid rgba(255,255,255,0.05);display:flex;gap:8px}.ai-input input{flex:1;padding:10px 14px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:100px;color:white;font-size:13px;outline:none;min-width:0}.ai-send{padding:0 16px;background:linear-gradient(135deg,#8b5cf6,#ec4899);border:none;color:white;border-radius:100px;font-weight:600;cursor:pointer;flex-shrink:0}@media (max-width:640px){.ai-bubble{right:16px;bottom:16px;width:52px;height:52px;font-size:24px}.ai-panel{right:12px;left:12px;width:auto;bottom:76px;height:70vh;border-radius:16px}}`;
   document.head.appendChild(aiStyle);
   const aiB = document.createElement('button');
   aiB.className = 'ai-bubble';
@@ -57,17 +90,18 @@
     setTimeout(() => {
       const lower = t.toLowerCase();
       let r = 'Qiziqarli savol! AI yordam berishga tayyor 🤖';
-      if (lower.match(/salom|qalay/)) r = 'Salom! 👋 30 ta AI vositam bor. Qaysi biri kerak?';
+      if (lower.match(/salom|qalay|hello|hi/)) r = 'Salom! 👋 30 ta AI vositam bor. Qaysi biri kerak?';
       else if (lower.match(/startap/)) r = '💡 3 ta startap g\'oyasi:\n1. AI tutor (EdTech)\n2. Local delivery\n3. Crypto edu';
       else if (lower.match(/ish|vakansiya/)) r = '💼 500+ vakansiya bor! IT, dizayn, marketing';
       else if (lower.match(/cv/)) r = '📄 CV yaratish uchun ai-chat.html ga o\'ting';
       else if (lower.match(/kod|code/)) r = '💻 Qaysi til? React, Python, Java?';
+      else if (lower.match(/yordam|help/)) r = 'Ctrl+K — buyruqlar paneli\nMavzu: AI, Startap, Ish, Freelance';
       aiAdd(r, 'bot');
     }, 700);
   }
   aiP.querySelector('.ai-send').onclick = aiSend;
   aiIn.onkeydown = e => { if (e.key === 'Enter') aiSend(); };
-  setTimeout(() => aiAdd('Salom! 👋 Men 00o AI yordamchisiman. 30 ta vosita bilan ishlayman.', 'bot'), 1500);
+  setTimeout(() => aiAdd('Salom! 👋 Men 00o AI yordamchisiman. 30 ta vosita bilan ishlayman. Ctrl+K — buyruqlar', 'bot'), 1500);
 
   // === COMMAND PALETTE (Ctrl+K) ===
   const cmds = [
@@ -85,7 +119,7 @@
     {i:'🔐',t:'Login',a:'login.html'},
   ];
   const cStyle = document.createElement('style');
-  cStyle.textContent = `.cmdp{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);z-index:100000;display:none;align-items:flex-start;justify-content:center;padding-top:12vh}.cmdp.open{display:flex}.cmdp-box{width:600px;max-width:92vw;background:linear-gradient(135deg,rgba(30,41,59,0.98),rgba(15,23,42,0.98));border:1px solid rgba(255,255,255,0.1);border-radius:16px;overflow:hidden;box-shadow:0 20px 80px rgba(0,0,0,0.5)}.cmdp-search{width:100%;padding:18px 20px;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,0.08);color:white;font-size:16px;outline:none}.cmdp-list{max-height:420px;overflow-y:auto;padding:8px 0}.cmdp-item{padding:10px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:0.1s}.cmdp-item:hover,.cmdp-item.active{background:rgba(139,92,246,0.15)}.cmdp-i{font-size:20px;width:32px;text-align:center}.cmdp-n{flex:1;font-weight:600;font-size:14px}`;
+  cStyle.textContent = `.cmdp{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);z-index:100000;display:none;align-items:flex-start;justify-content:center;padding-top:12vh}.cmdp.open{display:flex}.cmdp-box{width:600px;max-width:92vw;background:linear-gradient(135deg,rgba(30,41,59,0.98),rgba(15,23,42,0.98));border:1px solid rgba(255,255,255,0.1);border-radius:16px;overflow:hidden;box-shadow:0 20px 80px rgba(0,0,0,0.5);max-height:80vh;display:flex;flex-direction:column}.cmdp-search{width:100%;padding:18px 20px;background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,0.08);color:white;font-size:16px;outline:none;flex-shrink:0}.cmdp-list{overflow-y:auto;padding:8px 0;flex:1}.cmdp-item{padding:10px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:0.1s}.cmdp-item:hover,.cmdp-item.active{background:rgba(139,92,246,0.15)}.cmdp-i{font-size:20px;width:32px;text-align:center;flex-shrink:0}.cmdp-n{flex:1;font-weight:600;font-size:14px}@media (max-width:640px){.cmdp{padding-top:8vh}.cmdp-box{border-radius:12px}.cmdp-search{padding:14px 16px;font-size:15px}.cmdp-item{padding:12px 14px}}`;
   document.head.appendChild(cStyle);
   const cp = document.createElement('div');
   cp.className = 'cmdp';
@@ -93,13 +127,21 @@
   document.body.appendChild(cp);
   const cpIn = cp.querySelector('.cmdp-search');
   const cpList = document.getElementById('cmdpList');
+  let activeCmd = 0;
   function renderCmds(filter='') {
     const f = cmds.filter(c => !filter || c.t.toLowerCase().includes(filter.toLowerCase()));
+    activeCmd = 0;
     cpList.innerHTML = f.map((c, i) => `<div class="cmdp-item ${i===0?'active':''}" data-a="${c.a}"><div class="cmdp-i">${c.i}</div><div class="cmdp-n">${c.t}</div></div>`).join('');
     cpList.querySelectorAll('.cmdp-item').forEach(el => el.onclick = () => location.href = el.dataset.a);
   }
   cp.onclick = e => { if (e.target === cp) cp.classList.remove('open'); };
   cpIn.oninput = e => renderCmds(e.target.value);
+  cpIn.onkeydown = e => {
+    const items = cpList.querySelectorAll('.cmdp-item');
+    if (e.key === 'ArrowDown') { e.preventDefault(); activeCmd = Math.min(activeCmd + 1, items.length - 1); items.forEach((it, i) => it.classList.toggle('active', i === activeCmd)); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); activeCmd = Math.max(activeCmd - 1, 0); items.forEach((it, i) => it.classList.toggle('active', i === activeCmd)); }
+    else if (e.key === 'Enter') { e.preventDefault(); if (items[activeCmd]) location.href = items[activeCmd].dataset.a; }
+  };
   document.addEventListener('keydown', e => {
     if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
       e.preventDefault();
@@ -110,4 +152,7 @@
   });
   renderCmds();
   window.cmdPalette = { toggle: () => cp.classList.toggle('open') };
+  window.ooToast = window.toast;
+  window.ooConfetti = window.confetti;
+  window.ooSfx = window.sfx;
 })();
