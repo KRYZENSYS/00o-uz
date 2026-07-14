@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sleep — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; padding: 100px 20px 60px; }
+.container { max-width: 700px; margin: 0 auto; }
+h1 { font-size: 32px; margin-bottom: 8px; text-align: center;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.bar { padding: 20px; border-radius: 16px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); margin-bottom: 16px; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+input, select { width: 100%; padding: 12px; border-radius: 8px; background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(255,255,255,0.1); }
+.btn { padding: 12px; border-radius: 10px; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; border: none; font-weight: 700; cursor: pointer; width: 100%; margin-top: 12px; }
+.stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
+.s { padding: 12px; border-radius: 10px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); text-align: center; }
+.s-n { font-size: 24px; font-weight: 800;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.s-l { font-size: 11px; color: #94a3b8; }
+.week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 16px; }
+.day { text-align: center; }
+.day-bar { background: rgba(255,255,255,0.05); border-radius: 6px; height: 120px; display: flex; align-items: flex-end; }
+.day-fill { width: 100%; background: linear-gradient(180deg, #6366f1, #8b5cf6); border-radius: 6px 6px 0 0; }
+.day-l { font-size: 11px; color: #94a3b8; margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>😴 Sleep Tracker</h1>
+  <div class="stat-row" style="margin-bottom:16px">
+    <div class="s"><div class="s-n" id="avg">0</div><div class="s-l">O'rtacha</div></div>
+    <div class="s"><div class="s-n" id="streak">0</div><div class="s-l">Streak</div></div>
+    <div class="s"><div class="s-n" id="qual">0%</div><div class="s-l">Sifat</div></div>
+  </div>
+  <div class="bar">
+    <h3 style="margin-bottom:12px">📝 Bugungi uyqu</h3>
+    <div class="row">
+      <div><label style="font-size:12px;color:#94a3b8">Yotgan vaqti</label><input type="time" id="bed" value="23:00"></div>
+      <div><label style="font-size:12px;color:#94a3b8">Turgan vaqti</label><input type="time" id="wake" value="07:00"></div>
+    </div>
+    <div style="margin-top:12px">
+      <label style="font-size:12px;color:#94a3b8">Sifat (1-10)</label>
+      <input type="range" id="q" min="1" max="10" value="7" style="width:100%">
+    </div>
+    <button class="btn" onclick="add()">💾 Saqlash</button>
+  </div>
+  <div class="bar">
+    <h3 style="margin-bottom:12px">📊 Haftalik statistika</h3>
+    <div class="week" id="week"></div>
+  </div>
+  <div class="bar">
+    <h3>📜 Tarix</h3>
+    <div id="hist"></div>
+  </div>
+</div>
+<script>
+let data = JSON.parse(localStorage.getItem('oo-sleep') || '[]');
+function add() {
+  const bed = document.getElementById('bed').value;
+  const wake = document.getElementById('wake').value;
+  const q = parseInt(document.getElementById('q').value);
+  const [bh, bm] = bed.split(':').map(Number);
+  const [wh, wm] = wake.split(':').map(Number);
+  let h = (wh * 60 + wm) - (bh * 60 + bm);
+  if (h < 0) h += 24 * 60;
+  const today = new Date().toDateString();
+  data = data.filter(d => d.date !== today);
+  data.unshift({date: today, bed, wake, q, mins: h});
+  localStorage.setItem('oo-sleep', JSON.stringify(data));
+  render();
+}
+function render() {
+  if (!data.length) return;
+  const avg = Math.round(data.reduce((s, d) => s + d.mins, 0) / data.length / 60 * 10) / 10;
+  const qual = Math.round(data.reduce((s, d) => s + d.q, 0) / data.length * 10);
+  let streak = 0; for (let d of data) if (d.mins >= 7*60 && d.mins <= 9*60) streak++; else break;
+  document.getElementById('avg').textContent = avg + 'h';
+  document.getElementById('streak').textContent = streak;
+  document.getElementById('qual').textContent = qual + '%';
+  // Week chart
+  const days = ['Yak','Du','Se','Ch','Pa','Ju','Sh'];
+  const now = new Date();
+  const week = [];
+  for (let i = 6; i >= 0; i--) { const d = new Date(now); d.setDate(d.getDate() - i); const e = data.find(x => x.date === d.toDateString()); week.push({label: days[d.getDay()], data: e, max: 10*60}); }
+  document.getElementById('week').innerHTML = week.map(d => `<div class="day"><div class="day-bar">${d.data?`<div class="day-fill" style="height:${d.data.mins/d.max*100}%"></div>`:''}</div><div class="day-l">${d.label}</div></div>`).join('');
+  document.getElementById('hist').innerHTML = data.slice(0, 7).map(d => `<div style="display:flex;justify-content:space-between;padding:8px;border-radius:6px;background:rgba(255,255,255,0.03);margin-bottom:4px">
+    <span>${new Date(d.date).toLocaleDateString('uz-UZ',{day:'numeric',month:'short'})}</span>
+    <span>${d.bed} → ${d.wake}</span>
+    <span>${(d.mins/60).toFixed(1)}h</span>
+    <span>${'⭐'.repeat(d.q)}</span>
+  </div>`).join('');
+}
+render();
+</script>
+</body>
+</html>
