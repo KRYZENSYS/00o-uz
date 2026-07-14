@@ -28,14 +28,12 @@ nav { position: fixed; top: 0; left: 0; right: 0;
   background: linear-gradient(135deg, #f59e0b, #8b5cf6, #06b6d4);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .page-hero p { color: #94a3b8; font-size: 18px; max-width: 600px; margin: 0 auto; }
-
 .toggle-billing { display: flex; gap: 4px; padding: 4px; background: rgba(255,255,255,0.05);
   border-radius: 12px; width: fit-content; margin: 30px auto; }
 .bill-tab { padding: 10px 24px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; transition: 0.3s; }
 .bill-tab.active { background: linear-gradient(135deg, #8b5cf6, #06b6d4); }
 .save-badge { background: #22c55e; color: white; font-size: 11px; padding: 2px 6px;
   border-radius: 6px; margin-left: 6px; }
-
 .plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px; padding: 30px 0 60px; max-width: 1100px; margin: 0 auto; }
 .plan { padding: 40px 32px; border-radius: 24px;
@@ -61,7 +59,6 @@ nav { position: fixed; top: 0; left: 0; right: 0;
 .btn-plan.primary { background: linear-gradient(135deg, #8b5cf6, #06b6d4); color: white; }
 .btn-plan.secondary { background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.2); }
 .btn-plan:hover { transform: translateY(-2px); }
-
 .payment-section { padding: 40px 0 80px; }
 .payment-methods { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 16px; margin: 30px 0; }
@@ -70,7 +67,6 @@ nav { position: fixed; top: 0; left: 0; right: 0;
   transition: 0.3s; font-size: 15px; font-weight: 600; }
 .pay-method:hover, .pay-method.active { border-color: #8b5cf6; background: rgba(139,92,246,0.1); }
 .pay-method-icon { font-size: 32px; margin-bottom: 8px; }
-
 .checkout-box { max-width: 500px; margin: 0 auto; padding: 32px; border-radius: 20px;
   background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
   border: 1px solid rgba(255,255,255,0.1); }
@@ -81,7 +77,6 @@ nav { position: fixed; top: 0; left: 0; right: 0;
 .btn-pay { width: 100%; padding: 16px; margin-top: 20px; border: none; border-radius: 12px;
   background: linear-gradient(135deg, #22c55e, #06b6d4); color: white; font-size: 16px; font-weight: 700; cursor: pointer; }
 .btn-pay:hover { transform: translateY(-2px); }
-
 .faq-section { padding: 60px 0; }
 .faq-list { max-width: 700px; margin: 30px auto 0; }
 .faq-item { padding: 20px; border-radius: 16px; background: rgba(255,255,255,0.03);
@@ -108,7 +103,6 @@ nav { position: fixed; top: 0; left: 0; right: 0;
     <a href="#" class="btn btn-primary" onclick="event.preventDefault();alert('Demo rejim')">Kirish</a>
   </div>
 </nav>
-
 <section class="page-hero container">
   <h1>👑 Premium tariflar</h1>
   <p>Imkoniyatlaringizni kengaytiring. AI vositalar cheksiz, prioritet ko'rinish, reklama yo'q.</p>
@@ -117,7 +111,6 @@ nav { position: fixed; top: 0; left: 0; right: 0;
     <div class="bill-tab active" onclick="setBilling(this, 'yearly')">Yillik <span class="save-badge">-30%</span></div>
   </div>
 </section>
-
 <section class="container">
   <div class="plans">
     <div class="plan">
@@ -136,7 +129,6 @@ nav { position: fixed; top: 0; left: 0; right: 0;
       </ul>
       <button class="btn-plan secondary" onclick="alert('Siz hozir Free tarifdasiz')">Hozir shu tarifsiz</button>
     </div>
-
     <div class="plan popular">
       <div class="plan-badge">🔥 MASHHUR</div>
       <div class="plan-name">⚡ Pro</div>
@@ -154,7 +146,6 @@ nav { position: fixed; top: 0; left: 0; right: 0;
       </ul>
       <button class="btn-plan primary" onclick="selectPlan('Pro', '349000')">Pro'ga o'tish →</button>
     </div>
-
     <div class="plan">
       <div class="plan-name">🏢 Business</div>
       <div class="plan-desc">Kompaniyalar va startaplar uchun</div>
@@ -173,23 +164,14 @@ nav { position: fixed; top: 0; left: 0; right: 0;
     </div>
   </div>
 </section>
-
 <section class="payment-section container" id="paymentSection" style="display:none">
   <h2 style="text-align:center;font-size:32px;margin-bottom:8px;">💳 To'lov</h2>
   <p style="text-align:center;color:#94a3b8;" id="planInfo">Pro tarif — yillik</p>
   <div class="payment-methods">
-    <div class="pay-method active" onclick="selectPay(this, 'Payme')">
-      <div class="pay-method-icon">💳</div>Payme
-    </div>
-    <div class="pay-method" onclick="selectPay(this, 'Click')">
-      <div class="pay-method-icon">📱</div>Click
-    </div>
-    <div class="pay-method" onclick="selectPay(this, 'Uzum')">
-      <div class="pay-method-icon">🟣</div>Uzum
-    </div>
-    <div class="pay-method" onclick="selectPay(this, 'Visa')">
-      <div class="pay-method-icon">💎</div>Visa/MasterCard
-    </div>
+    <div class="pay-method active" onclick="selectPay(this, 'Payme')"><div class="pay-method-icon">💳</div>Payme</div>
+    <div class="pay-method" onclick="selectPay(this, 'Click')"><div class="pay-method-icon">📱</div>Click</div>
+    <div class="pay-method" onclick="selectPay(this, 'Uzum')"><div class="pay-method-icon">🟣</div>Uzum</div>
+    <div class="pay-method" onclick="selectPay(this, 'Visa')"><div class="pay-method-icon">💎</div>Visa/MasterCard</div>
   </div>
   <div class="checkout-box">
     <div class="checkout-row"><span>Tarif:</span><span id="coPlan">Pro</span></div>
@@ -199,35 +181,20 @@ nav { position: fixed; top: 0; left: 0; right: 0;
     <button class="btn-pay" onclick="processPayment()">✅ To'lash</button>
   </div>
 </section>
-
 <section class="faq-section container">
   <h2 style="text-align:center;font-size:32px;margin-bottom:8px;">❓ Ko'p beriladigan savollar</h2>
   <p style="text-align:center;color:#94a3b8;">Premium haqida eng ko'p so'raladiganlar</p>
   <div class="faq-list">
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-q"><span>Premium'ni qanday bekor qilish mumkin?</span><span class="faq-arrow">▼</span></div>
-      <div class="faq-a">Profil → Sozlamalar → Obuna bo'limidan istalgan vaqtda bekor qilishingiz mumkin. Pul qaytariladi.</div>
-    </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-q"><span>To'lov usullari qaysilar?</span><span class="faq-arrow">▼</span></div>
-      <div class="faq-a">Payme, Click, Uzum, Visa/MasterCard. Barcha to'lovlar xavfsiz va shifrlangan.</div>
-    </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-q"><span>Yillik tarifda qancha tejayman?</span><span class="faq-arrow">▼</span></div>
-      <div class="faq-a">Yillik tarif oylikdan 30% arzon. Masalan, Pro: oylik 49,000 so'm, yillik 29,000 so'm/oy.</div>
-    </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
-      <div class="faq-q"><span>AI so'rovlar nima?</span><span class="faq-arrow">▼</span></div>
-      <div class="faq-a">AI Chat, tarjimon, rasm generatsiya va boshqa vositalarga yuborilgan har bir so'rov.</div>
-    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q"><span>Premium'ni qanday bekor qilish mumkin?</span><span class="faq-arrow">▼</span></div><div class="faq-a">Profil → Sozlamalar → Obuna bo'limidan istalgan vaqtda bekor qilishingiz mumkin. Pul qaytariladi.</div></div>
+    <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q"><span>To'lov usullari qaysilar?</span><span class="faq-arrow">▼</span></div><div class="faq-a">Payme, Click, Uzum, Visa/MasterCard. Barcha to'lovlar xavfsiz va shifrlangan.</div></div>
+    <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q"><span>Yillik tarifda qancha tejayman?</span><span class="faq-arrow">▼</span></div><div class="faq-a">Yillik tarif oylikdan 30% arzon. Masalan, Pro: oylik 49,000 so'm, yillik 29,000 so'm/oy.</div></div>
+    <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q"><span>AI so'rovlar nima?</span><span class="faq-arrow">▼</span></div><div class="faq-a">AI Chat, tarjimon, rasm generatsiya va boshqa vositalarga yuborilgan har bir so'rov.</div></div>
   </div>
 </section>
-
 <script>
 let billing = 'yearly';
 let plan = { name: 'Pro', price: 349000 };
 let payMethod = 'Payme';
-
 function setBilling(el, type) {
   document.querySelectorAll('.bill-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
@@ -244,40 +211,32 @@ function setBilling(el, type) {
     document.getElementById('bizPeriod').textContent = 'yiliga (83,000/oy)';
   }
 }
-
 function selectPlan(name, price) {
   plan = { name, price: parseInt(price) };
   document.getElementById('paymentSection').style.display = 'block';
-  document.getElementById('planInfo').textContent = `${name} tarif — ${billing === 'yearly' ? 'yillik' : 'oylik'}`;
+  document.getElementById('planInfo').textContent = name + ' tarif — ' + (billing === 'yearly' ? 'yillik' : 'oylik');
   document.getElementById('coPlan').textContent = name;
   document.getElementById('coPeriod').textContent = billing === 'yearly' ? 'Yillik' : 'Oylik';
-  document.getElementById('coTotal').textContent = `${parseInt(price).toLocaleString()} so'm`;
+  document.getElementById('coTotal').textContent = parseInt(price).toLocaleString() + ' so\'m';
   document.getElementById('paymentSection').scrollIntoView({ behavior: 'smooth' });
 }
-
 function selectPay(el, name) {
   document.querySelectorAll('.pay-method').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
   payMethod = name;
 }
-
 function processPayment() {
   const btn = document.querySelector('.btn-pay');
   btn.textContent = '⏳ To\'lov amalga oshirilmoqda...';
   btn.disabled = true;
   setTimeout(() => {
-    alert(`✅ To'lov muvaffaqiyatli!\n\nTarif: ${plan.name}\nDavr: ${billing}\nUsul: ${payMethod}\nSumma: ${plan.price.toLocaleString()} so'm\n\nDemo versiya: haqiqiy to'lov amalga oshmaydi.`);
+    alert(`✅ To'lov muvaffaqiyatli!\n\nTarif: ${plan.name}\nDavr: ${billing}\nUsul: ${payMethod}\nSumma: ${plan.price.toLocaleString()} so'm\n\nDemo versiya.`);
     btn.textContent = '✅ To\'landi!';
     btn.style.background = 'linear-gradient(135deg, #22c55e, #10b981)';
-    setTimeout(() => {
-      btn.textContent = '✅ To\'lash';
-      btn.disabled = false;
-      btn.style.background = '';
-    }, 4000);
+    setTimeout(() => { btn.textContent = '✅ To\'lash'; btn.disabled = false; btn.style.background = ''; }, 4000);
   }, 2000);
 }
-
-console.log('%c👑 Premium sahifasi', 'font-size:24px;font-weight:bold;color:#f59e0b;');
 </script>
+<script src="/i18n.js"></script>
 </body>
 </html>
