@@ -1,35 +1,33 @@
-"""Email Service - SendGrid"""
-import os
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail, Email, To, Content
-
-SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
-FROM_EMAIL = os.getenv("FROM_EMAIL", "noreply@00o.uz")
+"""Email service"""
+import httpx
+from ..core.config import settings
 
 
 class EmailService:
-    client = SendGridAPIClient(SENDGRID_API_KEY) if SENDGRID_API_KEY else None
-
     @staticmethod
-    async def send(to: str, subject: str, html: str, text: str = None):
-        if not EmailService.client:
-            return {"error": "Not configured"}
-        message = Mail(from_email=Email(FROM_EMAIL), to_emails=To(to), subject=subject,
-                       html_content=Content("text/html", html))
+    async def send(to: str, subject: str, html: str) -> bool:
+        if not settings.SENDGRID_API_KEY: return False
         try:
-            response = EmailService.client.send(message)
-            return {"status": "sent", "code": response.status_code}
-        except Exception as e:
-            return {"error": str(e)}
+            async with httpx.AsyncClient() as client:
+                await client.post(
+                    "https://api.sendgrid.com/v3/mail/send",
+                    headers={"Authorization": f"Bearer {settings.SENDGRID_API_KEY}", "Content-Type": "application/json"},
+                    json={"personalizations": [{"to": [{"email": to}]}], "from": {"email": settings.EMAIL_FROM, "name": "00o.uz"},
+                          "subject": subject, "content": [{"type": "text/html", "value": html}]}
+                )
+            return True
+        except: return False
 
     @staticmethod
-    async def send_verification(to: str, code: str):
-        await EmailService.send(to, "Email tasdiqlash", f"<h1>Kod: {code}</h1>", f"Kod: {code}")
+    async def send_welcome(email: str, name: str):
+        return await EmailService.send(email, "00o.uz ga xush kelibsiz! 🎉",
+            f"<h1>Salom, {name}!</h1><p>00o.uz ga qo'shilganingizdan xursandmiz!</p>")
 
     @staticmethod
-    async def send_welcome(to: str, name: str):
-        await EmailService.send(to, "Xush kelibsiz!", f"<h1>Salom, {name}!</h1>")
+    async def send_password_reset(email: str, link: str):
+        return await EmailService.send(email, "Parolni tiklash", f"<h1>Parolni tiklash</h1><p><a href='{link}'>Bu yerni bosing</a> yangi parol o'rnatish uchun.</p>")
 
     @staticmethod
-    async def send_premium_activated(to: str, days: int):
-        await EmailService.send(to, "Premium faollashtirildi", f"<h1>💎 {days} kunlik premium</h1>")
+    async def send_premium_activated(email: str, name: str, plan: str):
+        return await EmailService.send(email, f"💎 Premium faollashtirildi - {plan}",
+            f"<h1>Tabriklaymiz, {name}!</h1><p>Premium {plan} faollashtirildi!</p>")
