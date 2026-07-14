@@ -1,13 +1,17 @@
 {
-  "name": "00o.uz - O'zbekistonning eng katta AI platformasi",
+  "name": "00o.uz — Mega Platform",
   "short_name": "00o.uz",
-  "description": "Startaplar, frilanserlar, ish o'rinlari va AI bir joyda",
+  "description": "O'zbek tilidagi eng katta bepul onlayn platforma. 300+ funksiya, 12+ kategoriya.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a0e1a",
   "theme_color": "#8b5cf6",
+  "orientation": "portrait",
   "icons": [
-    {"src": "/icon-192.png", "sizes": "192x192", "type": "image/png"},
-    {"src": "/icon-512.png", "sizes": "512x512", "type": "image/png"}
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIgMTkyIj48cmVjdCB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgZmlsbD0idXJsKCNnKSIvPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMTkyIiB5Mj0iMTkyIiBncmlkVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM4YjVjZjYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNlYzQ4OTkiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48dGV4dCB4PSI5NiIgeT0iMTMwIiBmb250LXNpemU9IjcwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI4MDAiPjA8L3RleHQ+PC9zdmc+",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    }
   ]
 }
