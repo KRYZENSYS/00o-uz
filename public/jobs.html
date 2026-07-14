@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ish o'rinlari — 00o.uz</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+  color: white; min-height: 100vh; }
+.container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+nav { position: fixed; top: 0; left: 0; right: 0;
+  background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 100; padding: 16px 0; }
+.nav-inner { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+.nav-links { display: flex; gap: 24px; list-style: none; align-items: center; }
+.nav-links a { color: #cbd5e1; text-decoration: none; font-size: 14px; transition: 0.3s; }
+.nav-links a:hover, .nav-links a.active { color: #8b5cf6; }
+.btn { padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer;
+  border: none; transition: 0.3s; text-decoration: none; display: inline-block; font-size: 14px; }
+.btn-primary { background: linear-gradient(135deg, #8b5cf6, #06b6d4); color: white; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(139,92,246,0.4); }
+.page-hero { padding: 130px 0 40px; }
+.page-hero h1 { font-size: clamp(36px, 5vw, 52px); font-weight: 800; margin-bottom: 12px;
+  background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.page-hero p { color: #94a3b8; font-size: 18px; max-width: 600px; }
+.search-bar { display: flex; gap: 12px; margin: 32px 0; flex-wrap: wrap; }
+.search-input { flex: 1; min-width: 250px; padding: 14px 20px; border-radius: 12px;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  color: white; font-size: 15px; }
+.search-input:focus { outline: none; border-color: #8b5cf6; }
+.search-select { padding: 14px 20px; border-radius: 12px;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  color: white; font-size: 15px; cursor: pointer; }
+
+.jobs-list { display: flex; flex-direction: column; gap: 16px; padding: 20px 0 80px; }
+.job-card { padding: 24px; border-radius: 20px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; cursor: pointer;
+  display: grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center; }
+@media (max-width: 768px) { .job-card { grid-template-columns: 1fr; } }
+.job-card:hover { transform: translateX(4px); border-color: rgba(139,92,246,0.5);
+  box-shadow: 0 10px 40px rgba(139,92,246,0.15); }
+.job-icon { width: 64px; height: 64px; border-radius: 16px;
+  background: linear-gradient(135deg, #8b5cf6, #06b6d4); display: flex; align-items: center;
+  justify-content: center; font-size: 28px; flex-shrink: 0; }
+.job-main { min-width: 0; }
+.job-title { font-size: 18px; font-weight: 700; margin-bottom: 4px;
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.urgent-badge { background: linear-gradient(135deg, #ef4444, #f59e0b); color: white;
+  font-size: 10px; padding: 2px 8px; border-radius: 6px; font-weight: 700; }
+.remote-badge { background: rgba(34, 197, 94, 0.15); color: #86efac;
+  font-size: 10px; padding: 2px 8px; border-radius: 6px; font-weight: 700; }
+.job-company { color: #94a3b8; font-size: 14px; margin-bottom: 8px; }
+.job-meta { display: flex; gap: 12px; flex-wrap: wrap; font-size: 13px; color: #cbd5e1; }
+.job-meta span { display: flex; align-items: center; gap: 4px; }
+.job-action { text-align: right; }
+@media (max-width: 768px) { .job-action { text-align: left; } }
+.job-salary { font-size: 20px; font-weight: 800; color: #8b5cf6; margin-bottom: 8px; }
+.btn-apply { padding: 10px 20px; border-radius: 10px;
+  background: linear-gradient(135deg, #8b5cf6, #06b6d4); border: none;
+  color: white; font-size: 14px; font-weight: 600; cursor: pointer; }
+.btn-apply:hover { transform: translateY(-2px); }
+.job-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.tag { padding: 3px 8px; border-radius: 10px; font-size: 11px;
+  background: rgba(255,255,255,0.05); color: #cbd5e1; }
+</style>
+</head>
+<body>
+<nav>
+  <div class="container nav-inner">
+    <a href="index.html" class="logo">00o.uz</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Bosh sahifa</a></li>
+      <li><a href="startups.html">Startaplar</a></li>
+      <li><a href="freelancers.html">Frilanserlar</a></li>
+      <li><a href="jobs.html" class="active">Ish o'rinlari</a></li>
+      <li><a href="admin.html">📞 Aloqa</a></li>
+    </ul>
+    <a href="#" class="btn btn-primary" onclick="event.preventDefault();alert('Demo rejim')">Kirish</a>
+  </div>
+</nav>
+
+<section class="page-hero container">
+  <h1>💼 Ish o'rinlari</h1>
+  <p>O'zbekistondagi eng yaxshi kompaniyalar va startaplarda ish toping. 500+ yangi vakansiya har kuni.</p>
+  <div class="search-bar">
+    <input type="text" class="search-input" id="searchInput" placeholder="🔍 Lavozim yoki kompaniya qidirish..." oninput="filterJobs()">
+    <select class="search-select" id="typeSelect" onchange="filterJobs()">
+      <option value="all">Hammasi</option>
+      <option value="fulltime">To'liq ish kuni</option>
+      <option value="parttime">Yarim stavka</option>
+      <option value="remote">Masofadan</option>
+      <option value="internship">Amaliyot</option>
+    </select>
+  </div>
+</section>
+
+<section class="container">
+  <div class="jobs-list" id="jobsList"></div>
+</section>
+
+<script>
+const jobs = [
+  { id: 1, title: 'Senior Frontend Developer', company: 'PayUz', icon: '💳', type: 'fulltime', remote: true, urgent: true, salary: '25-40 mln', experience: '3+ yil', location: 'Toshkent', tags: ['React', 'Next.js', 'TypeScript'] },
+  { id: 2, title: 'UI/UX Designer', company: 'EduPro', icon: '🎓', type: 'fulltime', remote: false, urgent: false, salary: '15-25 mln', experience: '2+ yil', location: 'Toshkent', tags: ['Figma', 'UI/UX', 'Mobile'] },
+  { id: 3, title: 'Backend Developer (Python)', company: 'MedLink', icon: '🏥', type: 'fulltime', remote: true, urgent: false, salary: '20-35 mln', experience: '2+ yil', location: 'Toshkent', tags: ['Python', 'FastAPI', 'PostgreSQL'] },
+  { id: 4, title: 'Digital Marketing Manager', company: 'Bozor.uz', icon: '🛒', type: 'fulltime', remote: false, urgent: true, salary: '18-30 mln', experience: '3+ yil', location: 'Toshkent', tags: ['SEO', 'Ads', 'Analytics'] },
+  { id: 5, title: 'Mobile Developer (Flutter)', company: 'TaksiPro', icon: '🚕', type: 'fulltime', remote: true, urgent: false, salary: '20-35 mln', experience: '2+ yil', location: 'Remote', tags: ['Flutter', 'Dart', 'iOS'] },
+  { id: 6, title: 'Data Scientist', company: 'AgroAI', icon: '🌾', type: 'fulltime', remote: true, urgent: false, salary: '25-45 mln', experience: '3+ yil', location: 'Remote', tags: ['Python', 'ML', 'TensorFlow'] },
+  { id: 7, title: 'SMM Specialist', company: 'Foody', icon: '🍔', type: 'parttime', remote: true, urgent: false, salary: '8-15 mln', experience: '1+ yil', location: 'Remote', tags: ['Instagram', 'TikTok', 'Content'] },
+  { id: 8, title: 'DevOps Engineer', company: 'CodeUz', icon: '💻', type: 'fulltime', remote: true, urgent: false, salary: '30-50 mln', experience: '3+ yil', location: 'Remote', tags: ['Docker', 'K8s', 'AWS'] },
+  { id: 9, title: 'Junior Frontend', company: 'SmartHome', icon: '🏠', type: 'internship', remote: true, urgent: false, salary: '5-8 mln', experience: '0-1 yil', location: 'Remote', tags: ['HTML', 'CSS', 'JS'] },
+  { id: 10, title: 'Content Writer', company: 'InvestUz', icon: '💎', type: 'parttime', remote: true, urgent: false, salary: '6-12 mln', experience: '1+ yil', location: 'Remote', tags: ['Copywriting', 'SEO'] },
+  { id: 11, title: 'Product Manager', company: 'AIHelper', icon: '🤖', type: 'fulltime', remote: true, urgent: true, salary: '30-50 mln', experience: '4+ yil', location: 'Toshkent', tags: ['PM', 'Agile', 'SaaS'] },
+  { id: 12, title: 'Full-stack Developer', company: 'LogiTrans', icon: '🚚', type: 'fulltime', remote: false, urgent: false, salary: '20-35 mln', experience: '2+ yil', location: 'Toshkent', tags: ['React', 'Node.js', 'MongoDB'] },
+];
+
+function render() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const type = document.getElementById('typeSelect').value;
+  const filtered = jobs.filter(j => {
+    const ms = j.title.toLowerCase().includes(search) || j.company.toLowerCase().includes(search) || j.tags.some(t => t.toLowerCase().includes(search));
+    const mt = type === 'all' || j.type === type || (type === 'remote' && j.remote);
+    return ms && mt;
+  });
+
+  document.getElementById('jobsList').innerHTML = filtered.map(j => `
+    <div class="job-card">
+      <div class="job-icon">${j.icon}</div>
+      <div class="job-main">
+        <div class="job-title">
+          ${j.title}
+          ${j.urgent ? '<span class="urgent-badge">🔥 SHOSHILINCH</span>' : ''}
+          ${j.remote ? '<span class="remote-badge">🌍 Remote</span>' : ''}
+        </div>
+        <div class="job-company">${j.company} • ${j.location}</div>
+        <div class="job-meta">
+          <span>💰 ${j.salary} so'm</span>
+          <span>⏱ ${j.experience}</span>
+          <span>📅 ${j.type === 'fulltime' ? "To'liq ish" : j.type === 'parttime' ? 'Yarim stavka' : 'Amaliyot'}</span>
+        </div>
+        <div class="job-tags">${j.tags.map(t => `<span class="tag">#${t}</span>`).join('')}</div>
+      </div>
+      <div class="job-action">
+        <div class="job-salary">${j.salary}</div>
+        <button class="btn-apply" onclick="alert('Demo: ${j.title} ga ariza topshirildi!')">Ariza →</button>
+      </div>
+    </div>
+  `).join('') || '<p style="color:#94a3b8;text-align:center;padding:40px;">Hech qanday vakansiya topilmadi</p>';
+}
+
+function filterJobs() { render(); }
+render();
+console.log('%c💼 Ish o\'rinlari', 'font-size:24px;font-weight:bold;color:#8b5cf6;');
+</script>
+</body>
+</html>
