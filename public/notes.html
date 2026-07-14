@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qaydlar — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; }
+.layout { display: grid; grid-template-columns: 280px 1fr; height: 100vh; }
+@media (max-width:768px) { .layout { grid-template-columns: 1fr; } .sidebar { display: none; } }
+.sidebar { background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border-right: 1px solid rgba(255,255,255,0.05); padding: 16px; display: flex; flex-direction: column; }
+.new { padding: 12px; border-radius: 10px; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; border: none; font-weight: 700; cursor: pointer; margin-bottom: 12px; }
+.search { padding: 10px; border-radius: 10px; background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 12px; font-size: 13px; }
+.list { flex: 1; overflow-y: auto; }
+.note-item { padding: 12px; border-radius: 10px; cursor: pointer; margin-bottom: 6px; background: rgba(255,255,255,0.02); border: 1px solid transparent; }
+.note-item:hover, .note-item.active { background: rgba(139,92,246,0.15); border-color: rgba(139,92,246,0.3); }
+.note-t { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+.note-d { font-size: 11px; color: #94a3b8; }
+.main { display: flex; flex-direction: column; }
+.toolbar { padding: 12px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 8px; align-items: center; }
+.tbtn { padding: 6px 10px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; cursor: pointer; font-size: 12px; }
+.tbtn:hover { background: rgba(255,255,255,0.1); }
+.title-in { flex: 1; padding: 10px; background: transparent; border: none; color: white; font-size: 18px; font-weight: 700; outline: none; }
+.editor { flex: 1; padding: 20px 40px; overflow-y: auto; }
+textarea { width: 100%; height: 100%; min-height: 500px; padding: 20px; background: transparent; border: none; color: white; font-size: 15px; line-height: 1.7; resize: none; outline: none; font-family: inherit; }
+.empty { text-align: center; color: #94a3b8; padding: 100px 20px; }
+.empty-emoji { font-size: 80px; margin-bottom: 16px; }
+</style>
+</head>
+<body>
+<div class="layout">
+  <div class="sidebar">
+    <button class="new" onclick="newNote()">+ Yangi qayd</button>
+    <input class="search" id="search" placeholder="🔍 Qidirish..." oninput="render()">
+    <div class="list" id="list"></div>
+  </div>
+  <div class="main">
+    <div class="toolbar">
+      <input class="title-in" id="title" placeholder="Sarlavha..." oninput="autosave()">
+      <button class="tbtn" onclick="togglePin()">📌</button>
+      <button class="tbtn" onclick="toggleColor()">🎨</button>
+      <button class="tbtn" onclick="del()">🗑</button>
+      <span style="color:#94a3b8;font-size:11px;margin-left:auto" id="saved">Saqlandi</span>
+    </div>
+    <div class="editor">
+      <textarea id="content" placeholder="Yozishni boshlang..." oninput="autosave()"></textarea>
+    </div>
+  </div>
+</div>
+<script>
+let notes = JSON.parse(localStorage.getItem('oo-notes') || '[]');
+if (!notes.length) notes.push({id:Date.now(), title:'Salom! 👋', content:'Bu sizning birinchi qaydingiz. Yozishni boshlang!', color:'default', pin:false, date:Date.now()});
+let cur = notes[0].id;
+const colors = ['default','#fbbf24','#f87171','#34d399','#60a5fa','#a78bfa','#f472b6'];
+function save() { localStorage.setItem('oo-notes', JSON.stringify(notes)); render(); }
+function newNote() {
+  const n = {id:Date.now(), title:'', content:'', color:'default', pin:false, date:Date.now()};
+  notes.unshift(n); cur = n.id; save(); load();
+}
+function del() {
+  if (!confirm('O\'chirilsinmi?')) return;
+  notes = notes.filter(n => n.id !== cur);
+  if (notes.length) cur = notes[0].id; else newNote();
+  save(); load();
+}
+function togglePin() { const n = notes.find(x=>x.id===cur); n.pin=!n.pin; save(); }
+function toggleColor() { const n = notes.find(x=>x.id===cur); n.color = colors[(colors.indexOf(n.color)+1) % colors.length]; document.body.style.background = n.color==='default'?'#0a0e1a':n.color+'22'; save(); }
+function autosave() {
+  const n = notes.find(x=>x.id===cur);
+  if (!n) return;
+  n.title = document.getElementById('title').value;
+  n.content = document.getElementById('content').value;
+  n.date = Date.now();
+  document.getElementById('saved').textContent = 'Saqlanmoqda...';
+  clearTimeout(window.st);
+  window.st = setTimeout(() => { save(); document.getElementById('saved').textContent = 'Saqlandi ✓'; }, 500);
+}
+function load() {
+  const n = notes.find(x=>x.id===cur) || notes[0];
+  document.getElementById('title').value = n.title;
+  document.getElementById('content').value = n.content;
+  document.body.style.background = n.color==='default'?'#0a0e1a':n.color+'22';
+}
+function render() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const f = notes.filter(n => !q || n.title.toLowerCase().includes(q) || n.content.toLowerCase().includes(q));
+  f.sort((a,b) => (b.pin?1:0) - (a.pin?1:0) || b.date - a.date);
+  document.getElementById('list').innerHTML = f.map(n => `<div class="note-item ${n.id===cur?'active':''}" onclick="cur=${n.id};load();render()">
+    <div class="note-t">${n.pin?'📌 ':''}${n.title || 'Sarlavhasiz'}</div>
+    <div class="note-d">${new Date(n.date).toLocaleString('uz-UZ',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</div>
+  </div>`).join('');
+}
+load(); render();
+</script>
+</body>
+</html>
