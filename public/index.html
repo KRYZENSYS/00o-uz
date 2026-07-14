@@ -12,20 +12,20 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 nav { position: fixed; top: 0; left: 0; right: 0;
   background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 100; padding: 16px 0; }
+  border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 100; padding: 12px 0; }
 .nav-inner { display: flex; justify-content: space-between; align-items: center; }
-.logo { font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+.logo { font-size: 22px; font-weight: 800; background: linear-gradient(135deg, #8b5cf6, #06b6d4);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
-.nav-links { display: flex; gap: 20px; list-style: none; align-items: center; }
-.nav-links a { color: #cbd5e1; text-decoration: none; font-size: 14px; transition: 0.3s; }
-.nav-links a:hover { color: #8b5cf6; }
-.btn { padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer;
-  border: none; transition: 0.3s; text-decoration: none; display: inline-block; }
+.nav-links { display: flex; gap: 6px; list-style: none; align-items: center; }
+.nav-links a { color: #cbd5e1; text-decoration: none; font-size: 13px; padding: 6px 10px; border-radius: 6px; transition: 0.3s; }
+.nav-links a:hover { background: rgba(255,255,255,0.05); color: white; }
+.btn { padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer;
+  border: none; transition: 0.3s; text-decoration: none; display: inline-block; font-size: 13px; }
 .btn-primary { background: linear-gradient(135deg, #8b5cf6, #06b6d4); color: white; }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(139,92,246,0.4); }
 .btn-outline { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.2); }
 .btn-outline:hover { background: rgba(255,255,255,0.05); }
-.hero { padding: 140px 0 80px; text-align: center; position: relative; }
+.hero { padding: 130px 0 80px; text-align: center; position: relative; }
 .hero::before { content: ''; position: absolute; top: 10%; left: 50%;
   transform: translateX(-50%); width: 600px; height: 600px;
   background: radial-gradient(circle, rgba(139,92,246,0.3), transparent 70%);
@@ -34,57 +34,65 @@ nav { position: fixed; top: 0; left: 0; right: 0;
 .badge { display: inline-block; padding: 6px 16px; border-radius: 100px;
   background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.3);
   color: #c4b5fd; font-size: 13px; margin-bottom: 24px; }
+.badge .new { background: #22c55e; color: white; padding: 1px 6px; border-radius: 4px; font-size: 10px; font-weight: 700; margin-left: 6px; }
 h1 { font-size: clamp(40px, 6vw, 72px); font-weight: 800; line-height: 1.1;
   margin-bottom: 24px; letter-spacing: -2px; }
 h1 .gradient { background: linear-gradient(135deg, #8b5cf6, #06b6d4, #ec4899);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .hero p { font-size: 18px; color: #94a3b8; max-width: 600px; margin: 0 auto 32px; line-height: 1.6; }
-.hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-.btn-lg { padding: 16px 32px; font-size: 16px; }
-.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 24px; padding: 60px 0; max-width: 900px; margin: 0 auto; }
-.stat { text-align: center; padding: 24px; background: rgba(255,255,255,0.03);
+.hero-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn-lg { padding: 14px 28px; font-size: 15px; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px; padding: 60px 0; max-width: 900px; margin: 0 auto; }
+.stat { text-align: center; padding: 20px; background: rgba(255,255,255,0.03);
   border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); }
-.stat-num { font-size: 36px; font-weight: 800; background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+.stat-num { font-size: 32px; font-weight: 800; background: linear-gradient(135deg, #8b5cf6, #06b6d4);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.stat-label { color: #94a3b8; font-size: 14px; margin-top: 8px; }
-.features { padding: 80px 0; }
-.section-title { text-align: center; margin-bottom: 60px; }
-.section-title h2 { font-size: clamp(32px, 4vw, 48px); font-weight: 800; margin-bottom: 16px; }
-.section-title p { color: #94a3b8; font-size: 18px; }
-.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
-.feature { padding: 32px; border-radius: 20px;
+.stat-label { color: #94a3b8; font-size: 13px; margin-top: 6px; }
+.section { padding: 80px 0; }
+.section-title { text-align: center; margin-bottom: 50px; }
+.section-title h2 { font-size: clamp(32px, 4vw, 48px); font-weight: 800; margin-bottom: 12px; }
+.section-title p { color: #94a3b8; font-size: 16px; }
+.section-title .tag { display: inline-block; padding: 4px 12px; border-radius: 100px;
+  background: rgba(34,197,94,0.15); color: #86efac; font-size: 12px; font-weight: 700; margin-bottom: 12px; }
+.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+.feature { padding: 28px; border-radius: 20px;
   background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
   border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; cursor: pointer;
-  text-decoration: none; color: white; display: block; }
-.feature:hover { transform: translateY(-8px); border-color: rgba(139,92,246,0.5);
+  text-decoration: none; color: white; display: block; position: relative; overflow: hidden; }
+.feature::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--c1, #8b5cf6), var(--c2, #06b6d4));
+  opacity: 0; transition: 0.3s; }
+.feature:hover { transform: translateY(-6px); border-color: rgba(139,92,246,0.5);
   box-shadow: 0 20px 60px rgba(139,92,246,0.2); }
-.feature-icon { font-size: 40px; margin-bottom: 16px; }
-.feature h3 { font-size: 20px; margin-bottom: 12px; }
-.feature p { color: #94a3b8; font-size: 14px; line-height: 1.6; }
-.feature-arrow { color: #8b5cf6; font-weight: 600; font-size: 14px; margin-top: 12px; display: inline-block; }
-.ai-tools { padding: 80px 0;
-  background: linear-gradient(180deg, transparent, rgba(139,92,246,0.05), transparent); }
-.ai-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
-.ai-tool { padding: 20px; border-radius: 12px; text-align: center;
-  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
-  transition: 0.3s; cursor: pointer; font-size: 14px; }
-.ai-tool:hover { background: rgba(139,92,246,0.15); border-color: rgba(139,92,246,0.4); transform: scale(1.05); }
-.ai-tool-icon { font-size: 32px; margin-bottom: 8px; }
+.feature:hover::before { opacity: 1; }
+.feature-icon { font-size: 36px; margin-bottom: 14px;
+  width: 64px; height: 64px; border-radius: 16px;
+  background: linear-gradient(135deg, var(--c1, #8b5cf6), var(--c2, #06b6d4));
+  display: flex; align-items: center; justify-content: center; }
+.feature h3 { font-size: 18px; margin-bottom: 8px; }
+.feature p { color: #94a3b8; font-size: 13px; line-height: 1.5; margin-bottom: 12px; }
+.feature .badge-new { display: inline-block; padding: 2px 8px; border-radius: 6px;
+  background: linear-gradient(135deg, #22c55e, #10b981); font-size: 10px; font-weight: 700; margin-bottom: 8px; }
+.feature-arrow { color: #8b5cf6; font-weight: 600; font-size: 13px; }
 .cta { padding: 100px 0; text-align: center; }
 .cta-box { padding: 60px 40px; border-radius: 32px;
   background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(6,182,212,0.2));
-  border: 1px solid rgba(139,92,246,0.3); }
-.cta h2 { font-size: 40px; margin-bottom: 16px; }
-.cta p { color: #cbd5e1; font-size: 18px; margin-bottom: 32px; }
-.cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  border: 1px solid rgba(139,92,246,0.3); position: relative; overflow: hidden; }
+.cta-box::before { content: ''; position: absolute; top: -50%; left: -10%; width: 120%; height: 200%;
+  background: radial-gradient(circle, rgba(251,191,36,0.1), transparent 50%);
+  animation: ctaGlow 8s ease-in-out infinite; }
+@keyframes ctaGlow { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(180deg); } }
+.cta h2 { font-size: 40px; margin-bottom: 16px; position: relative; }
+.cta p { color: #cbd5e1; font-size: 18px; margin-bottom: 32px; position: relative; }
+.cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; position: relative; }
 footer { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.1);
-  text-align: center; color: #64748b; font-size: 14px; }
-.footer-logo { font-size: 20px; font-weight: 800; margin-bottom: 12px;
+  text-align: center; color: #64748b; font-size: 13px; }
+.footer-logo { font-size: 18px; font-weight: 800; margin-bottom: 8px;
   background: linear-gradient(135deg, #8b5cf6, #06b6d4);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.footer-links { display: flex; gap: 24px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
-.footer-links a { color: #94a3b8; text-decoration: none; font-size: 14px; }
+.footer-links { display: flex; gap: 20px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
+.footer-links a { color: #94a3b8; text-decoration: none; font-size: 13px; }
 .footer-links a:hover { color: #8b5cf6; }
 @media (max-width: 768px) { .nav-links { display: none; } .hero { padding: 100px 0 60px; } }
 </style>
@@ -94,88 +102,134 @@ footer { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.1);
   <div class="container nav-inner">
     <a href="index.html" class="logo">00o.uz</a>
     <ul class="nav-links">
-      <li><a href="index.html" class="active">Bosh sahifa</a></li>
       <li><a href="startups.html">Startaplar</a></li>
-      <li><a href="freelancers.html">Frilanserlar</a></li>
-      <li><a href="jobs.html">Ish o'rinlari</a></li>
+      <li><a href="freelancers.html">Frilanser</a></li>
+      <li><a href="jobs.html">Ish</a></li>
+      <li><a href="community.html">Community</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="leaderboard.html">Top</a></li>
+      <li><a href="kanban.html">Board</a></li>
+      <li><a href="achievements.html">Yutuq</a></li>
       <li><a href="premium.html">Premium</a></li>
-      <li><a href="profile.html">Profil</a></li>
-      <li><a href="admin.html">📞 Aloqa</a></li>
+      <li><a href="admin.html">📞</a></li>
     </ul>
-    <a href="startups.html" class="btn btn-primary">Boshlash →</a>
+    <a href="dashboard.html" class="btn btn-primary">Boshlash →</a>
   </div>
 </nav>
 <section class="hero">
   <div class="container hero-content">
-    <div class="badge">🇺🇿 O'zbekistondagi #1 AI platforma</div>
+    <div class="badge">🇺🇿 O'zbekistondagi #1 AI platforma <span class="new">v2.0</span></div>
     <h1>Startaplar, Frilanserlar<br><span class="gradient">va AI bir joyda</span></h1>
-    <p>30+ AI vosita, 1000+ startap, minglab ish o'rinlari va xizmatlar — hammasi bitta platformada.</p>
+    <p>30+ AI vosita, 1000+ startap, minglab ish o'rinlari, community, gamification va yana ko'p narsa — hammasi bitta platformada.</p>
     <div class="hero-buttons">
-      <a href="startups.html" class="btn btn-primary btn-lg">Startaplarni ko'rish</a>
-      <a href="freelancers.html" class="btn btn-outline btn-lg">Frilanserlar</a>
-      <a href="jobs.html" class="btn btn-outline btn-lg">Ish o'rinlari</a>
-      <a href="admin.html" class="btn btn-outline btn-lg">📞 Aloqa</a>
+      <a href="dashboard.html" class="btn btn-primary btn-lg">📊 Dashboard</a>
+      <a href="community.html" class="btn btn-outline btn-lg">👥 Community</a>
+      <a href="leaderboard.html" class="btn btn-outline btn-lg">🏆 Top</a>
+      <a href="kanban.html" class="btn btn-outline btn-lg">📋 Board</a>
     </div>
   </div>
 </section>
 <section class="container">
   <div class="stats">
-    <div class="stat"><div class="stat-num">30+</div><div class="stat-label">AI vositalar</div></div>
-    <div class="stat"><div class="stat-num">1000+</div><div class="stat-label">Startaplar</div></div>
-    <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Ish o'rinlari</div></div>
-    <div class="stat"><div class="stat-num">10K+</div><div class="stat-label">Foydalanuvchilar</div></div>
+    <div class="stat oo-anim fade-up"><div class="stat-num">30+</div><div class="stat-label">AI vositalar</div></div>
+    <div class="stat oo-anim fade-up"><div class="stat-num">1000+</div><div class="stat-label">Startaplar</div></div>
+    <div class="stat oo-anim fade-up"><div class="stat-num">24K+</div><div class="stat-label">Foydalanuvchi</div></div>
+    <div class="stat oo-anim fade-up"><div class="stat-num">500+</div><div class="stat-label">Vakansiya</div></div>
   </div>
 </section>
-<section class="features container" id="features">
+<section class="section container">
   <div class="section-title">
-    <h2>Barcha imkoniyatlar</h2>
-    <p>Bir platformada — barcha kerakli vositalar</p>
+    <span class="tag">🆕 YANGI v2.0</span>
+    <h2>Yangi imkoniyatlar</h2>
+    <p>Hozirda 10+ yangi modul qo'shildi</p>
   </div>
   <div class="features-grid">
-    <a href="startups.html" class="feature"><div class="feature-icon">🚀</div><h3>Startaplar</h3><p>Yangi g'oyalaringizni ro'yobga chiqaring, investorlar toping.</p><span class="feature-arrow">12 ta startap →</span></a>
-    <a href="freelancers.html" class="feature"><div class="feature-icon">💼</div><h3>Frilanserlar</h3><p>Professional frilanserlar bilan ishlash.</p><span class="feature-arrow">10 ta mutaxassis →</span></a>
-    <a href="jobs.html" class="feature"><div class="feature-icon">💎</div><h3>Ish o'rinlari</h3><p>Eng yaxshi kompaniyalarda ish toping.</p><span class="feature-arrow">12 ta vakansiya →</span></a>
-    <a href="index.html#ai" class="feature"><div class="feature-icon">🤖</div><h3>AI Yordamchi</h3><p>Sun'iy intellekt yordamida biznesingizni rivojlantiring.</p><span class="feature-arrow">30+ vosita →</span></a>
-    <a href="admin.html" class="feature"><div class="feature-icon">📞</div><h3>Aloqa markazi</h3><p>24/7 qo'llab-quvvatlash va yordam.</p><span class="feature-arrow">Bog'lanish →</span></a>
-    <a href="premium.html" class="feature"><div class="feature-icon">👑</div><h3>Premium</h3><p>Pro tarif bilan imkoniyatlarni kengaytiring.</p><span class="feature-arrow">Tariflar →</span></a>
+    <a href="dashboard.html" class="feature oo-anim fade-up" style="--c1:#8b5cf6;--c2:#06b6d4">
+      <span class="badge-new">🆕 YANGI</span>
+      <div class="feature-icon">📊</div>
+      <h3>Analytics Dashboard</h3>
+      <p>Real-time Chart.js grafiklar, KPI ko'rsatkichlar, faollik monitoring.</p>
+      <span class="feature-arrow">Dashboard →</span>
+    </a>
+    <a href="community.html" class="feature oo-anim fade-up" style="--c1:#ec4899;--c2:#8b5cf6">
+      <span class="badge-new">🆕 YANGI</span>
+      <div class="feature-icon">👥</div>
+      <h3>Community Feed</h3>
+      <p>Ijtimoiy tarmoq: postlar, izohlar, like, share, trendlar.</p>
+      <span class="feature-arrow">Community →</span>
+    </a>
+    <a href="leaderboard.html" class="feature oo-anim fade-up" style="--c1:#fbbf24;--c2:#ef4444">
+      <span class="badge-new">🆕 YANGI</span>
+      <div class="feature-icon">🏆</div>
+      <h3>Leaderboard & XP</h3>
+      <p>Gamification tizimi: level, XP, podium, kategoriyalar.</p>
+      <span class="feature-arrow">Top foydalanuvchilar →</span>
+    </a>
+    <a href="kanban.html" class="feature oo-anim fade-up" style="--c1:#06b6d4;--c2:#22c55e">
+      <span class="badge-new">🆕 YANGI</span>
+      <div class="feature-icon">📋</div>
+      <h3>Kanban Board</h3>
+      <p>Drag & drop loyiha boshqaruvi: 5 ta ustun, priority, tegi.</p>
+      <span class="feature-arrow">Board →</span>
+    </a>
+    <a href="achievements.html" class="feature oo-anim fade-up" style="--c1:#f59e0b;--c2:#fbbf24">
+      <span class="badge-new">🆕 YANGI</span>
+      <div class="feature-icon">🎖</div>
+      <h3>Achievements</h3>
+      <p>30+ yutuq: common, rare, epic, legendary. Progress tracking.</p>
+      <span class="feature-arrow">Yutuqlar →</span>
+    </a>
+    <a href="startups.html" class="feature oo-anim fade-up" style="--c1:#22c55e;--c2:#06b6d4">
+      <div class="feature-icon">🚀</div>
+      <h3>Startaplar</h3>
+      <p>Yangi g'oyalarni ro'yobga chiqaring, investorlar toping.</p>
+      <span class="feature-arrow">12 ta startap →</span>
+    </a>
+    <a href="freelancers.html" class="feature oo-anim fade-up" style="--c1:#3b82f6;--c2:#06b6d4">
+      <div class="feature-icon">💼</div>
+      <h3>Frilanserlar</h3>
+      <p>Professional mutaxassislar: IT, dizayn, marketing.</p>
+      <span class="feature-arrow">10 ta mutaxassis →</span>
+    </a>
+    <a href="jobs.html" class="feature oo-anim fade-up" style="--c1:#8b5cf6;--c2:#ec4899">
+      <div class="feature-icon">💎</div>
+      <h3>Ish o'rinlari</h3>
+      <p>Eng yaxshi kompaniyalarda ish toping.</p>
+      <span class="feature-arrow">12 ta vakansiya →</span>
+    </a>
+    <a href="admin.html" class="feature oo-anim fade-up" style="--c1:#22c55e;--c2:#10b981">
+      <div class="feature-icon">📞</div>
+      <h3>Aloqa + AI Chat</h3>
+      <p>24/7 yordam, AI chatbot, tez javoblar.</p>
+      <span class="feature-arrow">Aloqa →</span>
+    </a>
+    <a href="premium.html" class="feature oo-anim fade-up" style="--c1:#f59e0b;--c2:#ef4444">
+      <div class="feature-icon">👑</div>
+      <h3>Premium</h3>
+      <p>Pro tarif: cheksiz AI, prioritet, reklama yo'q.</p>
+      <span class="feature-arrow">Tariflar →</span>
+    </a>
   </div>
 </section>
-<section class="ai-tools" id="ai">
+<section class="ai-tools section">
   <div class="container">
     <div class="section-title">
-      <h2>30+ AI Vositalar</h2>
+      <h2>🤖 30+ AI Vositalar</h2>
       <p>Sun'iy intellekt yordamida har qanday vazifani hal qiling</p>
     </div>
-    <div class="ai-grid">
-      <div class="ai-tool"><div class="ai-tool-icon">💬</div>AI Chat</div>
-      <div class="ai-tool"><div class="ai-tool-icon">📊</div>Business Plan</div>
-      <div class="ai-tool"><div class="ai-tool-icon">🎯</div>Pitch Deck</div>
-      <div class="ai-tool"><div class="ai-tool-icon">💻</div>Code Generator</div>
-      <div class="ai-tool"><div class="ai-tool-icon">🌍</div>Tarjimon</div>
-      <div class="ai-tool"><div class="ai-tool-icon">✍️</div>Copywriter</div>
-      <div class="ai-tool"><div class="ai-tool-icon">🎨</div>Logo Maker</div>
-      <div class="ai-tool"><div class="ai-tool-icon">📝</div>Resume Builder</div>
-      <div class="ai-tool"><div class="ai-tool-icon">📧</div>Email Writer</div>
-      <div class="ai-tool"><div class="ai-tool-icon">🎬</div>Video Script</div>
-      <div class="ai-tool"><div class="ai-tool-icon">📱</div>Social Media</div>
-      <div class="ai-tool"><div class="ai-tool-icon">🔍</div>SEO Helper</div>
-      <div class="ai-tool"><div class="ai-tool-icon">📈</div>Marketing</div>
-      <div class="ai-tool"><div class="ai-tool-icon">💡</div>Idea Generator</div>
-      <div class="ai-tool"><div class="ai-tool-icon">📖</div>Story Writer</div>
-      <div class="ai-tool"><div class="ai-tool-icon">🎓</div>Tutor AI</div>
-      <div class="ai-tool"><div class="ai-tool-icon">⚖️</div>Legal Helper</div>
-      <div class="ai-tool"><div class="ai-tool-icon">💰</div>Finance AI</div>
-      <div class="ai-tool"><div class="ai-tool-icon">🏥</div>Health Tips</div>
-      <div class="ai-tool"><div class="ai-tool-icon">🍳</div>Recipe AI</div>
-      <div class="ai-tool"><div class="ai-tool-icon">✈️</div>Travel Planner</div>
-      <div class="ai-tool"><div class="ai-tool-icon">🎵</div>Music AI</div>
-      <div class="ai-tool"><div class="ai-tool-icon">🖼️</div>Image AI</div>
-      <div class="ai-tool"><div class="ai-tool-icon">🎙️</div>Voice AI</div>
-      <div class="ai-tool"><div class="ai-tool-icon">📊</div>Data Analyst</div>
-      <div class="ai-tool"><div class="ai-tool-icon">🔮</div>Predict AI</div>
-      <div class="ai-tool"><div class="ai-tool-icon">🤝</div>HR Helper</div>
-      <div class="ai-tool"><div class="ai-tool-icon">📞</div>Sales AI</div>
-      <div class="ai-tool"><div class="ai-tool-icon">🎯</div>Coach AI</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;max-width:900px;margin:0 auto">
+      <div class="stat oo-anim fade-up" style="text-align:center">💬 AI Chat</div>
+      <div class="stat oo-anim fade-up" style="text-align:center">📊 Business</div>
+      <div class="stat oo-anim fade-up" style="text-align:center">🎯 Pitch</div>
+      <div class="stat oo-anim fade-up" style="text-align:center">💻 Code</div>
+      <div class="stat oo-anim fade-up" style="text-align:center">🌍 Tarjimon</div>
+      <div class="stat oo-anim fade-up" style="text-align:center">✍️ Copy</div>
+      <div class="stat oo-anim fade-up" style="text-align:center">🎨 Logo</div>
+      <div class="stat oo-anim fade-up" style="text-align:center">📝 Resume</div>
+      <div class="stat oo-anim fade-up" style="text-align:center">📧 Email</div>
+      <div class="stat oo-anim fade-up" style="text-align:center">🎬 Script</div>
+      <div class="stat oo-anim fade-up" style="text-align:center">📱 SMM</div>
+      <div class="stat oo-anim fade-up" style="text-align:center">🔍 SEO</div>
     </div>
   </div>
 </section>
@@ -185,7 +239,7 @@ footer { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.1);
       <h2>Boshlashga tayyormisiz?</h2>
       <p>Bugun ro'yxatdan o'ting va kelajak imkoniyatlarini oching</p>
       <div class="cta-buttons">
-        <a href="startups.html" class="btn btn-primary btn-lg">Bepul boshlash →</a>
+        <a href="dashboard.html" class="btn btn-primary btn-lg">Bepul boshlash →</a>
         <a href="admin.html" class="btn btn-outline btn-lg">📞 Aloqa</a>
       </div>
     </div>
@@ -194,17 +248,28 @@ footer { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.1);
 <footer>
   <div class="container">
     <div class="footer-logo">00o.uz</div>
-    <p>© 2026 00o.uz — O'zbekistondagi eng katta AI platforma</p>
-    <p style="margin-top: 8px;">Made with ❤️ in Tashkent</p>
+    <p>© 2026 00o.uz — O'zbekistondagi eng katta AI platforma v2.0</p>
+    <p style="margin-top:6px;">Made with ❤️ in Tashkent</p>
     <div class="footer-links">
       <a href="startups.html">Startaplar</a>
       <a href="freelancers.html">Frilanserlar</a>
-      <a href="jobs.html">Ish o'rinlari</a>
+      <a href="jobs.html">Ish</a>
+      <a href="community.html">Community</a>
+      <a href="leaderboard.html">Top</a>
       <a href="premium.html">Premium</a>
       <a href="admin.html">📞 Aloqa</a>
     </div>
   </div>
 </footer>
+<script src="/toast.js"></script>
+<script src="/confetti.js"></script>
+<script src="/animations.js"></script>
 <script src="/i18n.js"></script>
+<script>
+setTimeout(() => {
+  toast.achievement('v2.0 yangi imkoniyatlar mavjud!', '🎉 Yangilanish');
+  setTimeout(() => window.fireworks(), 400);
+}, 1500);
+</script>
 </body>
 </html>
