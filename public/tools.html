@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vositalar — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; padding: 100px 20px 60px; }
+.container { max-width: 1200px; margin: 0 auto; }
+h1 { font-size: 40px; font-weight: 800; margin-bottom: 8px;
+  background: linear-gradient(135deg, #8b5cf6, #06b6d4, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.sub { color: #94a3b8; margin-bottom: 30px; }
+.cats { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+.cat { padding: 8px 16px; border-radius: 100px; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1); cursor: pointer; font-size: 13px; }
+.cat.active { background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+.tool { padding: 24px; border-radius: 16px; cursor: pointer; text-decoration: none; color: white;
+  background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.06); transition: 0.3s; display: block; }
+.tool:hover { transform: translateY(-4px); border-color: rgba(139,92,246,0.4); box-shadow: 0 20px 40px rgba(139,92,246,0.2); }
+.tool-i { font-size: 36px; margin-bottom: 12px; }
+.tool-n { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.tool-d { font-size: 12px; color: #94a3b8; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🛠 Vositalar markazi</h1>
+  <p class="sub">50+ foydali vosita bir joyda — bepul, tez, ishonchli</p>
+  <div class="cats">
+    <div class="cat active" onclick="filter(this, 'all')">🌐 Hammasi</div>
+    <div class="cat" onclick="filter(this, 'util')">⚙️ Utility</div>
+    <div class="cat" onclick="filter(this, 'prod')">📊 Productivity</div>
+    <div class="cat" onclick="filter(this, 'game')">🎮 O'yinlar</div>
+    <div class="cat" onclick="filter(this, 'media')">🎨 Media</div>
+    <div class="cat" onclick="filter(this, 'health')">💪 Sog'liq</div>
+    <div class="cat" onclick="filter(this, 'finance')">💰 Moliya</div>
+    <div class="cat" onclick="filter(this, 'edu')">📚 Ta'lim</div>
+  </div>
+  <div class="grid" id="grid"></div>
+</div>
+<script>
+const tools = [
+  {i:'🧮',n:'Kalkulyator',d:'Ilmiy va oddiy',c:'util',a:'calculator.html'},
+  {i:'📏',n:'Konverter',d:'Uzunlik, og\'irlik, hajm',c:'util',a:'converter.html'},
+  {i:'🎨',n:'Rang tanlagich',d:'HEX, RGB, HSL',c:'util',a:'color-picker.html'},
+  {i:'📱',n:'QR generator',d:'Matndan QR yaratish',c:'util',a:'qr.html'},
+  {i:'🔐',n:'Parol generator',d:'Xavfsiz parollar',c:'util',a:'password.html'},
+  {i:'📋',n:'JSON vositalar',d:'Formatlash, tekshirish',c:'util',a:'json-tools.html'},
+  {i:'✍️',n:'Markdown editor',d:'Yozish va ko\'rish',c:'util',a:'markdown.html'},
+  {i:'⏰',n:'Vaqt konverter',d:'Timestamp, timezone',c:'util',a:'timestamp.html'},
+  {i:'📝',n:'Lorem Ipsum',d:'Demo matn generator',c:'util',a:'lorem.html'},
+  {i:'🔤',n:'Base64',d:'Kodlash va dekodlash',c:'util',a:'base64.html'},
+  {i:'🔗',n:'URL encoder',d:'URL formatlash',c:'util',a:'url-encoder.html'},
+  {i:'📊',n:'Hash generator',d:'MD5, SHA-256',c:'util',a:'hash.html'},
+  {i:'📝',n:'Qaydlar',d:'Eslatmalar',c:'prod',a:'notes.html'},
+  {i:'✅',n:'Todo list',d:'Vazifalar',c:'prod',a:'todo.html'},
+  {i:'🍅',n:'Pomodoro',d:'25/5 vaqt',c:'prod',a:'pomodoro.html'},
+  {i:'📋',n:'Kanban',d:'Loyiha boshqaruvi',c:'prod',a:'kanban-board.html'},
+  {i:'📅',n:'Kalendar',d:'Rejalashtirish',c:'prod',a:'calendar.html'},
+  {i:'📚',n:'Kitob belgilari',d:'Saqlangan sahifalar',c:'prod',a:'bookmarks.html'},
+  {i:'🎯',n:'Odat tracker',d:'Yangi odatlar',c:'prod',a:'habit-tracker.html'},
+  {i:'⏱️',n:'Taymer',d:'Countdown vaqt',c:'prod',a:'timer.html'},
+  {i:'🐍',n:'Snake',d:'Klassik o\'yin',c:'game',a:'snake.html'},
+  {i:'🧱',n:'Tetris',d:'Blok o\'yini',c:'game',a:'tetris.html'},
+  {i:'♟️',n:'Shaxmat',d:'Strategiya',c:'game',a:'chess.html'},
+  {i:'🎴',n:'Memory',d:'Juft toping',c:'game',a:'memory.html'},
+  {i:'🔢',n:'2048',d:'Raqam birlashtirish',c:'game',a:'2048.html'},
+  {i:'💣',n:'Minesweeper',d:'Minalar',c:'game',a:'minesweeper.html'},
+  {i:'❌',n:'Tic-tac-toe',d:'3 ta bir qator',c:'game',a:'tic-tac-toe.html'},
+  {i:'🎯',n:'Sudoku',d:'9x9 raqam',c:'game',a:'sudoku.html'},
+  {i:'🏓',n:'Pong',d:'Tennis',c:'game',a:'pong.html'},
+  {i:'🎲',n:'Dice',d:'Tasodifiy son',c:'game',a:'dice.html'},
+  {i:'🖼️',n:'Rasm muharriri',d:'Crop, filter',c:'media',a:'image-editor.html'},
+  {i:'😂',n:'Meme generator',d:'Rasmli memlar',c:'media',a:'meme-generator.html'},
+  {i:'🎨',n:'Logo maker',d:'Logotip yaratish',c:'media',a:'logo-maker.html'},
+  {i:'👤',n:'Avatar gen',d:'Tasodifiy avatar',c:'media',a:'avatar-generator.html'},
+  {i:'🌈',n:'Gradient',d:'Rang o\'tish',c:'media',a:'gradient-generator.html'},
+  {i:'😀',n:'Emoji qidirish',d:'1000+ emoji',c:'media',a:'emoji-search.html'},
+  {i:'✏️',n:'Chizish',d:'Rasm chizish',c:'media',a:'drawing.html'},
+  {i:'💪',n:'Workout',d:'Mashqlar',c:'health',a:'workout.html'},
+  {i:'💧',n:'Suv tracker',d:'Kunlik suv',c:'health',a:'water.html'},
+  {i:'😴',n:'Sleep tracker',d:'Uyqu monitoring',c:'health',a:'sleep.html'},
+  {i:'😊',n:'Mood',d:'Kayfiyat kuzatish',c:'health',a:'mood.html'},
+  {i:'🍎',n:'Kaloriya',d:'Ovqat hisoblash',c:'health',a:'calories.html'},
+  {i:'🧘',n:'Meditatsiya',d:'Tinchlanish',c:'health',a:'meditation.html'},
+  {i:'💰',n:'Byudjet',d:'Daromad/xarajat',c:'finance',a:'budget.html'},
+  {i:'💱',n:'Valyuta',d:'Kurs konverter',c:'finance',a:'currency.html'},
+  {i:'🧾',n:'Invoice',d:'Hisob-faktura',c:'finance',a:'invoice.html'},
+  {i:'📊',n:'Kripto',d:'Kripto portfolio',c:'finance',a:'crypto.html'},
+  {i:'💳',n:'Xarajatlar',d:'Kunlik xarajat',c:'finance',a:'expense.html'},
+  {i:'📇',n:'Flashcards',d:'Kartochkalar',c:'edu',a:'flashcards.html'},
+  {i:'❓',n:'Quiz',d:'Test savollari',c:'edu',a:'quiz.html'},
+  {i:'📖',n:'Lug\'at',d:'So\'z ma\'nolari',c:'edu',a:'dictionary.html'},
+  {i:'🌍',n:'Tarjimon',d:'10+ til',c:'edu',a:'translator.html'},
+  {i:'📐',n:'Whiteboard',d:'Doska chizish',c:'edu',a:'whiteboard.html'},
+];
+function render(filter='all') {
+  const f = filter === 'all' ? tools : tools.filter(t => t.c === filter);
+  document.getElementById('grid').innerHTML = f.map(t => `
+    <a class="tool oo-anim fade-up" href="${t.a}">
+      <div class="tool-i">${t.i}</div>
+      <div class="tool-n">${t.n}</div>
+      <div class="tool-d">${t.d}</div>
+    </a>
+  `).join('');
+}
+function filter(el, c) {
+  document.querySelectorAll('.cat').forEach(x => x.classList.remove('active'));
+  el.classList.add('active');
+  render(c);
+}
+render();
+</script>
+</body>
+</html>
