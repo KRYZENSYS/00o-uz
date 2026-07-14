@@ -16,7 +16,7 @@ nav { position: fixed; top: 0; left: 0; right: 0;
 .nav-inner { display: flex; justify-content: space-between; align-items: center; }
 .logo { font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #8b5cf6, #06b6d4);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
-.nav-links { display: flex; gap: 24px; list-style: none; align-items: center; }
+.nav-links { display: flex; gap: 20px; list-style: none; align-items: center; }
 .nav-links a { color: #cbd5e1; text-decoration: none; font-size: 14px; transition: 0.3s; }
 .nav-links a:hover, .nav-links a.active { color: #8b5cf6; }
 .btn { padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer;
@@ -36,7 +36,6 @@ nav { position: fixed; top: 0; left: 0; right: 0;
 .search-select { padding: 14px 20px; border-radius: 12px;
   background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
   color: white; font-size: 15px; cursor: pointer; }
-
 .freelancers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px; padding: 20px 0 80px; }
 .freelancer-card { padding: 24px; border-radius: 20px;
@@ -83,12 +82,12 @@ nav { position: fixed; top: 0; left: 0; right: 0;
       <li><a href="startups.html">Startaplar</a></li>
       <li><a href="freelancers.html" class="active">Frilanserlar</a></li>
       <li><a href="jobs.html">Ish o'rinlari</a></li>
-      <li><a href="admin.html">📞 Aloqa</a></li>
+      <li><a href="premium.html">Premium</a></li>
+      <li><a href="admin.html">📞</a></li>
     </ul>
-    <a href="startups.html" class="btn btn-primary" onclick="event.preventDefault();alert('Demo rejim')">Kirish</a>
+    <a href="startups.html" class="btn btn-primary">Boshlash</a>
   </div>
 </nav>
-
 <section class="page-hero container">
   <h1>💼 Frilanserlar</h1>
   <p>O'zbekistondagi eng yaxshi frilanserlar. Tajribali mutaxassislar — IT, dizayn, marketing, kontent.</p>
@@ -103,11 +102,9 @@ nav { position: fixed; top: 0; left: 0; right: 0;
     </select>
   </div>
 </section>
-
 <section class="container">
   <div class="freelancers-grid" id="grid"></div>
 </section>
-
 <script>
 const freelancers = [
   { id: 1, name: 'Aziz Karimov', title: 'Full-stack Developer', cat: 'developer', avatar: '👨‍💻', skills: ['React', 'Node.js', 'Python', 'PostgreSQL'], rating: 4.9, reviews: 127, price: '25$', online: true, pro: true },
@@ -119,9 +116,8 @@ const freelancers = [
   { id: 7, name: 'Kamila Ergasheva', title: 'SMM Specialist', cat: 'marketing', avatar: '👩‍💼', skills: ['Instagram', 'TikTok', 'Telegram'], rating: 4.8, reviews: 113, price: '22$', online: true, pro: true },
   { id: 8, name: 'Jasur Nazarov', title: 'DevOps Engineer', cat: 'developer', avatar: '👨‍🔬', skills: ['Docker', 'K8s', 'AWS', 'CI/CD'], rating: 5.0, reviews: 41, price: '45$', online: true, pro: true },
   { id: 9, name: 'Saida Mahmudova', title: 'Video Editor', cat: 'content', avatar: '👩‍🎬', skills: ['Premiere', 'After Effects', 'DaVinci'], rating: 4.7, reviews: 58, price: '20$', online: false, pro: false },
-  { id: 10, name: 'Ulug\'bek Sodiqov', title: 'Data Scientist', cat: 'developer', avatar: '🧑‍💻', skills: ['Python', 'ML', 'TensorFlow', 'Pandas'], rating: 4.9, reviews: 36, price: '40$', online: true, pro: true },
+  { id: 10, name: "Ulug'bek Sodiqov", title: 'Data Scientist', cat: 'developer', avatar: '🧑‍💻', skills: ['Python', 'ML', 'TensorFlow', 'Pandas'], rating: 4.9, reviews: 36, price: '40$', online: true, pro: true },
 ];
-
 function render() {
   const search = document.getElementById('searchInput').value.toLowerCase();
   const cat = document.getElementById('catSelect').value;
@@ -130,7 +126,6 @@ function render() {
     const mc = cat === 'all' || f.cat === cat;
     return ms && mc;
   });
-
   document.getElementById('grid').innerHTML = filtered.map(f => `
     <div class="freelancer-card">
       <div class="avatar-row">
@@ -154,10 +149,9 @@ function render() {
     </div>
   `).join('') || '<p style="color:#94a3b8;grid-column:1/-1;text-align:center;padding:40px;">Hech kim topilmadi</p>';
 }
-
 function filterFreelancers() { render(); }
 render();
-console.log('%c💼 Frilanserlar', 'font-size:24px;font-weight:bold;color:#06b6d4;');
 </script>
+<script src="/i18n.js"></script>
 </body>
 </html>
