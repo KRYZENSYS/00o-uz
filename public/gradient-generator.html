@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gradient Generator — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; padding: 100px 20px 60px; }
+.container { max-width: 800px; margin: 0 auto; }
+h1 { font-size: 32px; margin-bottom: 8px; text-align: center;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.preview { height: 280px; border-radius: 16px; margin-bottom: 16px; transition: 0.3s; }
+.controls { padding: 20px; border-radius: 16px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); margin-bottom: 16px; }
+.row { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
+.row label { font-size: 13px; min-width: 80px; }
+input[type=color] { width: 50px; height: 40px; border: none; border-radius: 8px; cursor: pointer; }
+input[type=range] { flex: 1; }
+input[type=number] { width: 60px; padding: 6px; border-radius: 6px; background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(255,255,255,0.1); }
+.btn { padding: 10px 20px; border-radius: 10px; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; border: none; font-weight: 700; cursor: pointer; }
+.code { padding: 12px; border-radius: 8px; background: rgba(0,0,0,0.4); color: #10b981; font-family: monospace; font-size: 13px; word-break: break-all; }
+.presets { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; margin-top: 12px; }
+.preset { height: 60px; border-radius: 8px; cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🌈 Gradient Generator</h1>
+  <p style="color:#94a3b8;text-align:center;margin-bottom:20px">Chiroyli rang o'tishlari yarating</p>
+  <div class="preview" id="prev"></div>
+  <div class="controls">
+    <div class="row">
+      <label>1-rang:</label><input type="color" id="c1" value="#8b5cf6">
+      <label>2-rang:</label><input type="color" id="c2" value="#ec4899">
+      <label>3-rang:</label><input type="color" id="c3" value="#06b6d4">
+    </div>
+    <div class="row">
+      <label>Tur:</label>
+      <select id="type" style="padding:8px;border-radius:6px;background:rgba(0,0,0,0.3);color:white;border:1px solid rgba(255,255,255,0.1)">
+        <option value="linear">Linear</option>
+        <option value="radial">Radial</option>
+        <option value="conic">Conic</option>
+      </select>
+      <label>Burchak:</label><input type="range" id="ang" min="0" max="360" value="135"><span id="angL">135°</span>
+    </div>
+    <button class="btn" onclick="cp()">📋 Nusxa olish</button>
+    <div class="code" id="code">background: linear-gradient(135deg, #8b5cf6, #ec4899);</div>
+    <h4 style="margin:16px 0 8px">✨ Tayyor presetlar</h4>
+    <div class="presets" id="pres"></div>
+  </div>
+</div>
+<script>
+const ps = [
+  ['Sunset', 'linear-gradient(135deg, #ff6b6b, #feca57)'],
+  ['Ocean', 'linear-gradient(135deg, #667eea, #764ba2)'],
+  ['Forest', 'linear-gradient(135deg, #11998e, #38ef7d)'],
+  ['Fire', 'linear-gradient(135deg, #f12711, #f5af19)'],
+  ['Cool', 'linear-gradient(135deg, #2193b0, #6dd5ed)'],
+  ['Pink', 'linear-gradient(135deg, #ee9ca7, #ffdde1)'],
+  ['Night', 'linear-gradient(135deg, #232526, #414345)'],
+  ['Mint', 'linear-gradient(135deg, #00b09b, #96c93d)'],
+  ['Royal', 'linear-gradient(135deg, #141e30, #243b55)'],
+  ['Candy', 'linear-gradient(135deg, #ff9a9e, #fecfef)'],
+  ['Sky', 'linear-gradient(135deg, #2980b9, #6dd5fa)'],
+  ['Peach', 'linear-gradient(135deg, #ed4264, #ffedbc)']
+];
+function gen() {
+  const c1 = document.getElementById('c1').value;
+  const c2 = document.getElementById('c2').value;
+  const c3 = document.getElementById('c3').value;
+  const type = document.getElementById('type').value;
+  const ang = document.getElementById('ang').value;
+  document.getElementById('angL').textContent = ang + '°';
+  let css;
+  if (type === 'linear') css = `linear-gradient(${ang}deg, ${c1}, ${c2}, ${c3})`;
+  else if (type === 'radial') css = `radial-gradient(circle, ${c1}, ${c2})`;
+  else css = `conic-gradient(from ${ang}deg, ${c1}, ${c2}, ${c3})`;
+  document.getElementById('prev').style.background = css;
+  document.getElementById('code').textContent = 'background: ' + css + ';';
+}
+function cp() { navigator.clipboard.writeText('background: ' + document.getElementById('code').textContent.split(': ')[1]); window.toast?.success('Nusxalandi!'); }
+function init() { document.getElementById('pres').innerHTML = ps.map(([n, g]) => `<div class="preset" style="background:${g}" onclick="document.getElementById('code').textContent='background: ' + '${g}' + ';';document.getElementById('prev').style.background='${g}'"></div>`).join(''); }
+['c1','c2','c3','type','ang'].forEach(id => document.getElementById(id).oninput = gen);
+init(); gen();
+</script>
+</body>
+</html>
