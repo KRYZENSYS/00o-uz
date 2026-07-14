@@ -16,7 +16,7 @@ nav { position: fixed; top: 0; left: 0; right: 0;
 .nav-inner { display: flex; justify-content: space-between; align-items: center; }
 .logo { font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #8b5cf6, #06b6d4);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
-.nav-links { display: flex; gap: 24px; list-style: none; align-items: center; }
+.nav-links { display: flex; gap: 20px; list-style: none; align-items: center; }
 .nav-links a { color: #cbd5e1; text-decoration: none; font-size: 14px; transition: 0.3s; }
 .nav-links a:hover, .nav-links a.active { color: #8b5cf6; }
 .btn { padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer;
@@ -30,7 +30,6 @@ nav { position: fixed; top: 0; left: 0; right: 0;
   background: linear-gradient(135deg, #8b5cf6, #06b6d4);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .page-hero p { color: #94a3b8; font-size: 18px; max-width: 600px; }
-
 .search-bar { display: flex; gap: 12px; margin: 32px 0; flex-wrap: wrap; }
 .search-input { flex: 1; min-width: 250px; padding: 14px 20px; border-radius: 12px;
   background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
@@ -39,13 +38,11 @@ nav { position: fixed; top: 0; left: 0; right: 0;
 .search-select { padding: 14px 20px; border-radius: 12px;
   background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
   color: white; font-size: 15px; cursor: pointer; }
-
 .filters { display: flex; gap: 8px; margin: 20px 0; flex-wrap: wrap; }
 .filter-chip { padding: 8px 16px; border-radius: 20px; background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.3s; font-size: 14px; }
 .filter-chip:hover, .filter-chip.active { background: linear-gradient(135deg, #8b5cf6, #06b6d4);
   border-color: transparent; }
-
 .startups-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 24px; padding: 20px 0 80px; }
 .startup-card { padding: 24px; border-radius: 20px;
@@ -81,7 +78,6 @@ nav { position: fixed; top: 0; left: 0; right: 0;
   border-color: #ef4444; color: #ef4444; }
 .funding { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 12px;
   font-weight: 600; background: rgba(34, 197, 94, 0.15); color: #86efac; margin-top: 8px; }
-
 .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7);
   backdrop-filter: blur(8px); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
 .modal.open { display: flex; animation: fadeIn 0.2s; }
@@ -128,12 +124,12 @@ nav { position: fixed; top: 0; left: 0; right: 0;
       <li><a href="startups.html" class="active">Startaplar</a></li>
       <li><a href="freelancers.html">Frilanserlar</a></li>
       <li><a href="jobs.html">Ish o'rinlari</a></li>
-      <li><a href="admin.html">📞 Aloqa</a></li>
+      <li><a href="premium.html">Premium</a></li>
+      <li><a href="admin.html">📞</a></li>
     </ul>
     <button class="btn btn-primary" onclick="openModal('login')">Kirish</button>
   </div>
 </nav>
-
 <section class="page-hero container">
   <h1>🚀 Startaplar</h1>
   <p>O'zbekistondagi eng yaxshi startaplarni kashf qiling. Investitsiya qiling, hamkor bo'ling yoki g'oyangizni qo'shing.</p>
@@ -156,11 +152,9 @@ nav { position: fixed; top: 0; left: 0; right: 0;
     <span class="filter-chip" data-cat="agritech" onclick="setFilter(this)">🌾 AgriTech</span>
   </div>
 </section>
-
 <section class="container">
   <div class="startups-grid" id="startupsGrid"></div>
 </section>
-
 <div class="modal" id="loginModal">
   <div class="modal-content">
     <button class="modal-close" onclick="closeModal('login')">×</button>
@@ -186,26 +180,23 @@ nav { position: fixed; top: 0; left: 0; right: 0;
     </div>
   </div>
 </div>
-
 <script>
 const startups = [
-  { id: 1, name: 'PayUz', cat: 'fintech', icon: '💳', desc: 'O\'zbekistondagi birinchi mobil to\'lov platformasi. P2P, merchant va crypto.', tags: ['Mobile', 'Fintech', 'P2P'], users: '500K+', rating: 4.8, funding: '$2.5M', verified: true },
-  { id: 2, name: 'EduPro', cat: 'edtech', icon: '🎓', desc: 'Onlayn ta\'lim platformasi. Kurslar, mentorlar va sertifikatlar.', tags: ['Online', 'Education'], users: '120K+', rating: 4.7, funding: '$800K', verified: true },
-  { id: 3, name: 'MedLink', cat: 'healthtech', icon: '🏥', desc: 'Shifokor bilan onlayn konsultatsiya. AI yordamida tashxis.', tags: ['Health', 'AI', 'Telemed'], users: '85K+', rating: 4.9, funding: '$1.2M', verified: true },
-  { id: 4, name: 'Bozor.uz', cat: 'ecommerce', icon: '🛒', desc: 'O\'zbekistondagi eng katta onlayn bozor. 50K+ mahsulot.', tags: ['E-commerce', 'Marketplace'], users: '1M+', rating: 4.6, funding: '$5M', verified: true },
-  { id: 5, name: 'AgroAI', cat: 'agritech', icon: '🌾', desc: 'Fermerlar uchun AI yordamchi. Ob-havo, kasallik va hosil bashorati.', tags: ['AI', 'Agriculture'], users: '45K+', rating: 4.8, funding: '$600K', verified: true },
-  { id: 6, name: 'TaksiPro', cat: 'logistics', icon: '🚕', desc: 'Yangi avlod taksi xizmati. AI marshrut va adolatli narxlar.', tags: ['Transport', 'AI'], users: '300K+', rating: 4.5, funding: '$3.2M', verified: true },
-  { id: 7, name: 'CodeUz', cat: 'edtech', icon: '💻', desc: 'Dasturlashni o\'rganish platformasi. Amaliy mashg\'ulotlar va portfolio.', tags: ['Coding', 'Bootcamp'], users: '65K+', rating: 4.9, funding: '$400K', verified: true },
-  { id: 8, name: 'SmartHome', cat: 'ai', icon: '🏠', desc: 'IoT asosidagi uy boshqaruv tizimi. O\'zbekiston uchun maxsus.', tags: ['IoT', 'Smart Home'], users: '15K+', rating: 4.7, funding: '$350K', verified: false },
-  { id: 9, name: 'LogiTrans', cat: 'logistics', icon: '🚚', desc: 'Yuk tashish va logistika platformasi. Real-time tracking.', tags: ['Logistics', 'B2B'], users: '25K+', rating: 4.6, funding: '$900K', verified: true },
-  { id: 10, name: 'InvestUz', cat: 'fintech', icon: '💎', desc: 'Investitsiya platformasi. Startaplar va investorlarni birlashtiradi.', tags: ['Investment', 'P2P'], users: '40K+', rating: 4.8, funding: '$1.5M', verified: true },
-  { id: 11, name: 'Foody', cat: 'ecommerce', icon: '🍔', desc: 'Ovqat yetkazib berish. 1000+ restoran va 30 daqiqa kafolat.', tags: ['Food', 'Delivery'], users: '250K+', rating: 4.4, funding: '$1.8M', verified: true },
-  { id: 12, name: 'AIHelper', cat: 'ai', icon: '🤖', desc: 'Biznes uchun AI yordamchi. Chatbot, analitika va avtomatlashtirish.', tags: ['AI', 'B2B', 'SaaS'], users: '8K+', rating: 4.9, funding: '$250K', verified: false },
+  { id: 1, name: 'PayUz', cat: 'fintech', icon: '💳', desc: "O'zbekistondagi birinchi mobil to'lov platformasi.", tags: ['Mobile', 'Fintech', 'P2P'], users: '500K+', rating: 4.8, funding: '$2.5M', verified: true },
+  { id: 2, name: 'EduPro', cat: 'edtech', icon: '🎓', desc: "Onlayn ta'lim platformasi. Kurslar, mentorlar va sertifikatlar.", tags: ['Online', 'Education'], users: '120K+', rating: 4.7, funding: '$800K', verified: true },
+  { id: 3, name: 'MedLink', cat: 'healthtech', icon: '🏥', desc: "Shifokor bilan onlayn konsultatsiya. AI yordamida tashxis.", tags: ['Health', 'AI', 'Telemed'], users: '85K+', rating: 4.9, funding: '$1.2M', verified: true },
+  { id: 4, name: 'Bozor.uz', cat: 'ecommerce', icon: '🛒', desc: "O'zbekistondagi eng katta onlayn bozor. 50K+ mahsulot.", tags: ['E-commerce', 'Marketplace'], users: '1M+', rating: 4.6, funding: '$5M', verified: true },
+  { id: 5, name: 'AgroAI', cat: 'agritech', icon: '🌾', desc: "Fermerlar uchun AI yordamchi. Ob-havo, kasallik va hosil bashorati.", tags: ['AI', 'Agriculture'], users: '45K+', rating: 4.8, funding: '$600K', verified: true },
+  { id: 6, name: 'TaksiPro', cat: 'logistics', icon: '🚕', desc: "Yangi avlod taksi xizmati. AI marshrut va adolatli narxlar.", tags: ['Transport', 'AI'], users: '300K+', rating: 4.5, funding: '$3.2M', verified: true },
+  { id: 7, name: 'CodeUz', cat: 'edtech', icon: '💻', desc: "Dasturlashni o'rganish platformasi. Amaliy mashg'ulotlar.", tags: ['Coding', 'Bootcamp'], users: '65K+', rating: 4.9, funding: '$400K', verified: true },
+  { id: 8, name: 'SmartHome', cat: 'ai', icon: '🏠', desc: "IoT asosidagi uy boshqaruv tizimi. O'zbekiston uchun maxsus.", tags: ['IoT', 'Smart Home'], users: '15K+', rating: 4.7, funding: '$350K', verified: false },
+  { id: 9, name: 'LogiTrans', cat: 'logistics', icon: '🚚', desc: "Yuk tashish va logistika platformasi. Real-time tracking.", tags: ['Logistics', 'B2B'], users: '25K+', rating: 4.6, funding: '$900K', verified: true },
+  { id: 10, name: 'InvestUz', cat: 'fintech', icon: '💎', desc: "Investitsiya platformasi. Startaplar va investorlarni birlashtiradi.", tags: ['Investment', 'P2P'], users: '40K+', rating: 4.8, funding: '$1.5M', verified: true },
+  { id: 11, name: 'Foody', cat: 'ecommerce', icon: '🍔', desc: "Ovqat yetkazib berish. 1000+ restoran va 30 daqiqa kafolat.", tags: ['Food', 'Delivery'], users: '250K+', rating: 4.4, funding: '$1.8M', verified: true },
+  { id: 12, name: 'AIHelper', cat: 'ai', icon: '🤖', desc: "Biznes uchun AI yordamchi. Chatbot, analitika, avtomatlashtirish.", tags: ['AI', 'B2B', 'SaaS'], users: '8K+', rating: 4.9, funding: '$250K', verified: false },
 ];
-
 let saved = JSON.parse(localStorage.getItem('00o_saved_startups') || '[]');
 let currentFilter = 'all';
-
 function render() {
   const search = document.getElementById('searchInput').value.toLowerCase();
   const filtered = startups.filter(s => {
@@ -213,12 +204,9 @@ function render() {
     const matchCat = currentFilter === 'all' || s.cat === currentFilter;
     return matchSearch && matchCat;
   });
-
   document.getElementById('startupsGrid').innerHTML = filtered.map(s => `
     <div class="startup-card">
-      <div class="save-btn ${saved.includes(s.id) ? 'saved' : ''}" onclick="toggleSave(event, ${s.id})">
-        ${saved.includes(s.id) ? '❤️' : '🤍'}
-      </div>
+      <div class="save-btn ${saved.includes(s.id) ? 'saved' : ''}" onclick="toggleSave(event, ${s.id})">${saved.includes(s.id) ? '❤️' : '🤍'}</div>
       <div class="startup-header">
         <div class="startup-logo">${s.icon}</div>
         <div class="startup-info">
@@ -237,7 +225,6 @@ function render() {
     </div>
   `).join('') || '<p style="color:#94a3b8;grid-column:1/-1;text-align:center;padding:40px;">Hech narsa topilmadi</p>';
 }
-
 function filterStartups() { render(); }
 function setFilter(el) {
   document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
@@ -260,12 +247,11 @@ function switchTab(el, type) {
   document.getElementById('loginForm').style.display = type === 'login' ? 'block' : 'none';
   document.getElementById('registerForm').style.display = type === 'register' ? 'block' : 'none';
 }
-function fakeLogin() { alert('✅ Demo: Muvaffaqiyatli kirdingiz!\n\nReal versiyada backend bilan ishlaydi.'); closeModal('login'); }
-function fakeRegister() { alert('✅ Demo: Ro\'yxatdan o\'tdingiz!\n\nEmail tasdiqlash xabari yuborildi.'); closeModal('login'); }
-
+function fakeLogin() { alert("✅ Demo: Muvaffaqiyatli kirdingiz!"); closeModal('login'); }
+function fakeRegister() { alert("✅ Demo: Ro'yxatdan o'tdingiz!"); closeModal('login'); }
 document.getElementById('loginModal').onclick = (e) => { if (e.target.id === 'loginModal') closeModal('login'); };
 render();
-console.log('%c🚀 Startaplar sahifasi', 'font-size:24px;font-weight:bold;color:#8b5cf6;');
 </script>
+<script src="/i18n.js"></script>
 </body>
 </html>
