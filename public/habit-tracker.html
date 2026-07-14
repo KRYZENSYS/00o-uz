@@ -1,71 +1,117 @@
 <!DOCTYPE html>
 <html lang="uz"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Odat tracker — 00o.uz</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0e1a">
+<title>Habit Tracker — 00o.uz</title>
 <script src="/global.js"></script>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; padding: 100px 20px 60px; }
-.container { max-width: 700px; margin: 0 auto; }
-h1 { font-size: 28px; margin-bottom: 8px; background: linear-gradient(135deg, #8b5cf6, #ec4899);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.bar { padding: 16px; border-radius: 14px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); margin-bottom: 16px; display: flex; gap: 8px; }
-.bar input { flex: 1; padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(255,255,255,0.1); }
-.bar button { padding: 10px 20px; border-radius: 8px; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; border: none; font-weight: 700; cursor: pointer; }
-.habit { padding: 16px; border-radius: 14px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); margin-bottom: 12px; }
-.h-t { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-.h-n { font-weight: 700; }
-.streak { padding: 4px 12px; border-radius: 100px; background: rgba(245,158,11,0.2); color: #fcd34d; font-size: 12px; font-weight: 600; }
-.days { display: grid; grid-template-columns: repeat(14, 1fr); gap: 3px; }
-.day { aspect-ratio: 1; border-radius: 4px; background: rgba(255,255,255,0.05); cursor: pointer; transition: 0.2s; }
-.day.done { background: linear-gradient(135deg, #22c55e, #10b981); }
-.day.today { box-shadow: 0 0 0 2px #8b5cf6; }
-.day:hover { transform: scale(1.2); }
-.del { background: rgba(239,68,68,0.2); color: #fca5a5; border: none; width: 24px; height: 24px; border-radius: 4px; cursor: pointer; }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,sans-serif;background:#0a0e1a;color:#f1f5f9;min-height:100vh;padding:60px 16px 100px;max-width:720px;margin:0 auto}
+h1{font-size:clamp(24px,6vw,32px);font-weight:800;text-align:center;background:linear-gradient(135deg,#22c55e,#10b981);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
+.sub{text-align:center;color:#94a3b8;font-size:14px;margin-bottom:20px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.s{padding:12px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);text-align:center}
+.s-n{font-size:22px;font-weight:800;color:#22c55e}
+.s-l{font-size:11px;color:#94a3b8;text-transform:uppercase}
+.habit{padding:14px;border-radius:12px;background:linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.06);margin-bottom:8px}
+.h-top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.h-i{font-size:28px;cursor:pointer;transition:transform 0.2s}
+.h-i.done{filter:grayscale(1);opacity:0.4}
+.h-info{flex:1}
+.h-n{font-weight:700;font-size:15px}
+.h-s{font-size:12px;color:#94a3b8}
+.h-streak{font-size:13px;font-weight:700;color:#fbbf24}
+.days{display:flex;gap:3px;overflow-x:auto;padding-bottom:4px}
+.day{width:32px;height:32px;border-radius:6px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;cursor:pointer;font-weight:600;color:#64748b}
+.day.done{background:linear-gradient(135deg,#22c55e,#10b981);color:white}
+.day.today{box-shadow:0 0 0 2px #fbbf24}
+.add{display:flex;gap:6px;margin-bottom:12px}
+.add input{flex:1;padding:12px;border-radius:10px;background:rgba(0,0,0,0.4);color:white;border:1px solid rgba(255,255,255,0.1);font-size:15px}
+.add input:focus{outline:none;border-color:#22c55e}
+.add button{padding:12px 20px;border-radius:10px;background:linear-gradient(135deg,#22c55e,#10b981);color:white;border:none;font-weight:700;cursor:pointer}
+.del{background:rgba(239,68,68,0.2);color:#fca5a5;width:32px;height:32px;border-radius:8px;border:none;cursor:pointer;flex-shrink:0}
 </style>
 </head>
 <body>
-<div class="container">
-  <h1>🎯 Odat tracker</h1>
-  <p style="color:#94a3b8;margin-bottom:16px">Yangi odatlar shakllantiring · 14 kunlik ko'rinish</p>
-  <div class="bar">
-    <input id="n" placeholder="Masalan: ertalabki mashqlar..." onkeydown="if(event.key==='Enter')add()">
-    <button onclick="add()">+ Qo'shish</button>
-  </div>
-  <div id="list"></div>
+<h1>🎯 Habit Tracker</h1>
+<p class="sub" id="sub">Yaxshi odatlarni shakllantiring</p>
+<div class="stats">
+  <div class="s"><div class="s-n" id="tH">0</div><div class="s-l">Odat</div></div>
+  <div class="s"><div class="s-n" id="tD">0</div><div class="s-l">Bugun</div></div>
+  <div class="s"><div class="s-n" id="tS">0</div><div class="s-l">Eng uzun streak</div></div>
 </div>
+<div class="add">
+  <input id="ni" placeholder="Yangi odat..." maxlength="50">
+  <button onclick="add()">+</button>
+</div>
+<div id="list"></div>
 <script>
-let habits = JSON.parse(localStorage.getItem('oo-habits') || '[]');
-if (!habits.length) habits = [{id:1, n:'Ertalabki mashqlar', done:[]}, {id:2, n:'10,000 qadam', done:[]}, {id:3, n:'Kitob o\'qish', done:[]}];
-function save() { localStorage.setItem('oo-habits', JSON.stringify(habits)); render(); }
-function add() {
-  const n = document.getElementById('n').value.trim();
-  if (!n) return;
-  habits.push({id:Date.now(), n, done:[]});
-  document.getElementById('n').value = '';
-  save();
-}
-function del(id) { habits = habits.filter(h => h.id !== id); save(); }
-function toggle(habitId, date) {
-  const h = habits.find(x => x.id === habitId);
-  if (h.done.includes(date)) h.done = h.done.filter(d => d !== date);
-  else h.done.push(date);
-  save();
-}
-function streak(habit) {
-  let s = 0, d = new Date();
-  while (habit.done.includes(d.toISOString().split('T')[0])) { s++; d.setDate(d.getDate() - 1); }
+var data=oo.load('habits',[
+  {n:'🏃 Sport bilan shug\'ullanish',i:'🏃'},
+  {n:'📖 Kitob o\'qish',i:'📖'},
+  {n:'💧 Suv ichish',i:'💧'}
+]);
+function save(){ oo.save('habits',data); }
+function getStreak(idx){
+  var h=data[idx], s=0; var d=new Date();
+  for(var i=0;i<365;i++){
+    var k=d.toISOString().slice(0,10);
+    if(h.days&&h.days[k]) s++;
+    else if(i>0) break;
+    d.setDate(d.getDate()-1);
+  }
   return s;
 }
-function render() {
-  const today = new Date();
-  const dates = [];
-  for (let i = 13; i >= 0; i--) { const d = new Date(today); d.setDate(d.getDate() - i); dates.push(d.toISOString().split('T')[0]); }
-  document.getElementById('list').innerHTML = habits.map(h => `<div class="habit">
-    <div class="h-t"><div class="h-n">${h.n}</div><div style="display:flex;gap:6px"><span class="streak">🔥 ${streak(h)}</span><button class="del" onclick="del(${h.id})">×</button></div></div>
-    <div class="days">${dates.map(d => `<div class="day ${h.done.includes(d)?'done':''} ${d===dates[dates.length-1]?'today':''}" onclick="toggle(${h.id}, '${d}')" title="${d}"></div>`).join('')}</div>
-  </div>`).join('');
+function render(){
+  document.getElementById('tH').textContent=data.length;
+  var today=new Date().toISOString().slice(0,10);
+  var td=data.filter(function(h){return h.days&&h.days[today];}).length;
+  document.getElementById('tD').textContent=td;
+  var ms=Math.max.apply(null,data.map(function(_,i){return getStreak(i);}));
+  document.getElementById('tS').textContent=ms||0;
+  document.getElementById('sub').textContent=td+'/'+data.length+' bajarildi bugun';
+  if(!data.length){ document.getElementById('list').innerHTML='<div style="text-align:center;color:#64748b;padding:30px">Odat qo\'shing!</div>'; return; }
+  var days=[]; var d=new Date(); d.setDate(d.getDate()-29);
+  for(var i=0;i<30;i++){ var k=d.toISOString().slice(0,10); days.push({k:k,dn:['Ya','Du','Se','Ch','Pa','Ju','Sh'][d.getDay()],dn2:d.getDate(),today:k===today}); d.setDate(d.getDate()+1); }
+  document.getElementById('list').innerHTML=data.map(function(h,idx){
+    var days_html=days.map(function(dy){
+      var dn=dy.dn2;
+      var c='day';
+      if(h.days&&h.days[dy.k]) c+=' done';
+      if(dy.today) c+=' today';
+      return '<div class="'+c+'" onclick="toggle('+idx+',\''+dy.k+'\')" title="'+dy.k+'">'+dn+'</div>';
+    }).join('');
+    return '<div class="habit"><div class="h-top"><div class="h-i '+(h.days&&h.days[today]?'done':'')+'" onclick="toggleToday('+idx+')">'+h.i+'</div><div class="h-info"><div class="h-n">'+h.n+'</div><div class="h-s">'+countMonth(h)+' / 30 kun</div></div><div class="h-streak">🔥 '+getStreak(idx)+'</div><button class="del" onclick="del('+idx+')">×</button></div><div class="days">'+days_html+'</div></div>';
+  }).join('');
 }
+function countMonth(h){
+  if(!h.days) return 0;
+  var d=new Date(); d.setDate(d.getDate()-29);
+  var c=0; for(var i=0;i<30;i++){ if(h.days[d.toISOString().slice(0,10)]) c++; d.setDate(d.getDate()+1); }
+  return c;
+}
+function toggle(idx,k){
+  data[idx].days=data[idx].days||{};
+  if(data[idx].days[k]) delete data[idx].days[k]; else data[idx].days[k]=1;
+  save(); render();
+}
+function toggleToday(idx){
+  toggle(idx,new Date().toISOString().slice(0,10));
+  window.confetti({count:20});
+}
+function add(){
+  var v=document.getElementById('ni').value.trim();
+  if(!v) return;
+  data.unshift({n:v,i:'⭐',days:{}});
+  document.getElementById('ni').value='';
+  save(); render();
+  toast.success('Odat qo\'shildi');
+}
+function del(i){
+  if(!confirm('O\'chirilsinmi?')) return;
+  data.splice(i,1); save(); render();
+}
+document.getElementById('ni').addEventListener('keypress',function(e){if(e.key==='Enter')add();});
 render();
 </script>
 </body>
