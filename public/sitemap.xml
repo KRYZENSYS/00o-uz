@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://00o-demo.vercel.app/</loc><priority>1.0</priority></url>
+  <url><loc>https://00o-demo.vercel.app/index.html</loc><priority>1.0</priority></url>
+  <url><loc>https://00o-demo.vercel.app/dashboard.html</loc><priority>0.9</priority></url>
+  <url><loc>https://00o-demo.vercel.app/community.html</loc><priority>0.9</priority></url>
+  <url><loc>https://00o-demo.vercel.app/leaderboard.html</loc><priority>0.8</priority></url>
+  <url><loc>https://00o-demo.vercel.app/kanban.html</loc><priority>0.8</priority></url>
+  <url><loc>https://00o-demo.vercel.app/achievements.html</loc><priority>0.8</priority></url>
+  <url><loc>https://00o-demo.vercel.app/startups.html</loc><priority>0.9</priority></url>
+  <url><loc>https://00o-demo.vercel.app/freelancers.html</loc><priority>0.9</priority></url>
+  <url><loc>https://00o-demo.vercel.app/jobs.html</loc><priority>0.9</priority></url>
+  <url><loc>https://00o-demo.vercel.app/ai-chat.html</loc><priority>0.9</priority></url>
+  <url><loc>https://00o-demo.vercel.app/spin-wheel.html</loc><priority>0.7</priority></url>
+  <url><loc>https://00o-demo.vercel.app/shop.html</loc><priority>0.7</priority></url>
+  <url><loc>https://00o-demo.vercel.app/battle-pass.html</loc><priority>0.7</priority></url>
+  <url><loc>https://00o-demo.vercel.app/stories.html</loc><priority>0.7</priority></url>
+  <url><loc>https://00o-demo.vercel.app/reels.html</loc><priority>0.7</priority></url>
+  <url><loc>https://00o-demo.vercel.app/events.html</loc><priority>0.7</priority></url>
+  <url><loc>https://00o-demo.vercel.app/groups.html</loc><priority>0.7</priority></url>
+  <url><loc>https://00o-demo.vercel.app/mentorship.html</loc><priority>0.7</priority></url>
+  <url><loc>https://00o-demo.vercel.app/job-create.html</loc><priority>0.7</priority></url>
+  <url><loc>https://00o-demo.vercel.app/profile.html</loc><priority>0.7</priority></url>
+  <url><loc>https://00o-demo.vercel.app/login.html</loc><priority>0.6</priority></url>
+  <url><loc>https://00o-demo.vercel.app/settings.html</loc><priority>0.6</priority></url>
+  <url><loc>https://00o-demo.vercel.app/admin-dashboard.html</loc><priority>0.6</priority></url>
+  <url><loc>https://00o-demo.vercel.app/premium.html</loc><priority>0.6</priority></url>
+</urlset>
