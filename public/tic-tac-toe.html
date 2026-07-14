@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tic Tac Toe — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white;
+  min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.box { text-align: center; }
+h1 { font-size: 40px; margin-bottom: 8px; background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.tabs { display: flex; gap: 6px; justify-content: center; margin: 16px 0; }
+.tab { padding: 8px 16px; border-radius: 100px; background: rgba(255,255,255,0.05); cursor: pointer; font-size: 13px; }
+.tab.active { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
+.s { display: flex; gap: 16px; justify-content: center; margin-bottom: 16px; font-size: 18px; }
+.s span { font-weight: 800; }
+.board { display: grid; grid-template-columns: repeat(3, 100px); gap: 8px; margin: 0 auto;
+  padding: 12px; background: linear-gradient(135deg, rgba(139,92,246,0.1), rgba(236,72,153,0.1)); border-radius: 12px; }
+@media (max-width:480px) { .board { grid-template-columns: repeat(3, 85px); } }
+.cell { aspect-ratio: 1; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center; font-size: 50px; font-weight: 800; cursor: pointer; transition: 0.2s; }
+.cell:hover { background: rgba(255,255,255,0.1); }
+.cell.x { color: #8b5cf6; }
+.cell.o { color: #ec4899; }
+.b { padding: 10px 20px; border-radius: 100px; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; border: none; font-weight: 700; cursor: pointer; margin-top: 16px; }
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>❌ Tic Tac Toe</h1>
+  <div class="tabs">
+    <div class="tab active" onclick="setMode('pvp', this)">👥 Ikki kishi</div>
+    <div class="tab" onclick="setMode('cpu', this)">🤖 AI</div>
+  </div>
+  <div class="s"><div>❌ <span id="sx">0</span></div><div>⏱ <span id="sdr">0</span></div><div>⭕ <span id="so">0</span></div></div>
+  <div class="board" id="bd"></div>
+  <button class="b" onclick="init()">🔄 Yangi o'yin</button>
+</div>
+<script>
+let board, turn, mode='pvp', scores = {x:0, o:0, d:0}, gameOver = false;
+function setMode(m, el) { document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active')); el.classList.add('active'); mode=m; init(); }
+function init() { board = Array(9).fill(''); turn = 'X'; gameOver = false; draw(); }
+function draw() { document.getElementById('bd').innerHTML = board.map((c, i) => `<div class="cell ${c.toLowerCase()}" onclick="play(${i})">${c}</div>`).join(''); }
+function play(i) { if (board[i] || gameOver) return; board[i] = turn; if (check()) return; turn = turn==='X'?'O':'X'; draw(); if (mode==='cpu' && turn==='O' && !gameOver) setTimeout(cpu, 300); }
+function cpu() { const empty = board.map((c,i)=>c?null:i).filter(x=>x!==null); board[empty[Math.floor(Math.random()*empty.length)]] = 'O'; if (check()) return; turn='X'; draw(); }
+function check() {
+  const w = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  for (const [a,b,c] of w) if (board[a] && board[a]===board[b] && board[a]===board[c]) { gameOver = true; scores[board[a].toLowerCase()]++; update(); window.toast?.success(`${board[a]} g'olib!`, '🎉'); window.confetti && window.confetti({count:80}); return true; }
+  if (!board.includes('')) { gameOver = true; scores.d++; update(); window.toast?.info('Durang!'); return true; }
+  return false;
+}
+function update() { document.getElementById('sx').textContent = scores.x; document.getElementById('so').textContent = scores.o; document.getElementById('sdr').textContent = scores.d; }
+init();
+</script>
+</body>
+</html>
