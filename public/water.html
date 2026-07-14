@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suv tracker — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white;
+  min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.box { text-align: center; max-width: 400px; }
+h1 { font-size: 32px; margin-bottom: 8px; background: linear-gradient(135deg, #06b6d4, #3b82f6);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.glass { width: 200px; height: 280px; margin: 20px auto; border: 4px solid #06b6d4; border-radius: 0 0 100px 100px;
+  position: relative; overflow: hidden; background: rgba(255,255,255,0.05); }
+.fill { position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(180deg, #06b6d4, #3b82f6); transition: height 0.5s ease;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px; color: white; font-weight: 800; }
+.info { font-size: 20px; margin: 16px 0; }
+.big { font-size: 64px; font-weight: 800; font-family: monospace;
+  background: linear-gradient(135deg, #06b6d4, #3b82f6);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.btns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
+.btn { padding: 12px 24px; border-radius: 100px; border: none; font-weight: 700; cursor: pointer; }
+.btn-a { background: linear-gradient(135deg, #06b6d4, #3b82f6); color: white; }
+.btn-r { background: rgba(255,255,255,0.05); color: white; }
+.history { display: flex; gap: 8px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+.h { padding: 6px 12px; border-radius: 100px; background: rgba(255,255,255,0.05); font-size: 12px; }
+.h.done { background: rgba(6,182,212,0.2); color: #67e8f9; }
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>💧 Suv Tracker</h1>
+  <p style="color:#94a3b8">Kunlik 2 litr suv iching</p>
+  <div class="glass"><div class="fill" id="f" style="height:0%">💧</div></div>
+  <div class="big" id="b">0/2000</div>
+  <div class="info"><span id="p">0</span>% · <span id="c">0</span> stakan</div>
+  <div class="btns">
+    <button class="btn btn-a" onclick="add(250)">+250ml</button>
+    <button class="btn btn-a" onclick="add(500)">+500ml</button>
+    <button class="btn btn-r" onclick="reset()">⟲ Reset</button>
+  </div>
+  <div class="history" id="h"></div>
+</div>
+<script>
+let data = JSON.parse(localStorage.getItem('oo-water') || '{}');
+const today = new Date().toDateString();
+if (data.date !== today) data = {date: today, ml: 0, log: []};
+const goal = 2000;
+function save() { localStorage.setItem('oo-water', JSON.stringify(data)); render(); }
+function add(ml) { data.ml += ml; data.log.push({ml, t: new Date().toLocaleTimeString('uz-UZ',{hour:'2-digit',minute:'2-digit'})}); save(); }
+function reset() { if (!confirm('Reset?')) return; data = {date: today, ml: 0, log: []}; save(); }
+function render() {
+  const pct = Math.min(100, data.ml / goal * 100);
+  document.getElementById('f').style.height = pct + '%';
+  document.getElementById('b').textContent = `${data.ml}/${goal}`;
+  document.getElementById('p').textContent = Math.round(pct);
+  document.getElementById('c').textContent = Math.round(data.ml / 250);
+  document.getElementById('h').innerHTML = data.log.map(l => `<div class="h done">+${l.ml}ml · ${l.t}</div>`).join('');
+  if (pct >= 100) window.confetti && window.confetti({count: 50});
+}
+render();
+</script>
+</body>
+</html>
