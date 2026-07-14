@@ -3,188 +3,143 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>00o.uz — Aloqa markazi</title>
+<title>Aloqa markazi — 00o.uz</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
-  color: white; min-height: 100vh; overflow-x: hidden;
-}
-.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+  color: white; min-height: 100vh; }
+.container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
 nav { position: fixed; top: 0; left: 0; right: 0;
   background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 100; padding: 16px 0; }
 .nav-inner { display: flex; justify-content: space-between; align-items: center; }
-.logo { font-size: 24px; font-weight: 800;
-  background: linear-gradient(135deg, #8b5cf6, #06b6d4);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  text-decoration: none; }
-.nav-links { display: flex; gap: 24px; list-style: none; align-items: center; }
+.logo { font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+.nav-links { display: flex; gap: 20px; list-style: none; align-items: center; }
 .nav-links a { color: #cbd5e1; text-decoration: none; font-size: 14px; transition: 0.3s; }
-.nav-links a:hover { color: #8b5cf6; }
+.nav-links a:hover, .nav-links a.active { color: #8b5cf6; }
 .btn { padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer;
-  border: none; transition: 0.3s; text-decoration: none; display: inline-block; }
+  border: none; transition: 0.3s; text-decoration: none; display: inline-block; font-size: 14px; }
 .btn-primary { background: linear-gradient(135deg, #8b5cf6, #06b6d4); color: white; }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(139,92,246,0.4); }
-
-/* HERO */
-.page-hero { padding: 140px 0 60px; text-align: center; position: relative; }
-.page-hero::before { content: ''; position: absolute; top: 10%; left: 50%;
-  transform: translateX(-50%); width: 600px; height: 600px;
-  background: radial-gradient(circle, rgba(139,92,246,0.3), transparent 70%);
-  filter: blur(80px); z-index: 0; }
-.page-hero-content { position: relative; z-index: 1; }
-.page-hero h1 { font-size: clamp(40px, 6vw, 60px); font-weight: 800; line-height: 1.1;
-  margin-bottom: 20px; letter-spacing: -1.5px; }
-.page-hero h1 .gradient { background: linear-gradient(135deg, #8b5cf6, #06b6d4, #ec4899);
+.page-hero { padding: 130px 0 30px; text-align: center; }
+.page-hero h1 { font-size: clamp(36px, 5vw, 52px); font-weight: 800; margin-bottom: 12px;
+  background: linear-gradient(135deg, #06b6d4, #8b5cf6);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.page-hero p { color: #94a3b8; font-size: 18px; max-width: 600px; margin: 0 auto; }
-
-/* CONTACT METHODS */
-.contact-methods { padding: 40px 0 60px; }
-.methods-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
-.method {
-  padding: 32px 24px; border-radius: 20px;
+.page-hero p { color: #94a3b8; font-size: 18px; }
+.contact-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 30px; margin: 30px 0 60px; }
+@media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
+.contact-card { padding: 28px; border-radius: 20px;
   background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
-  border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; cursor: pointer;
-  text-decoration: none; color: white; display: block; text-align: center;
-  position: relative; overflow: hidden;
-}
-.method::before { content: ''; position: absolute; top: 0; left: -100%;
-  width: 100%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(139,92,246,0.1), transparent);
-  transition: 0.5s; }
-.method:hover::before { left: 100%; }
-.method:hover { transform: translateY(-8px); border-color: rgba(139,92,246,0.5);
-  box-shadow: 0 20px 60px rgba(139,92,246,0.2); }
-.method-icon { font-size: 48px; margin-bottom: 16px; display: block; }
-.method-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
-.method-info { color: #94a3b8; font-size: 14px; margin-bottom: 12px; }
-.method-action { display: inline-block; padding: 8px 16px; border-radius: 8px;
-  background: rgba(139,92,246,0.15); color: #c4b5fd; font-size: 13px; font-weight: 600; }
-.method-status { position: absolute; top: 16px; right: 16px;
-  display: flex; align-items: center; gap: 6px; font-size: 12px; color: #86efac; }
-.status-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e;
-  box-shadow: 0 0 8px #22c55e; animation: pulse 2s infinite; }
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-
-/* MAIN CONTENT */
-.main-content { padding: 0 0 80px; }
-.content-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px; align-items: start; }
-@media (max-width: 900px) { .content-grid { grid-template-columns: 1fr; } }
-
-/* FORM */
-.form-card {
-  padding: 40px; border-radius: 24px;
-  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
-  border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-}
-.form-card h2 { font-size: 26px; margin-bottom: 8px; }
-.form-card .subtitle { color: #94a3b8; font-size: 14px; margin-bottom: 28px; }
-.form-group { margin-bottom: 18px; }
-label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: #cbd5e1; }
-input, select, textarea {
-  width: 100%; padding: 14px 16px; border-radius: 12px;
-  background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(255,255,255,0.1);
-  color: white; font-size: 15px; font-family: inherit; transition: 0.3s;
-}
-input:focus, select:focus, textarea:focus {
-  outline: none; border-color: #8b5cf6; background: rgba(15, 23, 42, 0.8);
-  box-shadow: 0 0 0 3px rgba(139,92,246,0.2);
-}
-input.error, select.error, textarea.error { border-color: #ef4444; }
-.error-msg { color: #fca5a5; font-size: 12px; margin-top: 4px; display: none; }
-.error-msg.show { display: block; }
-textarea { resize: vertical; min-height: 130px; }
-.row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-@media (max-width: 600px) { .row { grid-template-columns: 1fr; } }
-.btn-submit { width: 100%; padding: 16px; border: none; border-radius: 12px;
-  font-size: 16px; font-weight: 700; cursor: pointer;
-  background: linear-gradient(135deg, #8b5cf6, #06b6d4); color: white; transition: 0.3s; }
-.btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(139,92,246,0.4); }
+  border: 1px solid rgba(255,255,255,0.1); }
+.contact-card h2 { font-size: 22px; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+.contact-item { padding: 16px; border-radius: 14px; background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05); display: flex; gap: 14px; align-items: center;
+  margin-bottom: 12px; transition: 0.3s; cursor: pointer; text-decoration: none; color: white; }
+.contact-item:hover { transform: translateX(4px); border-color: rgba(139,92,246,0.4); background: rgba(139,92,246,0.08); }
+.contact-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center;
+  justify-content: center; font-size: 24px; flex-shrink: 0; }
+.icon-tg { background: linear-gradient(135deg, #0088cc, #229ed9); }
+.icon-email { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
+.icon-phone { background: linear-gradient(135deg, #22c55e, #06b6d4); }
+.icon-chat { background: linear-gradient(135deg, #f59e0b, #ef4444); position: relative; }
+.online-dot { position: absolute; top: -2px; right: -2px; width: 14px; height: 14px;
+  border-radius: 50%; background: #22c55e; border: 2px solid #0f172a;
+  animation: pulse 2s infinite; }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+.contact-info { flex: 1; min-width: 0; }
+.contact-title { font-weight: 700; font-size: 16px; margin-bottom: 2px; }
+.contact-desc { color: #94a3b8; font-size: 13px; }
+.form-group { margin-bottom: 14px; }
+.form-group label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: #cbd5e1; }
+.form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px 16px;
+  border-radius: 10px; background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(255,255,255,0.1);
+  color: white; font-size: 14px; font-family: inherit; }
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: #8b5cf6; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-group textarea { resize: vertical; min-height: 100px; }
+.form-group select option { background: #0f172a; }
+.form-success { display: none; padding: 24px; border-radius: 12px;
+  background: rgba(34, 197, 94, 0.1); border: 1px solid #22c55e; text-align: center; margin-top: 20px; }
+.form-success.show { display: block; animation: slideIn 0.3s; }
+@keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.form-success-icon { font-size: 48px; margin-bottom: 8px; }
+.form-success h3 { color: #22c55e; margin-bottom: 4px; }
+.btn-submit { width: 100%; padding: 14px; border: none; border-radius: 10px;
+  font-size: 15px; font-weight: 700; cursor: pointer;
+  background: linear-gradient(135deg, #8b5cf6, #06b6d4); color: white; }
+.btn-submit:hover { transform: translateY(-2px); }
 .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
-.success-msg { display: none; padding: 20px; border-radius: 12px; margin-top: 16px;
-  background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3);
-  color: #86efac; text-align: center; }
-.success-msg.show { display: block; animation: slideIn 0.4s ease; }
-.success-msg strong { display: block; font-size: 16px; margin-bottom: 4px; }
-@keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-
-/* SIDEBAR */
-.sidebar { display: flex; flex-direction: column; gap: 20px; }
-.info-card { padding: 24px; border-radius: 20px;
-  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); }
-.info-card h3 { font-size: 18px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-.info-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.05); }
-.info-item:last-child { border-bottom: none; }
-.info-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
-.info-content { flex: 1; }
-.info-title { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
-.info-text { color: #94a3b8; font-size: 13px; line-height: 1.5; }
-
-/* FAQ */
-.faq-section { padding: 60px 0; }
-.section-title { text-align: center; margin-bottom: 40px; }
-.section-title h2 { font-size: clamp(28px, 4vw, 40px); font-weight: 800; margin-bottom: 12px; }
-.section-title p { color: #94a3b8; font-size: 16px; }
-.faq-list { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
-.faq-item { padding: 20px 24px; border-radius: 16px;
-  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
-  cursor: pointer; transition: 0.3s; }
-.faq-item:hover { border-color: rgba(139,92,246,0.4); }
-.faq-q { display: flex; justify-content: space-between; align-items: center;
-  font-weight: 600; font-size: 16px; }
-.faq-arrow { color: #8b5cf6; transition: 0.3s; font-size: 20px; }
-.faq-a { max-height: 0; overflow: hidden; transition: 0.3s; color: #94a3b8; line-height: 1.6; }
+.sidebar-info { padding: 28px; border-radius: 20px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.1); margin-top: 20px; }
+.info-row { padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.info-row:last-child { border-bottom: none; }
+.info-label { color: #94a3b8; font-size: 12px; margin-bottom: 4px; }
+.info-value { color: white; font-size: 14px; font-weight: 600; }
+.faq-section { padding: 40px 0 80px; }
+.faq-section h2 { text-align: center; font-size: 32px; margin-bottom: 30px; }
+.faq-list { max-width: 800px; margin: 0 auto; }
+.faq-item { padding: 20px 24px; border-radius: 16px; background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05); margin-bottom: 10px; cursor: pointer; transition: 0.3s; }
+.faq-item:hover { border-color: rgba(139,92,246,0.3); }
+.faq-q { display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 16px; }
+.faq-arrow { color: #8b5cf6; transition: 0.3s; font-size: 14px; }
 .faq-item.open .faq-arrow { transform: rotate(180deg); }
-.faq-item.open .faq-a { max-height: 300px; margin-top: 12px; }
-
-/* CHAT WIDGET */
-.chat-btn { position: fixed; bottom: 30px; right: 30px; width: 64px; height: 64px;
-  border-radius: 50%; background: linear-gradient(135deg, #8b5cf6, #06b6d4);
-  border: none; cursor: pointer; box-shadow: 0 10px 40px rgba(139,92,246,0.5);
-  z-index: 99; transition: 0.3s; display: flex; align-items: center; justify-content: center;
-  font-size: 28px; color: white; }
-.chat-btn:hover { transform: scale(1.1); }
-.chat-btn::before { content: ''; position: absolute; inset: -4px; border-radius: 50%;
-  background: linear-gradient(135deg, #8b5cf6, #06b6d4); opacity: 0.4; z-index: -1;
-  animation: ripple 2s infinite; }
-@keyframes ripple { 0% { transform: scale(1); opacity: 0.4; } 100% { transform: scale(1.5); opacity: 0; } }
-.chat-window { position: fixed; bottom: 110px; right: 30px; width: 360px; height: 500px;
-  background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px);
-  border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5); z-index: 100;
-  display: none; flex-direction: column; overflow: hidden; }
-.chat-window.open { display: flex; animation: slideUp 0.3s ease; }
-@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-.chat-header { padding: 16px 20px;
-  background: linear-gradient(135deg, #8b5cf6, #06b6d4); display: flex;
-  justify-content: space-between; align-items: center; }
-.chat-header h3 { font-size: 16px; }
-.chat-header .close { background: none; border: none; color: white;
-  font-size: 24px; cursor: pointer; line-height: 1; }
-.chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex;
-  flex-direction: column; gap: 12px; }
-.msg { max-width: 80%; padding: 10px 14px; border-radius: 14px; font-size: 14px; line-height: 1.4; }
-.msg-bot { background: rgba(139,92,246,0.2); border: 1px solid rgba(139,92,246,0.3);
-  align-self: flex-start; border-bottom-left-radius: 4px; }
-.msg-user { background: linear-gradient(135deg, #8b5cf6, #06b6d4);
-  align-self: flex-end; border-bottom-right-radius: 4px; }
-.chat-input { padding: 16px; border-top: 1px solid rgba(255,255,255,0.1);
-  display: flex; gap: 8px; }
-.chat-input input { flex: 1; padding: 10px 14px; border-radius: 24px;
-  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-  color: white; font-size: 14px; }
-.chat-input button { width: 40px; height: 40px; border-radius: 50%;
-  background: linear-gradient(135deg, #8b5cf6, #06b6d4); border: none;
-  color: white; font-size: 18px; cursor: pointer; }
-
-@media (max-width: 768px) { .chat-window { right: 10px; width: calc(100vw - 20px); } }
-footer { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.1);
-  text-align: center; color: #64748b; font-size: 14px; }
+.faq-a { max-height: 0; overflow: hidden; transition: 0.3s; color: #94a3b8; font-size: 14px; line-height: 1.6; }
+.faq-item.open .faq-a { max-height: 200px; margin-top: 12px; }
+.team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px; margin: 30px 0; }
+.team-member { padding: 20px; border-radius: 16px; background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.1); text-align: center; transition: 0.3s; }
+.team-member:hover { transform: translateY(-4px); border-color: rgba(139,92,246,0.4); }
+.team-avatar { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 12px;
+  background: linear-gradient(135deg, #8b5cf6, #06b6d4); display: flex; align-items: center;
+  justify-content: center; font-size: 32px; }
+.team-name { font-weight: 700; font-size: 15px; margin-bottom: 2px; }
+.team-role { color: #94a3b8; font-size: 12px; margin-bottom: 8px; }
+.team-email { color: #8b5cf6; font-size: 12px; text-decoration: none; }
+.chat-widget { position: fixed; bottom: 24px; right: 24px; width: 380px; max-width: calc(100vw - 48px);
+  height: 540px; max-height: calc(100vh - 100px); border-radius: 20px; overflow: hidden;
+  background: linear-gradient(135deg, #1e293b, #0f172a); border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5); z-index: 1000; display: none; flex-direction: column; }
+.chat-widget.open { display: flex; animation: slideUp 0.3s; }
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.chat-header { padding: 16px 20px; background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  display: flex; justify-content: space-between; align-items: center; }
+.chat-header-info { display: flex; align-items: center; gap: 10px; }
+.chat-avatar { width: 36px; height: 36px; border-radius: 50%; background: white;
+  display: flex; align-items: center; justify-content: center; font-size: 20px; }
+.chat-title { font-weight: 700; font-size: 14px; }
+.chat-status { font-size: 11px; opacity: 0.9; display: flex; align-items: center; gap: 4px; }
+.chat-status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #4ade80; }
+.chat-close { background: rgba(255,255,255,0.2); border: none; color: white;
+  width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 16px; }
+.chat-messages { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+.chat-msg { max-width: 80%; padding: 10px 14px; border-radius: 14px; font-size: 13px; line-height: 1.4; }
+.chat-msg.bot { background: rgba(255,255,255,0.08); align-self: flex-start; border-bottom-left-radius: 4px; }
+.chat-msg.user { background: linear-gradient(135deg, #8b5cf6, #06b6d4); align-self: flex-end; border-bottom-right-radius: 4px; }
+.chat-msg.typing { display: flex; gap: 4px; padding: 14px; }
+.chat-msg.typing span { width: 6px; height: 6px; border-radius: 50%; background: #94a3b8;
+  animation: bounce 1.2s infinite; }
+.chat-msg.typing span:nth-child(2) { animation-delay: 0.2s; }
+.chat-msg.typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-8px); } }
+.chat-quick { display: flex; gap: 6px; padding: 0 16px 8px; flex-wrap: wrap; }
+.chat-quick button { padding: 6px 12px; border-radius: 16px; background: rgba(139,92,246,0.15);
+  border: 1px solid rgba(139,92,246,0.3); color: #c4b5fd; font-size: 11px; cursor: pointer; }
+.chat-quick button:hover { background: rgba(139,92,246,0.25); }
+.chat-input { padding: 12px; display: flex; gap: 8px; border-top: 1px solid rgba(255,255,255,0.05); }
+.chat-input input { flex: 1; padding: 10px 14px; border-radius: 20px; background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(255,255,255,0.1); color: white; font-size: 13px; outline: none; }
+.chat-input button { width: 40px; height: 40px; border-radius: 50%; border: none;
+  background: linear-gradient(135deg, #8b5cf6, #06b6d4); color: white; cursor: pointer; font-size: 18px; }
+.chat-toggle { position: fixed; bottom: 24px; right: 24px; width: 60px; height: 60px;
+  border-radius: 50%; background: linear-gradient(135deg, #8b5cf6, #06b6d4); border: none;
+  color: white; font-size: 28px; cursor: pointer; z-index: 1000; box-shadow: 0 10px 30px rgba(139,92,246,0.4); }
+.chat-toggle:hover { transform: scale(1.1); }
+@media (max-width: 768px) { .chat-widget { right: 12px; left: 12px; width: auto; } .form-row { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -192,363 +147,176 @@ footer { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.1);
   <div class="container nav-inner">
     <a href="index.html" class="logo">00o.uz</a>
     <ul class="nav-links">
-      <li><a href="index.html#features">Xususiyatlar</a></li>
-      <li><a href="index.html#ai">AI Vositalar</a></li>
-      <li><a href="index.html#categories">Kategoriyalar</a></li>
-      <li><a href="admin.html">📞 Bog'lanish</a></li>
+      <li><a href="index.html">Bosh sahifa</a></li>
+      <li><a href="startups.html">Startaplar</a></li>
+      <li><a href="freelancers.html">Frilanserlar</a></li>
+      <li><a href="jobs.html">Ish o'rinlari</a></li>
+      <li><a href="admin.html" class="active">📞 Aloqa</a></li>
     </ul>
-    <a href="index.html" class="btn btn-primary">← Bosh sahifa</a>
+    <a href="startups.html" class="btn btn-primary">Boshlash</a>
   </div>
 </nav>
-
-<section class="page-hero">
-  <div class="container page-hero-content">
-    <h1>📞 Aloqa <span class="gradient">markazi</span></h1>
-    <p>Savollaringiz bormi? Biz bilan bog'laning — 24 soat ichida javob beramiz!</p>
-  </div>
+<section class="page-hero container">
+  <h1>📞 Aloqa markazi</h1>
+  <p>Biz bilan bog'laning — 24/7 yordam berishga tayyormiz</p>
 </section>
-
-<section class="contact-methods container">
-  <div class="methods-grid">
-    <a href="https://t.me/KRYZENSYS_support" class="method" target="_blank">
-      <span class="method-status"><span class="status-dot"></span>Online</span>
-      <span class="method-icon">💬</span>
-      <div class="method-title">Telegram</div>
-      <div class="method-info">@KRYZENSYS_support</div>
-      <span class="method-action">Yozish →</span>
-    </a>
-    <a href="mailto:admin@00o.uz" class="method">
-      <span class="method-status"><span class="status-dot"></span>24/7</span>
-      <span class="method-icon">📧</span>
-      <div class="method-title">Email</div>
-      <div class="method-info">admin@00o.uz</div>
-      <span class="method-action">Xabar yozish →</span>
-    </a>
-    <a href="tel:+998901234567" class="method">
-      <span class="method-status"><span class="status-dot"></span>09:00-18:00</span>
-      <span class="method-icon">📱</span>
-      <div class="method-title">Telefon</div>
-      <div class="method-info">+998 90 123 45 67</div>
-      <span class="method-action">Qo'ng'iroq →</span>
-    </a>
-    <div class="method" onclick="toggleChat()">
-      <span class="method-status"><span class="status-dot"></span>Online</span>
-      <span class="method-icon">🤖</span>
-      <div class="method-title">Live Chat</div>
-      <div class="method-info">Hozir onlayn</div>
-      <span class="method-action">Suhbat →</span>
+<section class="container">
+  <div class="contact-grid">
+    <div>
+      <div class="contact-card">
+        <h2>📱 Aloqa usullari</h2>
+        <a href="https://t.me/ooouz_support" target="_blank" class="contact-item">
+          <div class="contact-icon icon-tg">✈️</div>
+          <div class="contact-info"><div class="contact-title">Telegram</div><div class="contact-desc">@ooouz_support · 24/7 javob</div></div>
+        </a>
+        <a href="mailto:support@00o.uz" class="contact-item">
+          <div class="contact-icon icon-email">📧</div>
+          <div class="contact-info"><div class="contact-title">Email</div><div class="contact-desc">support@00o.uz · 1-2 soat</div></div>
+        </a>
+        <a href="tel:+998712005050" class="contact-item">
+          <div class="contact-icon icon-phone">📞</div>
+          <div class="contact-info"><div class="contact-title">Telefon</div><div class="contact-desc">+998 71 200 50 50 · Dush-Shan 9:00-18:00</div></div>
+        </a>
+        <div class="contact-item" onclick="document.getElementById('chat-widget').classList.add('open')">
+          <div class="contact-icon icon-chat">💬<div class="online-dot"></div></div>
+          <div class="contact-info"><div class="contact-title">Live Chat</div><div class="contact-desc">Hozir onlayn · 30 soniyada javob</div></div>
+        </div>
+      </div>
+      <div class="sidebar-info">
+        <div class="info-row"><div class="info-label">📍 Ofis manzili</div><div class="info-value">Toshkent, Mirzo Ulug'bek tumani, Mustaqillik 107</div></div>
+        <div class="info-row"><div class="info-label">🕐 Ish vaqti</div><div class="info-value">Dush-Shan 9:00–18:00</div></div>
+        <div class="info-row"><div class="info-label">⚡ O'rtacha javob</div><div class="info-value">30 soniyada (chat)</div></div>
+        <div class="info-row"><div class="info-label">👥 Jamoa</div><div class="info-value">9 kishi · 24/7 chat</div></div>
+      </div>
     </div>
-  </div>
-</section>
-
-<section class="main-content container">
-  <div class="content-grid">
-    <div class="form-card">
-      <h2>✉️ Murojaat yuboring</h2>
-      <p class="subtitle">Formani to'ldiring — admin 24 soat ichida javob beradi</p>
-      <form id="contactForm" onsubmit="sendMessage(event)">
-        <div class="row">
-          <div class="form-group">
-            <label>Ismingiz *</label>
-            <input type="text" name="name" required minlength="2" placeholder="Firdavs">
-            <div class="error-msg" id="err-name">Ism kamida 2 ta belgidan iborat bo'lishi kerak</div>
-          </div>
-          <div class="form-group">
-            <label>Telefon *</label>
-            <input type="tel" name="phone" required placeholder="+998 90 123 45 67" pattern="[+0-9\s]{9,}">
-            <div class="error-msg" id="err-phone">To'g'ri telefon raqam kiriting</div>
+    <div class="contact-card">
+      <h2>✉️ Xabar yuboring</h2>
+      <form id="contactForm" onsubmit="return submitForm(event)">
+        <div class="form-row">
+          <div class="form-group"><label>Ism *</label><input type="text" name="name" required placeholder="Firdavs"></div>
+          <div class="form-group"><label>Email *</label><input type="email" name="email" required placeholder="example@mail.com"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Telefon</label><input type="tel" name="phone" placeholder="+998 90 123 45 67"></div>
+          <div class="form-group"><label>Mavzu *</label>
+            <select name="topic" required>
+              <option value="">Tanlang...</option>
+              <option>Savol</option><option>Hamkorlik</option><option>Reklama</option>
+              <option>Texnik muammo</option><option>Boshqa</option>
+            </select>
           </div>
         </div>
-        <div class="form-group">
-          <label>Email (ixtiyoriy)</label>
-          <input type="email" name="email" placeholder="example@mail.com">
-          <div class="error-msg" id="err-email">To'g'ri email kiriting</div>
-        </div>
-        <div class="form-group">
-          <label>Mavzu *</label>
-          <select name="topic" required>
-            <option value="">Tanlang...</option>
-            <option>💼 Hamkorlik</option>
-            <option>🚀 Startap g'oyasi</option>
-            <option>💰 Investitsiya</option>
-            <option>🛠 Texnik muammo</option>
-            <option>📝 Reklama</option>
-            <option>❓ Boshqa savol</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Xabaringiz *</label>
-          <textarea name="message" required minlength="10" placeholder="Xabaringizni batafsil yozing..."></textarea>
-          <div class="error-msg" id="err-message">Xabar kamida 10 ta belgidan iborat bo'lishi kerak</div>
-        </div>
+        <div class="form-group"><label>Xabar *</label><textarea name="message" required placeholder="Xabaringizni yozing..."></textarea></div>
         <button type="submit" class="btn-submit" id="submitBtn">📤 Yuborish</button>
-        <div class="success-msg" id="successMsg">
-          <strong>✅ Xabaringiz qabul qilindi!</strong>
-          Admin 24 soat ichida siz bilan bog'lanadi.<br>
-          Tezkor javob uchun Telegram orqali yozing.
-        </div>
       </form>
+      <div class="form-success" id="formSuccess">
+        <div class="form-success-icon">✅</div>
+        <h3>Xabaringiz qabul qilindi!</h3>
+        <p style="color:#94a3b8;margin-top:8px;">Tez orada siz bilan bog'lanamiz. O'rtacha javob vaqti: 30 daqiqa.</p>
+      </div>
     </div>
-
-    <aside class="sidebar">
-      <div class="info-card">
-        <h3>📍 Ofis manzili</h3>
-        <div class="info-item">
-          <div class="info-icon">🏢</div>
-          <div class="info-content">
-            <div class="info-title">Bosh ofis</div>
-            <div class="info-text">Toshkent shahri, Yunusobod tumani, Amir Temur ko'chasi 88-uy, 5-qavat</div>
-          </div>
-        </div>
-        <div class="info-item">
-          <div class="info-icon">⏰</div>
-          <div class="info-content">
-            <div class="info-title">Ish vaqti</div>
-            <div class="info-text">Dushanba – Shanba: 09:00 – 18:00<br>Yakshanba: dam olish kuni</div>
-          </div>
-        </div>
-        <div class="info-item">
-          <div class="info-icon">🚇</div>
-          <div class="info-content">
-            <div class="info-title">Metro</div>
-            <div class="info-text">Bodomzor bekatidan 5 daqiqa piyoda</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="info-card">
-        <h3>📊 Tezkor ma'lumotlar</h3>
-        <div class="info-item">
-          <div class="info-icon">⚡</div>
-          <div class="info-content">
-            <div class="info-title">Javob vaqti</div>
-            <div class="info-text">O'rtacha 2 soat (Telegram orqali)</div>
-          </div>
-        </div>
-        <div class="info-item">
-          <div class="info-icon">🌐</div>
-          <div class="info-content">
-            <div class="info-title">Tillar</div>
-            <div class="info-text">O'zbek, Rus, Ingliz</div>
-          </div>
-        </div>
-        <div class="info-item">
-          <div class="info-icon">✅</div>
-          <div class="info-content">
-            <div class="info-title">Hal qilingan</div>
-            <div class="info-text">98% mijozlar mamnun</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="info-card">
-        <h3>🤝 Jamoa bilan aloqa</h3>
-        <div class="info-item">
-          <div class="info-icon">👨‍💼</div>
-          <div class="info-content">
-            <div class="info-title">Asoschisi</div>
-            <div class="info-text">Ramziddin Abdumuminov<br>founder@00o.uz</div>
-          </div>
-        </div>
-        <div class="info-item">
-          <div class="info-icon">👩‍💻</div>
-          <div class="info-content">
-            <div class="info-title">Texnik bo'lim</div>
-            <div class="info-text">tech@00o.uz</div>
-          </div>
-        </div>
-        <div class="info-item">
-          <div class="info-icon">📰</div>
-          <div class="info-content">
-            <div class="info-title">PR & Marketing</div>
-            <div class="info-text">pr@00o.uz</div>
-          </div>
-        </div>
-      </div>
-    </aside>
+  </div>
+  <div class="team-grid">
+    <div class="team-member"><div class="team-avatar">👩‍💼</div><div class="team-name">Dilfuza Karimova</div><div class="team-role">Bosh support menejer</div><a href="mailto:dilfuza@00o.uz" class="team-email">dilfuza@00o.uz</a></div>
+    <div class="team-member"><div class="team-avatar">👨‍💻</div><div class="team-name">Aziz Rahimov</div><div class="team-role">Texnik yordam</div><a href="mailto:aziz@00o.uz" class="team-email">aziz@00o.uz</a></div>
+    <div class="team-member"><div class="team-avatar">👩‍🎨</div><div class="team-name">Madina Yusupova</div><div class="team-role">UX/UI maslahatchi</div><a href="mailto:madina@00o.uz" class="team-email">madina@00o.uz</a></div>
+    <div class="team-member"><div class="team-avatar">👨‍💼</div><div class="team-name">Sherzod Aliyev</div><div class="team-role">Hamkorlik bo'limi</div><a href="mailto:sherzod@00o.uz" class="team-email">sherzod@00o.uz</a></div>
   </div>
 </section>
-
 <section class="faq-section container">
-  <div class="section-title">
-    <h2>❓ Tez-tez beriladigan savollar</h2>
-    <p>Eng ko'p so'raladigan savollarga javoblar</p>
-  </div>
+  <h2>❓ Ko'p beriladigan savollar</h2>
   <div class="faq-list">
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">
-        <span>00o.uz platformasi bepulmi?</span>
-        <span class="faq-arrow">▼</span>
-      </div>
-      <div class="faq-a">Ha, asosiy funksiyalar butunlay bepul. Premium tariflar qo'shimcha imkoniyatlar beradi (AI vositalar cheksiz, reklama yo'q, prioritet ko'rinish).</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">
-        <span>Startapimni qanday qo'shish mumkin?</span>
-        <span class="faq-arrow">▼</span>
-      </div>
-      <div class="faq-a">Ro'yxatdan o'ting, "Startap" bo'limiga kiring, "Yangi startap qo'shish" tugmasini bosing va ma'lumotlarni to'ldiring. Moderator 24 soat ichida tasdiqlaydi.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">
-        <span>AI vositalardan foydalanish uchun nima kerak?</span>
-        <span class="faq-arrow">▼</span>
-      </div>
-      <div class="faq-a">Ro'yxatdan o'tganingiz yetarli. Har bir foydalanuvchiga kuniga 50 ta bepul so'rov. Pro tarifda — cheksiz.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">
-        <span>To'lov qanday amalga oshiriladi?</span>
-        <span class="faq-arrow">▼</span>
-      </div>
-      <div class="faq-a">Payme, Click, Uzum, Visa/MasterCard qabul qilamiz. Barcha to'lovlar xavfsiz va shifrlangan.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">
-        <span>Investor bo'lib qatnashsam bo'ladimi?</span>
-        <span class="faq-arrow">▼</span>
-      </div>
-      <div class="faq-a">Albatta! "Investor" ro'lini tanlang va startaplarga investitsiya qiling. Due diligence va shartnomalar bilan yordam beramiz.</div>
-    </div>
-    <div class="faq-item" onclick="toggleFaq(this)">
-      <div class="faq-q">
-        <span>Platformada qanday himoya mavjud?</span>
-        <span class="faq-arrow">▼</span>
-      </div>
-      <div class="faq-a">2FA autentifikatsiya, end-to-end shifrlash, anti-fraud tizim, 24/7 monitoring. Ma'lumotlaringiz xavfsiz.</div>
-    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q"><span>00o.uz nima?</span><span class="faq-arrow">▼</span></div><div class="faq-a">00o.uz — O'zbekistondagi eng katta AI-asoslangan platforma. Startaplar, frilanserlar, ish o'rinlari va 30+ AI vositasi.</div></div>
+    <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q"><span>Ro'yxatdan o'tish bepulmi?</span><span class="faq-arrow">▼</span></div><div class="faq-a">Ha! Bepul tarif mavjud. Premium tariflar qo'shimcha imkoniyatlar beradi.</div></div>
+    <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q"><span>Startapimni qanday qo'shish mumkin?</span><span class="faq-arrow">▼</span></div><div class="faq-a">"Boshlash" tugmasini bosing, profilingizni yarating va startap ma'lumotlarini kiriting.</div></div>
+    <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q"><span>To'lov qanday amalga oshadi?</span><span class="faq-arrow">▼</span></div><div class="faq-a">Payme, Click, Uzum va Visa/MasterCard. Barcha to'lovlar xavfsiz.</div></div>
+    <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q"><span>AI vositalar qanday ishlaydi?</span><span class="faq-arrow">▼</span></div><div class="faq-a">Sun'iy intellekt (GPT) yordamida har qanday savolga javob, tarjima, rasm yaratish mumkin.</div></div>
+    <div class="faq-item" onclick="this.classList.toggle('open')"><div class="faq-q"><span>Ma'lumotlarim xavfsizmi?</span><span class="faq-arrow">▼</span></div><div class="faq-a">Ha, barcha ma'lumotlar shifrlangan. GDPR va O'zbekiston qonunlariga mos.</div></div>
   </div>
 </section>
-
-<footer>
-  <div class="container">
-    <p>© 2026 00o.uz — O'zbekistondagi eng katta AI platforma</p>
-    <p style="margin-top: 8px;">Made with ❤️ in Tashkent</p>
-  </div>
-</footer>
-
-<button class="chat-btn" onclick="toggleChat()" title="Live Chat">💬</button>
-<div class="chat-window" id="chatWindow">
+<button class="chat-toggle" onclick="document.getElementById('chat-widget').classList.add('open')" id="chatToggle">💬</button>
+<div class="chat-widget" id="chat-widget">
   <div class="chat-header">
-    <h3>🤖 AI Yordamchi</h3>
-    <button class="close" onclick="toggleChat()">×</button>
+    <div class="chat-header-info"><div class="chat-avatar">🤖</div><div><div class="chat-title">Mira AI</div><div class="chat-status">Onlayn · tez javob</div></div></div>
+    <button class="chat-close" onclick="document.getElementById('chat-widget').classList.remove('open')">×</button>
   </div>
   <div class="chat-messages" id="chatMessages">
-    <div class="msg msg-bot">Salom! 👋 Men 00o.uz yordamchisiman. Qanday yordam bera olaman?</div>
-    <div class="msg msg-bot">Quyidagilardan birini tanlang yoki o'z savolingizni yozing:</div>
+    <div class="chat-msg bot">Salom! 👋 Men Mira AI yordamchisiman. Sizga qanday yordam bera olaman?</div>
+  </div>
+  <div class="chat-quick" id="chatQuick">
+    <button onclick="sendQuick(this)">💰 Narxlar</button>
+    <button onclick="sendQuick(this)">🚀 Startap</button>
+    <button onclick="sendQuick(this)">🤖 AI</button>
+    <button onclick="sendQuick(this)">📞 Aloqa</button>
   </div>
   <div class="chat-input">
     <input type="text" id="chatInput" placeholder="Xabar yozing..." onkeypress="if(event.key==='Enter')sendChat()">
     <button onclick="sendChat()">➤</button>
   </div>
 </div>
-
 <script>
-// FORM
-function sendMessage(e) {
+function submitForm(e) {
   e.preventDefault();
-  const form = e.target;
   const btn = document.getElementById('submitBtn');
-  const formData = new FormData(form);
-  const data = Object.fromEntries(formData);
-
-  if (data.name.length < 2) return showError('name');
-  if (data.message.length < 10) return showError('message');
-
   btn.disabled = true;
   btn.textContent = '⏳ Yuborilmoqda...';
-
   setTimeout(() => {
-    const messages = JSON.parse(localStorage.getItem('00o_messages') || '[]');
-    messages.push({ ...data, id: Date.now(), date: new Date().toISOString(), status: 'new' });
-    localStorage.setItem('00o_messages', JSON.stringify(messages));
-
-    document.getElementById('successMsg').classList.add('show');
-    btn.textContent = '✅ Yuborildi!';
-    form.reset();
-
-    console.log('📨 Yangi xabar:', data);
-
+    document.getElementById('contactForm').style.display = 'none';
+    document.getElementById('formSuccess').classList.add('show');
     setTimeout(() => {
+      document.getElementById('contactForm').reset();
+      document.getElementById('contactForm').style.display = 'block';
+      document.getElementById('formSuccess').classList.remove('show');
       btn.disabled = false;
       btn.textContent = '📤 Yuborish';
-      document.getElementById('successMsg').classList.remove('show');
     }, 5000);
-  }, 1200);
+  }, 1500);
+  return false;
 }
-
-function showError(field) {
-  const input = document.querySelector(`[name="${field}"]`);
-  input.classList.add('error');
-  document.getElementById(`err-${field}`).classList.add('show');
-  input.oninput = () => {
-    input.classList.remove('error');
-    document.getElementById(`err-${field}`).classList.remove('show');
-  };
-}
-
-// FAQ
-function toggleFaq(el) {
-  el.classList.toggle('open');
-}
-
-// CHAT
-let chatOpen = false;
-function toggleChat() {
-  chatOpen = !chatOpen;
-  document.getElementById('chatWindow').classList.toggle('open', chatOpen);
-  if (chatOpen) document.getElementById('chatInput').focus();
-}
-
 const botReplies = {
-  'salom': 'Salom! Qanday yordam bera olaman? 😊',
-  'narx': 'Bepul tarifda 50 ta AI so\'rov/kun. Pro tarif 49,000 so\'m/oy — cheksiz.',
-  'startap': 'Startap qo\'shish uchun ro\'yxatdan o\'ting va "Yangi startap" tugmasini bosing.',
-  'ai': 'Bizda 30+ AI vosita bor: Chat, Business Plan, Pitch Deck, Tarjimon va boshqalar.',
-  'investor': 'Investor sifatida qo\'shilish uchun "Investor" ro\'lini tanlang va profilingizni to\'ldiring.',
-  'aloqa': 'Menga yozing yoki Telegram: @KRYZENSYS_support',
-  'rahmat': 'Arzimaydi! Yana savol bo\'lsa yozing 😊',
-  'hayr': 'Xayr! Yana ko\'rishguncha! 👋'
+  'narxlar': "💰 Tariflar:\n\n🆓 Free — 0 so'm (asosiy)\n⚡ Pro — 49,000 so'm/oy\n🏢 Business — 149,000 so'm/oy\n\nYillik tarifda -30% chegirma!",
+  'startap': "🚀 Startap qo'shish:\n\n1. Ro'yxatdan o'ting\n2. Profilingizni to'ldiring\n3. 'Yangi startap' tugmasini bosing\n4. Ma'lumotlarni kiriting\n\nTasdiqlash 24 soat ichida!",
+  'ai': "🤖 AI vositalar:\n\n30+ ta vosita mavjud:\n- Chat, tarjimon\n- Rasm generator\n- Code helper\n- Business plan\n- Pitch deck\n\nPremium'da cheksiz!",
+  'aloqa': "📞 Aloqa:\n\n📱 Telegram: @ooouz_support\n📧 Email: support@00o.uz\n📞 Tel: +998 71 200 50 50\n⏰ 24/7 chat — hozir onlayn!",
+  'default': "Qiziqarli savol! 🙂\n\nAniqroq ma'lumot uchun:\n- 💰 Narxlar\n- 🚀 Startap\n- 🤖 AI\n- 📞 Aloqa\n\nYoki support@00o.uz ga yozing!"
 };
-
+function sendQuick(btn) {
+  const text = btn.textContent;
+  document.getElementById('chatInput').value = text;
+  sendChat();
+  document.getElementById('chatQuick').innerHTML = '';
+}
 function sendChat() {
   const input = document.getElementById('chatInput');
-  const msg = input.value.trim();
-  if (!msg) return;
-  addMessage(msg, 'user');
+  const text = input.value.trim();
+  if (!text) return;
+  addMsg(text, 'user');
   input.value = '';
-
+  const typing = document.createElement('div');
+  typing.className = 'chat-msg bot typing';
+  typing.innerHTML = '<span></span><span></span><span></span>';
+  document.getElementById('chatMessages').appendChild(typing);
   setTimeout(() => {
-    const lower = msg.toLowerCase();
-    let reply = botReplies[lower] || null;
-    if (!reply) {
-      for (const key in botReplies) {
-        if (lower.includes(key)) { reply = botReplies[key]; break; }
-      }
-    }
-    if (!reply) reply = 'Tushundim! Bu savol bo\'yicha admin batafsil javob beradi. Iltimos, telefon raqamingizni qoldiring yoki "Aloqa" formasini to\'ldiring. 📞';
-    addMessage(reply, 'bot');
-  }, 800);
+    typing.remove();
+    const lower = text.toLowerCase();
+    let key = 'default';
+    if (lower.includes('narx') || lower.includes('tarif') || lower.includes('price')) key = 'narxlar';
+    else if (lower.includes('startap')) key = 'startap';
+    else if (lower.includes('ai') || lower.includes('vosita')) key = 'ai';
+    else if (lower.includes('aloqa') || lower.includes('telefon')) key = 'aloqa';
+    addMsg(botReplies[key], 'bot');
+  }, 1000);
 }
-
-function addMessage(text, type) {
-  const messages = document.getElementById('chatMessages');
+function addMsg(text, who) {
   const div = document.createElement('div');
-  div.className = `msg msg-${type}`;
+  div.className = 'chat-msg ' + who;
+  div.style.whiteSpace = 'pre-line';
   div.textContent = text;
-  messages.appendChild(div);
-  messages.scrollTop = messages.scrollHeight;
+  document.getElementById('chatMessages').appendChild(div);
+  const cm = document.getElementById('chatMessages');
+  cm.scrollTop = cm.scrollHeight;
 }
-
-// Smooth focus animations
-document.querySelectorAll('input, textarea, select').forEach(el => {
-  el.addEventListener('focus', () => el.parentElement.style.transform = 'scale(1.01)');
-  el.addEventListener('blur', () => el.parentElement.style.transform = 'scale(1)');
-});
-
-// Console
-console.log('%c00o.uz — Aloqa markazi', 'font-size: 24px; font-weight: bold; color: #8b5cf6;');
-console.log('%cYordam kerakmi? @KRYZENSYS_support', 'color: #06b6d4;');
 </script>
+<script src="/i18n.js"></script>
 </body>
 </html>
