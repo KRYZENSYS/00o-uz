@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Base64 — 00o.uz</title>
+<script src="/global.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; padding: 100px 20px; }
+.container { max-width: 900px; margin: 0 auto; }
+h1 { font-size: 32px; margin-bottom: 8px; text-align: center;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.box { padding: 20px; border-radius: 16px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); margin-bottom: 16px; }
+label { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 4px; }
+textarea, input { width: 100%; padding: 12px; border-radius: 8px; background: rgba(0,0,0,0.4); color: white; border: 1px solid rgba(255,255,255,0.1); font-family: monospace; font-size: 13px; resize: vertical; }
+.btn { padding: 10px 20px; border-radius: 8px; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; border: none; font-weight: 600; cursor: pointer; margin: 4px; }
+.tabs { display: flex; gap: 4px; margin-bottom: 16px; flex-wrap: wrap; }
+.tab { padding: 8px 14px; border-radius: 8px; background: rgba(255,255,255,0.05); cursor: pointer; font-size: 13px; }
+.tab.active { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🔤 Base64 & URL Encoder</h1>
+  <div class="tabs">
+    <div class="tab active" onclick="setT('b64',this)">Base64</div>
+    <div class="tab" onclick="setT('url',this)">URL Encode</div>
+    <div class="tab" onclick="setT('html',this)">HTML Entity</div>
+    <div class="tab" onclick="setT('jwt',this)">JWT Decode</div>
+  </div>
+  <div id="main"></div>
+</div>
+<script>
+const templates = {
+  b64: () => `<div class="box"><label>Kiritish</label><textarea id="i" rows="4" placeholder="Matn yoki Base64..."></textarea>
+    <div><button class="btn" onclick="b64e()">Encode →</button><button class="btn" onclick="b64d()">← Decode</button><button class="btn" onclick="cp('i')">📋</button></div></div>
+    <div class="box"><label>Natija</label><textarea id="o" rows="4" readonly></textarea>
+    <div><button class="btn" onclick="cp('o')">📋 Nusxa</button></div></div>`,
+  url: () => `<div class="box"><label>Kiritish</label><textarea id="i" rows="4" placeholder="URL yoki matn..."></textarea>
+    <div><button class="btn" onclick="urle()">Encode →</button><button class="btn" onclick="urld()">← Decode</button></div></div>
+    <div class="box"><label>Natija</label><textarea id="o" rows="4" readonly></textarea></div>`,
+  html: () => `<div class="box"><label>Kiritish</label><textarea id="i" rows="4" placeholder="<h1>Salom</h1>"></textarea>
+    <div><button class="btn" onclick="htmle()">Escape →</button><button class="btn" onclick="htmld()">← Unescape</button></div></div>
+    <div class="box"><label>Natija</label><textarea id="o" rows="4" readonly></textarea></div>`,
+  jwt: () => `<div class="box"><label>JWT Token</label><textarea id="i" rows="3" placeholder="eyJ..."></textarea>
+    <div><button class="btn" onclick="jwt()">🔍 Decode</button></div></div>
+    <div class="box"><label>Header</label><textarea id="o" rows="3" readonly></textarea></div>
+    <div class="box"><label>Payload</label><textarea id="o2" rows="5" readonly></textarea></div>`
+};
+function setT(t, el) { document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active')); el.classList.add('active'); document.getElementById('main').innerHTML = templates[t](); }
+function b64e() { document.getElementById('o').value = btoa(unescape(encodeURIComponent(document.getElementById('i').value))); }
+function b64d() { try { document.getElementById('o').value = decodeURIComponent(escape(atob(document.getElementById('i').value))); } catch(e) { document.getElementById('o').value = 'Xato: ' + e.message; } }
+function urle() { document.getElementById('o').value = encodeURIComponent(document.getElementById('i').value); }
+function urld() { document.getElementById('o').value = decodeURIComponent(document.getElementById('i').value); }
+function htmle() { document.getElementById('o').value = document.getElementById('i').value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function htmld() { document.getElementById('o').value = document.getElementById('i').value.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&amp;/g,'&'); }
+function jwt() {
+  const t = document.getElementById('i').value;
+  const p = t.split('.');
+  if (p.length !== 3) return document.getElementById('o').value = 'Noto\'g\'ri JWT';
+  try {
+    document.getElementById('o').value = JSON.stringify(JSON.parse(atob(p[0].replace(/-/g,'+').replace(/_/g,'/'))), null, 2);
+    document.getElementById('o2').value = JSON.stringify(JSON.parse(atob(p[1].replace(/-/g,'+').replace(/_/g,'/'))), null, 2);
+  } catch(e) { document.getElementById('o').value = 'Xato: ' + e.message; }
+}
+function cp(id) { navigator.clipboard.writeText(document.getElementById(id).value); window.toast?.success('Nusxalandi!'); }
+setT('b64');
+</script>
+</body>
+</html>
