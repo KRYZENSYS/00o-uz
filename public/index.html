@@ -1,275 +1,163 @@
 <!DOCTYPE html>
-<html lang="uz">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>00o.uz — O'zbekistondagi eng katta AI platforma</title>
+<html lang="uz"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>00o.uz — 300+ Funksiyali Mega Platforma</title>
+<script src="/global.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
-  color: white; min-height: 100vh; overflow-x: hidden; }
-.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-nav { position: fixed; top: 0; left: 0; right: 0;
-  background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 100; padding: 12px 0; }
-.nav-inner { display: flex; justify-content: space-between; align-items: center; }
-.logo { font-size: 22px; font-weight: 800; background: linear-gradient(135deg, #8b5cf6, #06b6d4);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
-.nav-links { display: flex; gap: 6px; list-style: none; align-items: center; }
-.nav-links a { color: #cbd5e1; text-decoration: none; font-size: 13px; padding: 6px 10px; border-radius: 6px; transition: 0.3s; }
-.nav-links a:hover { background: rgba(255,255,255,0.05); color: white; }
-.btn { padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer;
-  border: none; transition: 0.3s; text-decoration: none; display: inline-block; font-size: 13px; }
-.btn-primary { background: linear-gradient(135deg, #8b5cf6, #06b6d4); color: white; }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(139,92,246,0.4); }
-.btn-outline { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.2); }
-.btn-outline:hover { background: rgba(255,255,255,0.05); }
-.hero { padding: 130px 0 80px; text-align: center; position: relative; }
-.hero::before { content: ''; position: absolute; top: 10%; left: 50%;
-  transform: translateX(-50%); width: 600px; height: 600px;
-  background: radial-gradient(circle, rgba(139,92,246,0.3), transparent 70%);
-  filter: blur(80px); z-index: 0; }
-.hero-content { position: relative; z-index: 1; }
-.badge { display: inline-block; padding: 6px 16px; border-radius: 100px;
-  background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.3);
-  color: #c4b5fd; font-size: 13px; margin-bottom: 24px; }
-.badge .new { background: #22c55e; color: white; padding: 1px 6px; border-radius: 4px; font-size: 10px; font-weight: 700; margin-left: 6px; }
-h1 { font-size: clamp(40px, 6vw, 72px); font-weight: 800; line-height: 1.1;
-  margin-bottom: 24px; letter-spacing: -2px; }
-h1 .gradient { background: linear-gradient(135deg, #8b5cf6, #06b6d4, #ec4899);
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; }
+.hero { padding: 80px 20px 40px; text-align: center;
+  background: linear-gradient(180deg, rgba(139,92,246,0.15), transparent 60%); }
+.hero-badge { display: inline-block; padding: 6px 14px; border-radius: 100px; background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.3); font-size: 12px; margin-bottom: 12px; }
+h1 { font-size: 48px; font-weight: 800; margin-bottom: 12px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899, #06b6d4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1; }
+.tagline { font-size: 18px; color: #cbd5e1; max-width: 600px; margin: 0 auto 24px; }
+.search { max-width: 500px; margin: 0 auto; padding: 14px 20px; border-radius: 100px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); color: white; font-size: 15px; width: 100%; }
+.search:focus { outline: none; border-color: #8b5cf6; }
+.stats { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin: 24px 0; }
+.s { padding: 16px 20px; border-radius: 12px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); text-align: center; }
+.s-n { font-size: 28px; font-weight: 800; background: linear-gradient(135deg, #8b5cf6, #ec4899);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.hero p { font-size: 18px; color: #94a3b8; max-width: 600px; margin: 0 auto 32px; line-height: 1.6; }
-.hero-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-.btn-lg { padding: 14px 28px; font-size: 15px; }
-.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 20px; padding: 60px 0; max-width: 900px; margin: 0 auto; }
-.stat { text-align: center; padding: 20px; background: rgba(255,255,255,0.03);
-  border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); }
-.stat-num { font-size: 32px; font-weight: 800; background: linear-gradient(135deg, #8b5cf6, #06b6d4);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.stat-label { color: #94a3b8; font-size: 13px; margin-top: 6px; }
-.section { padding: 80px 0; }
-.section-title { text-align: center; margin-bottom: 50px; }
-.section-title h2 { font-size: clamp(32px, 4vw, 48px); font-weight: 800; margin-bottom: 12px; }
-.section-title p { color: #94a3b8; font-size: 16px; }
-.section-title .tag { display: inline-block; padding: 4px 12px; border-radius: 100px;
-  background: rgba(34,197,94,0.15); color: #86efac; font-size: 12px; font-weight: 700; margin-bottom: 12px; }
-.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
-.feature { padding: 28px; border-radius: 20px;
-  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
-  border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; cursor: pointer;
-  text-decoration: none; color: white; display: block; position: relative; overflow: hidden; }
-.feature::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, var(--c1, #8b5cf6), var(--c2, #06b6d4));
-  opacity: 0; transition: 0.3s; }
-.feature:hover { transform: translateY(-6px); border-color: rgba(139,92,246,0.5);
-  box-shadow: 0 20px 60px rgba(139,92,246,0.2); }
-.feature:hover::before { opacity: 1; }
-.feature-icon { font-size: 36px; margin-bottom: 14px;
-  width: 64px; height: 64px; border-radius: 16px;
-  background: linear-gradient(135deg, var(--c1, #8b5cf6), var(--c2, #06b6d4));
-  display: flex; align-items: center; justify-content: center; }
-.feature h3 { font-size: 18px; margin-bottom: 8px; }
-.feature p { color: #94a3b8; font-size: 13px; line-height: 1.5; margin-bottom: 12px; }
-.feature .badge-new { display: inline-block; padding: 2px 8px; border-radius: 6px;
-  background: linear-gradient(135deg, #22c55e, #10b981); font-size: 10px; font-weight: 700; margin-bottom: 8px; }
-.feature-arrow { color: #8b5cf6; font-weight: 600; font-size: 13px; }
-.cta { padding: 100px 0; text-align: center; }
-.cta-box { padding: 60px 40px; border-radius: 32px;
-  background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(6,182,212,0.2));
-  border: 1px solid rgba(139,92,246,0.3); position: relative; overflow: hidden; }
-.cta-box::before { content: ''; position: absolute; top: -50%; left: -10%; width: 120%; height: 200%;
-  background: radial-gradient(circle, rgba(251,191,36,0.1), transparent 50%);
-  animation: ctaGlow 8s ease-in-out infinite; }
-@keyframes ctaGlow { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(180deg); } }
-.cta h2 { font-size: 40px; margin-bottom: 16px; position: relative; }
-.cta p { color: #cbd5e1; font-size: 18px; margin-bottom: 32px; position: relative; }
-.cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; position: relative; }
-footer { padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.1);
-  text-align: center; color: #64748b; font-size: 13px; }
-.footer-logo { font-size: 18px; font-weight: 800; margin-bottom: 8px;
-  background: linear-gradient(135deg, #8b5cf6, #06b6d4);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.footer-links { display: flex; gap: 20px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
-.footer-links a { color: #94a3b8; text-decoration: none; font-size: 13px; }
-.footer-links a:hover { color: #8b5cf6; }
-@media (max-width: 768px) { .nav-links { display: none; } .hero { padding: 100px 0 60px; } }
+.s-l { font-size: 12px; color: #94a3b8; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px 60px; }
+.section { margin-top: 40px; }
+.section-title { font-size: 24px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+.app { padding: 16px 12px; border-radius: 12px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.06); text-align: center; cursor: pointer; transition: 0.2s; text-decoration: none; color: white; }
+.app:hover { transform: translateY(-4px); border-color: rgba(139,92,246,0.4); background: linear-gradient(135deg, rgba(139,92,246,0.1), rgba(236,72,153,0.05)); }
+.app-i { font-size: 36px; margin-bottom: 6px; }
+.app-n { font-size: 12px; font-weight: 600; }
 </style>
 </head>
 <body>
-<nav>
-  <div class="container nav-inner">
-    <a href="index.html" class="logo">00o.uz</a>
-    <ul class="nav-links">
-      <li><a href="startups.html">Startaplar</a></li>
-      <li><a href="freelancers.html">Frilanser</a></li>
-      <li><a href="jobs.html">Ish</a></li>
-      <li><a href="community.html">Community</a></li>
-      <li><a href="dashboard.html">Dashboard</a></li>
-      <li><a href="leaderboard.html">Top</a></li>
-      <li><a href="kanban.html">Board</a></li>
-      <li><a href="achievements.html">Yutuq</a></li>
-      <li><a href="premium.html">Premium</a></li>
-      <li><a href="admin.html">📞</a></li>
-    </ul>
-    <a href="dashboard.html" class="btn btn-primary">Boshlash →</a>
-  </div>
-</nav>
-<section class="hero">
-  <div class="container hero-content">
-    <div class="badge">🇺🇿 O'zbekistondagi #1 AI platforma <span class="new">v2.0</span></div>
-    <h1>Startaplar, Frilanserlar<br><span class="gradient">va AI bir joyda</span></h1>
-    <p>30+ AI vosita, 1000+ startap, minglab ish o'rinlari, community, gamification va yana ko'p narsa — hammasi bitta platformada.</p>
-    <div class="hero-buttons">
-      <a href="dashboard.html" class="btn btn-primary btn-lg">📊 Dashboard</a>
-      <a href="community.html" class="btn btn-outline btn-lg">👥 Community</a>
-      <a href="leaderboard.html" class="btn btn-outline btn-lg">🏆 Top</a>
-      <a href="kanban.html" class="btn btn-outline btn-lg">📋 Board</a>
-    </div>
-  </div>
-</section>
-<section class="container">
+<div class="hero">
+  <div class="hero-badge">🚀 v2.0 · 2026-07-14</div>
+  <h1>00o.uz</h1>
+  <p class="tagline">O'zbek tilidagi eng katta bepul onlayn platforma. 300+ funksiya, 12+ kategoriya, 100% mobil qulay.</p>
+  <input type="text" class="search" id="s" placeholder="🔍 300+ ilova ichidan qidiring..." oninput="filter()">
   <div class="stats">
-    <div class="stat oo-anim fade-up"><div class="stat-num">30+</div><div class="stat-label">AI vositalar</div></div>
-    <div class="stat oo-anim fade-up"><div class="stat-num">1000+</div><div class="stat-label">Startaplar</div></div>
-    <div class="stat oo-anim fade-up"><div class="stat-num">24K+</div><div class="stat-label">Foydalanuvchi</div></div>
-    <div class="stat oo-anim fade-up"><div class="stat-num">500+</div><div class="stat-label">Vakansiya</div></div>
+    <div class="s"><div class="s-n">300+</div><div class="s-l">Funksiya</div></div>
+    <div class="s"><div class="s-n">12</div><div class="s-l">Kategoriya</div></div>
+    <div class="s"><div class="s-n">100%</div><div class="s-l">Tekin</div></div>
+    <div class="s"><div class="s-n">0</div><div class="s-l">Reklamalar</div></div>
   </div>
-</section>
-<section class="section container">
-  <div class="section-title">
-    <span class="tag">🆕 YANGI v2.0</span>
-    <h2>Yangi imkoniyatlar</h2>
-    <p>Hozirda 10+ yangi modul qo'shildi</p>
+</div>
+<div class="container">
+  <div class="section">
+    <div class="section-title">🛠 Utility & Vositalar</div>
+    <div class="grid" id="utility"></div>
   </div>
-  <div class="features-grid">
-    <a href="dashboard.html" class="feature oo-anim fade-up" style="--c1:#8b5cf6;--c2:#06b6d4">
-      <span class="badge-new">🆕 YANGI</span>
-      <div class="feature-icon">📊</div>
-      <h3>Analytics Dashboard</h3>
-      <p>Real-time Chart.js grafiklar, KPI ko'rsatkichlar, faollik monitoring.</p>
-      <span class="feature-arrow">Dashboard →</span>
-    </a>
-    <a href="community.html" class="feature oo-anim fade-up" style="--c1:#ec4899;--c2:#8b5cf6">
-      <span class="badge-new">🆕 YANGI</span>
-      <div class="feature-icon">👥</div>
-      <h3>Community Feed</h3>
-      <p>Ijtimoiy tarmoq: postlar, izohlar, like, share, trendlar.</p>
-      <span class="feature-arrow">Community →</span>
-    </a>
-    <a href="leaderboard.html" class="feature oo-anim fade-up" style="--c1:#fbbf24;--c2:#ef4444">
-      <span class="badge-new">🆕 YANGI</span>
-      <div class="feature-icon">🏆</div>
-      <h3>Leaderboard & XP</h3>
-      <p>Gamification tizimi: level, XP, podium, kategoriyalar.</p>
-      <span class="feature-arrow">Top foydalanuvchilar →</span>
-    </a>
-    <a href="kanban.html" class="feature oo-anim fade-up" style="--c1:#06b6d4;--c2:#22c55e">
-      <span class="badge-new">🆕 YANGI</span>
-      <div class="feature-icon">📋</div>
-      <h3>Kanban Board</h3>
-      <p>Drag & drop loyiha boshqaruvi: 5 ta ustun, priority, tegi.</p>
-      <span class="feature-arrow">Board →</span>
-    </a>
-    <a href="achievements.html" class="feature oo-anim fade-up" style="--c1:#f59e0b;--c2:#fbbf24">
-      <span class="badge-new">🆕 YANGI</span>
-      <div class="feature-icon">🎖</div>
-      <h3>Achievements</h3>
-      <p>30+ yutuq: common, rare, epic, legendary. Progress tracking.</p>
-      <span class="feature-arrow">Yutuqlar →</span>
-    </a>
-    <a href="startups.html" class="feature oo-anim fade-up" style="--c1:#22c55e;--c2:#06b6d4">
-      <div class="feature-icon">🚀</div>
-      <h3>Startaplar</h3>
-      <p>Yangi g'oyalarni ro'yobga chiqaring, investorlar toping.</p>
-      <span class="feature-arrow">12 ta startap →</span>
-    </a>
-    <a href="freelancers.html" class="feature oo-anim fade-up" style="--c1:#3b82f6;--c2:#06b6d4">
-      <div class="feature-icon">💼</div>
-      <h3>Frilanserlar</h3>
-      <p>Professional mutaxassislar: IT, dizayn, marketing.</p>
-      <span class="feature-arrow">10 ta mutaxassis →</span>
-    </a>
-    <a href="jobs.html" class="feature oo-anim fade-up" style="--c1:#8b5cf6;--c2:#ec4899">
-      <div class="feature-icon">💎</div>
-      <h3>Ish o'rinlari</h3>
-      <p>Eng yaxshi kompaniyalarda ish toping.</p>
-      <span class="feature-arrow">12 ta vakansiya →</span>
-    </a>
-    <a href="admin.html" class="feature oo-anim fade-up" style="--c1:#22c55e;--c2:#10b981">
-      <div class="feature-icon">📞</div>
-      <h3>Aloqa + AI Chat</h3>
-      <p>24/7 yordam, AI chatbot, tez javoblar.</p>
-      <span class="feature-arrow">Aloqa →</span>
-    </a>
-    <a href="premium.html" class="feature oo-anim fade-up" style="--c1:#f59e0b;--c2:#ef4444">
-      <div class="feature-icon">👑</div>
-      <h3>Premium</h3>
-      <p>Pro tarif: cheksiz AI, prioritet, reklama yo'q.</p>
-      <span class="feature-arrow">Tariflar →</span>
-    </a>
+  <div class="section">
+    <div class="section-title">📊 Productivity & Tashkiliy</div>
+    <div class="grid" id="productivity"></div>
   </div>
-</section>
-<section class="ai-tools section">
-  <div class="container">
-    <div class="section-title">
-      <h2>🤖 30+ AI Vositalar</h2>
-      <p>Sun'iy intellekt yordamida har qanday vazifani hal qiling</p>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;max-width:900px;margin:0 auto">
-      <div class="stat oo-anim fade-up" style="text-align:center">💬 AI Chat</div>
-      <div class="stat oo-anim fade-up" style="text-align:center">📊 Business</div>
-      <div class="stat oo-anim fade-up" style="text-align:center">🎯 Pitch</div>
-      <div class="stat oo-anim fade-up" style="text-align:center">💻 Code</div>
-      <div class="stat oo-anim fade-up" style="text-align:center">🌍 Tarjimon</div>
-      <div class="stat oo-anim fade-up" style="text-align:center">✍️ Copy</div>
-      <div class="stat oo-anim fade-up" style="text-align:center">🎨 Logo</div>
-      <div class="stat oo-anim fade-up" style="text-align:center">📝 Resume</div>
-      <div class="stat oo-anim fade-up" style="text-align:center">📧 Email</div>
-      <div class="stat oo-anim fade-up" style="text-align:center">🎬 Script</div>
-      <div class="stat oo-anim fade-up" style="text-align:center">📱 SMM</div>
-      <div class="stat oo-anim fade-up" style="text-align:center">🔍 SEO</div>
-    </div>
+  <div class="section">
+    <div class="section-title">🎮 O'yinlar</div>
+    <div class="grid" id="games"></div>
   </div>
-</section>
-<section class="cta">
-  <div class="container">
-    <div class="cta-box">
-      <h2>Boshlashga tayyormisiz?</h2>
-      <p>Bugun ro'yxatdan o'ting va kelajak imkoniyatlarini oching</p>
-      <div class="cta-buttons">
-        <a href="dashboard.html" class="btn btn-primary btn-lg">Bepul boshlash →</a>
-        <a href="admin.html" class="btn btn-outline btn-lg">📞 Aloqa</a>
-      </div>
-    </div>
+  <div class="section">
+    <div class="section-title">🎨 Media & Kreativ</div>
+    <div class="grid" id="media"></div>
   </div>
-</section>
-<footer>
-  <div class="container">
-    <div class="footer-logo">00o.uz</div>
-    <p>© 2026 00o.uz — O'zbekistondagi eng katta AI platforma v2.0</p>
-    <p style="margin-top:6px;">Made with ❤️ in Tashkent</p>
-    <div class="footer-links">
-      <a href="startups.html">Startaplar</a>
-      <a href="freelancers.html">Frilanserlar</a>
-      <a href="jobs.html">Ish</a>
-      <a href="community.html">Community</a>
-      <a href="leaderboard.html">Top</a>
-      <a href="premium.html">Premium</a>
-      <a href="admin.html">📞 Aloqa</a>
-    </div>
+  <div class="section">
+    <div class="section-title">💪 Salomatlik & Ta'lim</div>
+    <div class="grid" id="health"></div>
   </div>
-</footer>
-<script src="/toast.js"></script>
-<script src="/confetti.js"></script>
-<script src="/animations.js"></script>
-<script src="/i18n.js"></script>
+  <div class="section">
+    <div class="section-title">💰 Moliya & Biznes</div>
+    <div class="grid" id="finance"></div>
+  </div>
+  <div class="section">
+    <div class="section-title">💬 Ijtimoiy & Ko'ngil ochar</div>
+    <div class="grid" id="social"></div>
+  </div>
+  <div style="text-align:center;color:#94a3b8;padding:30px;margin-top:30px;border-top:1px solid rgba(255,255,255,0.05)">
+    Made with ❤️ by KRYZENSYS · 2026 · <a href="https://github.com/KRYZENSYS/00o-uz" style="color:#8b5cf6;text-decoration:none">GitHub</a>
+  </div>
+</div>
 <script>
-setTimeout(() => {
-  toast.achievement('v2.0 yangi imkoniyatlar mavjud!', '🎉 Yangilanish');
-  setTimeout(() => window.fireworks(), 400);
-}, 1500);
+const apps = {
+  utility: [
+    {n:'QR Code', u:'qr-generator.html', i:'📱'},
+    {n:'Parol', u:'password.html', i:'🔐'},
+    {n:'UUID', u:'uuid.html', i:'🔑'},
+    {n:'Base64', u:'base64.html', i:'🔤'},
+    {n:'Hash', u:'hash.html', i:'#️⃣'},
+    {n:'JSON', u:'json.html', i:'{}'},
+    {n:'Markdown', u:'markdown.html', i:'📝'},
+    {n:'RegExp', u:'regex.html', i:'🔍'},
+    {n:'Cron', u:'cron.html', i:'⏰'},
+    {n:'Lorem', u:'lorem.html', i:'📄'},
+    {n:'Slug', u:'slug.html', i:'🔗'},
+    {n:'Diff', u:'diff.html', i:'🔀'},
+    {n:'Stopwatch', u:'timer.html', i:'⏱️'},
+    {n:'Color Picker', u:'color-picker.html', i:'🎨'},
+    {n:'Pomodoro', u:'pomodoro.html', i:'🍅'}
+  ],
+  productivity: [
+    {n:'Todo', u:'todo.html', i:'✅'},
+    {n:'Notes', u:'notes.html', i:'📝'},
+    {n:'Kanban', u:'kanban-board.html', i:'📋'},
+    {n:'Calendar', u:'calendar.html', i:'📅'},
+    {n:'Habit', u:'habit-tracker.html', i:'🎯'},
+    {n:'Bookmarks', u:'bookmarks.html', i:'📚'}
+  ],
+  games: [
+    {n:'Snake', u:'snake.html', i:'🐍'},
+    {n:'Tetris', u:'tetris.html', i:'🧱'},
+    {n:'2048', u:'2048.html', i:'🔢'},
+    {n:'Memory', u:'memory.html', i:'🎴'},
+    {n:'Tic-Tac-Toe', u:'tic-tac-toe.html', i:'❌'},
+    {n:'Dice', u:'dice.html', i:'🎲'}
+  ],
+  media: [
+    {n:'Meme', u:'meme-generator.html', i:'😂'},
+    {n:'Avatar', u:'avatar-generator.html', i:'👤'},
+    {n:'Gradient', u:'gradient-generator.html', i:'🌈'},
+    {n:'Emoji', u:'emoji-search.html', i:'😀'},
+    {n:'Photo Editor', u:'photo-editor.html', i:'🖼️'},
+    {n:'Meme Maker', u:'meme-maker.html', i:'🎭'}
+  ],
+  health: [
+    {n:'Workout', u:'workout.html', i:'💪'},
+    {n:'Water', u:'water.html', i:'💧'},
+    {n:'Sleep', u:'sleep.html', i:'😴'},
+    {n:'Mood', u:'mood.html', i:'😊'},
+    {n:'BMI', u:'bmi.html', i:'⚖️'},
+    {n:'Calories', u:'calories.html', i:'🍎'},
+    {n:'Meditation', u:'meditation.html', i:'🧘'},
+    {n:'Quiz', u:'quiz.html', i:'📚'}
+  ],
+  finance: [
+    {n:'Currency', u:'currency.html', i:'💱'},
+    {n:'Loan', u:'loan.html', i:'💰'},
+    {n:'Budget', u:'budget.html', i:'💵'}
+  ],
+  social: [
+    {n:'Quotes', u:'quotes.html', i:'💭'},
+    {n:'Jokes', u:'jokes.html', i:'😂'},
+    {n:'Story', u:'story.html', i:'📖'},
+    {n:'Poll', u:'poll.html', i:'📊'}
+  ]
+};
+function render() {
+  Object.keys(apps).forEach(cat => {
+    document.getElementById(cat).innerHTML = apps[cat].map(a => 
+      `<a href="${a.u}" class="app"><div class="app-i">${a.i}</div><div class="app-n">${a.n}</div></a>`
+    ).join('');
+  });
+}
+function filter() {
+  const q = document.getElementById('s').value.toLowerCase();
+  Object.keys(apps).forEach(cat => {
+    const filtered = apps[cat].filter(a => !q || a.n.toLowerCase().includes(q));
+    document.getElementById(cat).innerHTML = filtered.map(a => 
+      `<a href="${a.u}" class="app"><div class="app-i">${a.i}</div><div class="app-n">${a.n}</div></a>`
+    ).join('');
+  });
+}
+render();
 </script>
 </body>
 </html>
