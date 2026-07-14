@@ -1,118 +1,83 @@
-# 🚀 00o.uz – AI Startup & Freelancer Hub
+# 🚀 00o.uz - AI Startup & Freelancer Hub
 
-> **Uzbekistan's largest platform** combining Startup Hub + Freelancer Marketplace + AI Assistant + Investor Platform + Team Builder
+> **O'zbekistondagi eng katta AI-powered startup, frilanser va investor platformasi**
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)](https://nextjs.org)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-green.svg)](https://fastapi.tiangolo.com)
-[![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue.svg)](https://www.typescriptlang.org)
-[![GroqCloud](https://img.shields.io/badge/GroqCloud-AI-orange.svg)](https://groq.com)
-[![i18n](https://img.shields.io/badge/i18n-UZ%20%7C%20RU%20%7C%20EN-green.svg)]()
+## ✨ Xususiyatlar
 
-## ✨ Features
+### 🤖 AI Yordamchi (GroqCloud)
+30+ vosita: Chat, Business Plan, Pitch Deck, Startup Analyzer, Code Generator, Translator, Summarizer, SEO, Marketing, Resume Builder va boshqalar
 
-### 🎯 Core Modules
-- 🏢 **Startup Hub** - Create, showcase, and fund startups
-- 👨‍💻 **Freelancer Marketplace** - Buy & sell services
-- 💰 **Investor Platform** - Connect startups with investors
-- 💼 **Jobs Board** - Find jobs or hire talent
-- 👥 **Team Builder** - Find co-founders and team members
-- 🤖 **AI Assistant** - 30+ AI tools powered by GroqCloud
+### 🎯 Asosiy modullar
+- 🚀 Startaplar (CRUD, investitsiya)
+- 💼 Frilanser xizmatlar (Basic/Standard/Premium)
+- 💼 Ish o'rinlari
+- 💰 Investorlar
+- 👥 Jamoalar
+- 💬 Xabarlar (WebSocket)
+- 🛡️ Admin panel
 
-### 🌐 Multi-Language
-- 🇺🇿 Uzbek (default)
-- 🇷🇺 Russian
-- 🇬🇧 English
-- Auto-detection + Manual switching
-- SEO-optimized per language
+### 🌍 i18n
+3 til: 🇺🇿 O'zbek, 🇷🇺 Русский, 🇬🇧 English
 
-### 🤖 AI (GroqCloud)
-- Llama 3.3 70B
-- DeepSeek R1
-- Qwen 2.5
-- Streaming responses
-- Chat history
-- File/PDF/Image analysis
+## 🏗️ Texnologiyalar
 
-## 🛠 Tech Stack
+**Frontend:** Next.js 15 · TypeScript · Tailwind CSS · next-intl
+**Backend:** FastAPI · SQLAlchemy 2.0 (async) · PostgreSQL · Redis · JWT · GroqCloud AI
+**Auth:** Email, Telegram, Google OAuth, 2FA, OTP
+**Deployment:** Vercel · Railway · Docker
 
-**Frontend:** Next.js 15 (App Router) · React · TypeScript · Tailwind CSS · shadcn/ui · Framer Motion · React Query · Zustand
-
-**Backend:** FastAPI · PostgreSQL · SQLAlchemy · Redis · WebSocket · JWT
-
-**Storage:** Cloudinary / S3
-
-**AI:** GroqCloud (OpenAI-compatible)
-
-**Auth:** Telegram · Google · Email+Password · OTP · 2FA
-
-## 👨‍💻 Administrator
-
-| Contact | Info |
-|---------|------|
-| 👤 **Name** | Firdavs (FirdavsVIP) |
-| 📧 **Email** | f91186645@gmail.com |
-| 💻 **GitHub** | https://github.com/KRYZENSYS/ |
-| 📱 **Telegram** | [@FirdavsVIP](https://t.me/FirdavsVIP) |
-| 🏢 **Organization** | KRYZENSYS |
-| 🌐 **Website** | https://00o.uz |
-
-## 🚀 Quick Start
-
-```bash
-# Clone
-git clone https://github.com/KRYZENSYS/00o-uz.git
-cd 00o-uz
-
-# Install
-npm install
-cd backend && pip install -r requirements.txt && cd ..
-
-# Setup
-cp .env.example .env.local
-cp backend/.env.example backend/.env
-
-# Run
-npm run dev          # Frontend (port 3000)
-cd backend && uvicorn main:app --reload   # Backend (port 8000)
-```
-
-## 📁 Project Structure
+## 📁 Struktura
 
 ```
 00o-uz/
-├── frontend/              # Next.js 15 App Router
-│   ├── app/              # Routes
-│   │   ├── [locale]/     # i18n routes (uz, ru, en)
-│   │   ├── admin/        # Admin panel
-│   │   └── api/          # API routes
-│   ├── components/       # Reusable UI
-│   ├── lib/              # Utilities
-│   ├── hooks/            # React hooks
-│   ├── stores/           # Zustand stores
-│   ├── messages/         # i18n translations
-│   └── public/           # Static files
-├── backend/              # FastAPI
+├── src/                     # Next.js frontend
+│   ├── app/[locale]/        # i18n routes
+│   │   ├── page.tsx         # Landing
+│   │   ├── login/           # Auth
+│   │   ├── register/
+│   │   ├── dashboard/
+│   │   ├── ai/              # AI Assistant
+│   │   └── startups/        # CRUD
+│   ├── components/          # React components
+│   ├── i18n/                # Config
+│   └── messages/            # uz, ru, en
+├── backend/                 # FastAPI
 │   ├── app/
-│   │   ├── api/          # Endpoints
-│   │   ├── core/         # Config
-│   │   ├── models/       # SQLAlchemy
-│   │   ├── schemas/      # Pydantic
-│   │   ├── services/     # Business logic
-│   │   └── ai/           # GroqCloud integration
-│   └── alembic/          # Migrations
-├── docker-compose.yml
-├── Dockerfile
+│   │   ├── main.py
+│   │   ├── core/            # config, db, security
+│   │   ├── models/          # SQLAlchemy
+│   │   ├── ai/              # GroqCloud
+│   │   └── api/v1/          # endpoints
+│   ├── requirements.txt
+│   └── .env.example
 └── README.md
 ```
 
-## 📞 Support
+## 🚀 Tezkor boshlash
 
-- 📧 f91186645@gmail.com
-- 💻 https://github.com/KRYZENSYS/
-- 📱 https://t.me/FirdavsVIP
+### Frontend
+```bash
+npm install
+cp .env.example .env.local
+npm run dev
+```
 
----
+### Backend
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+uvicorn app.main:app --reload
+```
 
-**Made with ❤️ by FirdavsVIP @ KRYZENSYS** 🛡️
+## 👨‍💻 Admin
+**Email:** `f91186645@gmail.com`
+**Telegram:** [@FirdavsVIP](https://t.me/FirdavsVIP)
+**Company:** KRYZENSYS
+
+## 📜 License
+MIT © 2026 00o.uz
+
+**Made with ❤️ by KRYZENSYS**
