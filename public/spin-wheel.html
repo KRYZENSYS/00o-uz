@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kunlik Spin Wheel — 00o.uz</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; }
+.container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(10,14,26,0.85); backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.05); z-index: 100; padding: 16px 0; }
+.nav-inner { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+.nav-links { display: flex; gap: 8px; list-style: none; }
+.nav-links a { color: #cbd5e1; text-decoration: none; font-size: 14px; padding: 8px 14px; border-radius: 8px; }
+.nav-links a:hover { background: rgba(255,255,255,0.05); color: white; }
+.btn-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1); color: white; cursor: pointer; }
+.sw-hero { padding: 100px 0 20px; text-align: center; }
+.sw-hero h1 { font-size: 40px; font-weight: 800; margin-bottom: 8px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.coins-bar { display: inline-block; padding: 8px 20px; border-radius: 100px;
+  background: rgba(251,191,36,0.15); border: 1px solid rgba(251,191,36,0.3);
+  color: #fbbf24; font-weight: 700; margin: 10px 0; }
+.wheel-container { position: relative; width: 400px; height: 400px; margin: 30px auto; }
+.wheel { width: 100%; height: 100%; border-radius: 50%;
+  background: conic-gradient(#8b5cf6 0deg 45deg, #ec4899 45deg 90deg, #06b6d4 90deg 135deg, #22c55e 135deg 180deg, #f59e0b 180deg 225deg, #ef4444 225deg 270deg, #fbbf24 270deg 315deg, #3b82f6 315deg 360deg);
+  box-shadow: 0 0 60px rgba(139,92,246,0.5); transition: transform 4s cubic-bezier(0.17, 0.67, 0.21, 0.99); position: relative; }
+.wheel-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 80px; height: 80px; border-radius: 50%;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b); display: flex; align-items: center; justify-content: center;
+  font-size: 32px; box-shadow: 0 0 30px rgba(251,191,36,0.6); cursor: pointer; z-index: 2; }
+.wheel-pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+  width: 0; height: 0; border-left: 20px solid transparent; border-right: 20px solid transparent; border-top: 40px solid #fbbf24; z-index: 3;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)); }
+.wheel-labels { position: absolute; inset: 0; }
+.wheel-label { position: absolute; top: 50%; left: 50%; transform-origin: 0 0; color: white;
+  font-weight: 800; font-size: 14px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+.prizes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 30px 0; }
+.prize { padding: 16px; border-radius: 12px; text-align: center;
+  background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.06); }
+.prize-icon { font-size: 32px; }
+.prize-amt { color: #fbbf24; font-weight: 800; margin-top: 4px; }
+.history { padding: 20px; border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.06); margin: 20px 0 60px; }
+.history h3 { margin-bottom: 12px; }
+.history-item { padding: 10px 0; display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px; }
+</style>
+</head>
+<body>
+<nav>
+  <div class="container nav-inner">
+    <a href="index.html" class="logo">00o.uz</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Bosh</a></li>
+      <li><a href="leaderboard.html">🏆 Top</a></li>
+      <li><a href="achievements.html">🎖</a></li>
+      <li><a href="shop.html">🛍 Shop</a></li>
+      <li><a href="battle-pass.html">⚔ Pass</a></li>
+    </ul>
+    <div style="display:flex;gap:8px;">
+      <button class="btn-icon" onclick="window.cmdPalette?.toggle()">⌘</button>
+      <a href="profile.html" class="btn-icon">👤</a>
+    </div>
+  </div>
+</nav>
+<section class="sw-hero container">
+  <h1>🎰 Kunlik Spin Wheel</h1>
+  <p>Har kuni aylantiring va sovg'alar yuting!</p>
+  <div class="coins-bar">💰 12,480 tanga</div>
+</section>
+<section class="container">
+  <div class="wheel-container">
+    <div class="wheel-pointer"></div>
+    <div class="wheel" id="wheel">
+      <div class="wheel-labels">
+        <div class="wheel-label" style="transform: rotate(22.5deg) translate(0, -130px) rotate(-22.5deg)">100</div>
+        <div class="wheel-label" style="transform: rotate(67.5deg) translate(0, -130px) rotate(-67.5deg)">200</div>
+        <div class="wheel-label" style="transform: rotate(112.5deg) translate(0, -130px) rotate(-112.5deg)">500</div>
+        <div class="wheel-label" style="transform: rotate(157.5deg) translate(0, -130px) rotate(-157.5deg)">1000</div>
+        <div class="wheel-label" style="transform: rotate(202.5deg) translate(0, -130px) rotate(-202.5deg)">JACKPOT</div>
+        <div class="wheel-label" style="transform: rotate(247.5deg) translate(0, -130px) rotate(-247.5deg)">50</div>
+        <div class="wheel-label" style="transform: rotate(292.5deg) translate(0, -130px) rotate(-292.5deg)">300</div>
+        <div class="wheel-label" style="transform: rotate(337.5deg) translate(0, -130px) rotate(-337.5deg)">XP</div>
+      </div>
+    </div>
+    <div class="wheel-center" onclick="spin()">🎯</div>
+  </div>
+  <div class="prizes">
+    <div class="prize"><div class="prize-icon">💎</div><div class="prize-amt">50 tanga</div></div>
+    <div class="prize"><div class="prize-icon">💰</div><div class="prize-amt">200 tanga</div></div>
+    <div class="prize"><div class="prize-icon">🎁</div><div class="prize-amt">500 tanga</div></div>
+    <div class="prize"><div class="prize-icon">🏆</div><div class="prize-amt">1000 tanga</div></div>
+  </div>
+  <div class="history">
+    <h3>📜 So'nggi yutuqlar</h3>
+    <div class="history-item"><span>🎉 500 tanga yutdingiz</span><span style="color:#94a3b8">Bugun 14:23</span></div>
+    <div class="history-item"><span>⭐ 100 XP oldingiz</span><span style="color:#94a3b8">Kecha 18:45</span></div>
+    <div class="history-item"><span>💰 200 tanga yutdingiz</span><span style="color:#94a3b8">2 kun oldin</span></div>
+    <div class="history-item"><span>🎁 Jackpot! 1000 tanga</span><span style="color:#94a3b8">3 kun oldin</span></div>
+  </div>
+</section>
+<script src="/toast.js"></script>
+<script src="/confetti.js"></script>
+<script src="/animations.js"></script>
+<script src="/sound-effects.js"></script>
+<script src="/cmd-palette.js"></script>
+<script>
+let spinning = false;
+function spin() {
+  if (spinning) return;
+  spinning = true;
+  const wheel = document.getElementById('wheel');
+  const deg = 360 * 5 + Math.random() * 360;
+  wheel.style.transform = `rotate(${deg}deg)`;
+  window.sfx?.coin();
+  setTimeout(() => {
+    const prizes = [100, 200, 500, 1000, 5000, 50, 300, 200];
+    const idx = Math.floor((deg % 360) / 45);
+    const won = prizes[idx];
+    window.sfx?.achievement();
+    window.confetti({count: 150, x: window.innerWidth/2, y: 300});
+    window.toast?.achievement(`Tabriklaymiz! ${won} tanga yutdingiz! 🎉`, '🎰 Spin Wheel');
+    spinning = false;
+  }, 4000);
+}
+</script>
+</body>
+</html>
