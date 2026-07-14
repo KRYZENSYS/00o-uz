@@ -1,57 +1,104 @@
 <!DOCTYPE html>
 <html lang="uz"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tic Tac Toe — 00o.uz</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0e1a">
+<title>Tic-Tac-Toe — 00o.uz</title>
 <script src="/global.js"></script>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white;
-  min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-.box { text-align: center; }
-h1 { font-size: 40px; margin-bottom: 8px; background: linear-gradient(135deg, #8b5cf6, #ec4899);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.tabs { display: flex; gap: 6px; justify-content: center; margin: 16px 0; }
-.tab { padding: 8px 16px; border-radius: 100px; background: rgba(255,255,255,0.05); cursor: pointer; font-size: 13px; }
-.tab.active { background: linear-gradient(135deg, #8b5cf6, #ec4899); }
-.s { display: flex; gap: 16px; justify-content: center; margin-bottom: 16px; font-size: 18px; }
-.s span { font-weight: 800; }
-.board { display: grid; grid-template-columns: repeat(3, 100px); gap: 8px; margin: 0 auto;
-  padding: 12px; background: linear-gradient(135deg, rgba(139,92,246,0.1), rgba(236,72,153,0.1)); border-radius: 12px; }
-@media (max-width:480px) { .board { grid-template-columns: repeat(3, 85px); } }
-.cell { aspect-ratio: 1; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-  display: flex; align-items: center; justify-content: center; font-size: 50px; font-weight: 800; cursor: pointer; transition: 0.2s; }
-.cell:hover { background: rgba(255,255,255,0.1); }
-.cell.x { color: #8b5cf6; }
-.cell.o { color: #ec4899; }
-.b { padding: 10px 20px; border-radius: 100px; background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; border: none; font-weight: 700; cursor: pointer; margin-top: 16px; }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+body{font-family:-apple-system,sans-serif;background:#0a0e1a;color:#f1f5f9;min-height:100vh;padding:60px 16px 100px;max-width:480px;margin:0 auto;display:flex;flex-direction:column;align-items:center}
+h1{font-size:clamp(24px,6vw,32px);font-weight:800;background:linear-gradient(135deg,#8b5cf6,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
+.score-row{display:flex;gap:8px;width:100%;margin-bottom:16px}
+.score{flex:1;padding:10px;border-radius:10px;background:rgba(255,255,255,0.05);text-align:center}
+.s-n{font-size:22px;font-weight:800}
+.s-l{font-size:10px;color:#94a3b8;text-transform:uppercase}
+.board{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:100%;max-width:320px;aspect-ratio:1;margin:0 auto}
+.cell{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:48px;font-weight:800;cursor:pointer;transition:background 0.2s}
+.cell:active{background:rgba(139,92,246,0.2)}
+.cell.win{background:linear-gradient(135deg,#22c55e,#10b981);animation:pop 0.5s}
+@keyframes pop{50%{transform:scale(1.05)}}
+.turn{text-align:center;padding:10px;border-radius:10px;background:rgba(255,255,255,0.04);margin:12px 0;width:100%;font-weight:700}
+.tabs{display:flex;gap:4px;margin-bottom:12px;background:rgba(255,255,255,0.03);padding:4px;border-radius:10px;width:100%}
+.tab{flex:1;padding:8px;border-radius:8px;text-align:center;cursor:pointer;font-size:13px;color:#94a3b8}
+.tab.act{background:linear-gradient(135deg,#8b5cf6,#ec4899);color:white;font-weight:700}
+button{padding:10px 20px;border-radius:10px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:white;border:none;font-weight:700;cursor:pointer;width:100%;margin-top:8px}
 </style>
 </head>
 <body>
-<div class="box">
-  <h1>❌ Tic Tac Toe</h1>
-  <div class="tabs">
-    <div class="tab active" onclick="setMode('pvp', this)">👥 Ikki kishi</div>
-    <div class="tab" onclick="setMode('cpu', this)">🤖 AI</div>
-  </div>
-  <div class="s"><div>❌ <span id="sx">0</span></div><div>⏱ <span id="sdr">0</span></div><div>⭕ <span id="so">0</span></div></div>
-  <div class="board" id="bd"></div>
-  <button class="b" onclick="init()">🔄 Yangi o'yin</button>
+<h1>❌ Tic-Tac-Toe</h1>
+<div class="score-row">
+  <div class="score" style="color:#22c55e"><div class="s-n" id="sx">0</div><div class="s-l">X</div></div>
+  <div class="score" style="color:#94a3b8"><div class="s-n" id="sd">0</div><div class="s-l">Durang</div></div>
+  <div class="score" style="color:#ec4899"><div class="s-n" id="so">0</div><div class="s-l">O</div></div>
 </div>
+<div class="tabs">
+  <div class="tab act" onclick="setM('pvp',this)">👥 2 kishi</div>
+  <div class="tab" onclick="setM('ai',this)">🤖 AI</div>
+</div>
+<div class="turn" id="turn">X navbati</div>
+<div class="board" id="board"></div>
+<button onclick="reset()">🔄 Yangi o'yin</button>
 <script>
-let board, turn, mode='pvp', scores = {x:0, o:0, d:0}, gameOver = false;
-function setMode(m, el) { document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active')); el.classList.add('active'); mode=m; init(); }
-function init() { board = Array(9).fill(''); turn = 'X'; gameOver = false; draw(); }
-function draw() { document.getElementById('bd').innerHTML = board.map((c, i) => `<div class="cell ${c.toLowerCase()}" onclick="play(${i})">${c}</div>`).join(''); }
-function play(i) { if (board[i] || gameOver) return; board[i] = turn; if (check()) return; turn = turn==='X'?'O':'X'; draw(); if (mode==='cpu' && turn==='O' && !gameOver) setTimeout(cpu, 300); }
-function cpu() { const empty = board.map((c,i)=>c?null:i).filter(x=>x!==null); board[empty[Math.floor(Math.random()*empty.length)]] = 'O'; if (check()) return; turn='X'; draw(); }
-function check() {
-  const w = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-  for (const [a,b,c] of w) if (board[a] && board[a]===board[b] && board[a]===board[c]) { gameOver = true; scores[board[a].toLowerCase()]++; update(); window.toast?.success(`${board[a]} g'olib!`, '🎉'); window.confetti && window.confetti({count:80}); return true; }
-  if (!board.includes('')) { gameOver = true; scores.d++; update(); window.toast?.info('Durang!'); return true; }
-  return false;
+var board=Array(9).fill(''), turn='X', mode='pvp', over=false, win=Array(9).fill(false);
+var sc=JSON.parse(localStorage.getItem('oo-ttt')||'{"x":0,"o":0,"d":0}');
+function setM(m,el){ mode=m; document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('act');}); el.classList.add('act'); reset(); }
+function render(){
+  document.getElementById('board').innerHTML=board.map(function(c,i){
+    return '<div class="cell '+(win[i]?'win':'')+'" onclick="play('+i+')" style="color:'+(c==='X'?'#22c55e':c==='O'?'#ec4899':'transparent')+'">'+c+'</div>';
+  }).join('');
+  document.getElementById('sx').textContent=sc.x;
+  document.getElementById('so').textContent=sc.o;
+  document.getElementById('sd').textContent=sc.d;
+  document.getElementById('turn').textContent=over?'O\'yin tugadi':turn+' navbati';
 }
-function update() { document.getElementById('sx').textContent = scores.x; document.getElementById('so').textContent = scores.o; document.getElementById('sdr').textContent = scores.d; }
-init();
+function check(){
+  var lines=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  for(var l of lines){ if(board[l[0]]&&board[l[0]]===board[l[1]]&&board[l[0]]===board[l[2]]){ return l; } }
+  return null;
+}
+function play(i){
+  if(over||board[i]) return;
+  board[i]=turn;
+  var w=check();
+  if(w){
+    over=true; win=w;
+    sc[turn.toLowerCase()]++;
+    localStorage.setItem('oo-ttt',JSON.stringify(sc));
+    setTimeout(function(){ window.confetti({count:50}); toast.success(turn+' yutdi! 🎉'); },300);
+  } else if(board.every(function(c){return c;})){
+    over=true; sc.d++; localStorage.setItem('oo-ttt',JSON.stringify(sc));
+    toast.info('Durang 🤝');
+  } else {
+    turn=turn==='X'?'O':'X';
+    if(mode==='ai'&&turn==='O') setTimeout(aiPlay,500);
+  }
+  render();
+}
+function aiPlay(){
+  if(over) return;
+  // Simple AI
+  var avail=board.map(function(c,i){return c?null:i;}).filter(function(x){return x!==null;});
+  // Win
+  for(var i of avail){ var nb=board.slice(); nb[i]='O'; if(check.call({board:nb})){ board[i]='O'; return done(); } }
+  // Block
+  for(var i of avail){ var nb=board.slice(); nb[i]='X'; var t=check.call({board:nb}); if(t){ board[i]='O'; return done(); } }
+  // Center
+  if(avail.indexOf(4)>=0){ board[4]='O'; return done(); }
+  // Random corner
+  var corners=[0,2,6,8].filter(function(x){return avail.indexOf(x)>=0;});
+  if(corners.length){ board[corners[Math.floor(Math.random()*corners.length)]]='O'; return done(); }
+  board[avail[0]]='O';
+  done();
+}
+function done(){
+  var w=check();
+  if(w){ over=true; win=w; sc.o++; localStorage.setItem('oo-ttt',JSON.stringify(sc)); setTimeout(function(){toast.info('AI yutdi 🤖');},200); }
+  else if(board.every(function(c){return c;})){ over=true; sc.d++; localStorage.setItem('oo-ttt',JSON.stringify(sc)); }
+  else turn='X';
+  render();
+}
+function reset(){ board=Array(9).fill(''); turn='X'; over=false; win=Array(9).fill(false); render(); }
+render();
 </script>
 </body>
 </html>
