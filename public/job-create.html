@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ish e'lon qilish — 00o.uz</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #0a0e1a; color: white; min-height: 100vh; }
+.container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(10,14,26,0.85); backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.05); z-index: 100; padding: 16px 0; }
+.nav-inner { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+.nav-links { display: flex; gap: 8px; list-style: none; }
+.nav-links a { color: #cbd5e1; text-decoration: none; font-size: 14px; padding: 8px 14px; border-radius: 8px; }
+.nav-links a:hover { background: rgba(255,255,255,0.05); }
+.btn-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1); color: white; cursor: pointer; }
+.jc-hero { padding: 100px 0 30px; }
+.jc-hero h1 { font-size: 36px; font-weight: 800; margin-bottom: 8px;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.wizard { display: flex; gap: 8px; margin: 30px 0; justify-content: center; }
+.wstep { flex: 1; max-width: 100px; padding: 12px 8px; text-align: center; border-radius: 12px;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
+  font-size: 12px; font-weight: 600; transition: 0.3s; }
+.wstep.active { background: linear-gradient(135deg, #8b5cf6, #ec4899); border-color: transparent; }
+.wstep.completed { background: rgba(34,197,94,0.2); border-color: rgba(34,197,94,0.4); }
+.wstep-num { font-size: 18px; font-weight: 800; }
+.form { padding: 30px; border-radius: 20px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.06); margin-bottom: 30px; }
+.field { margin-bottom: 20px; }
+.label { font-weight: 600; margin-bottom: 8px; display: block; font-size: 14px; }
+.input, .textarea, .select { width: 100%; padding: 12px 16px; border-radius: 12px;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  color: white; font-size: 14px; font-family: inherit; transition: 0.2s; }
+.input:focus, .textarea:focus, .select:focus { outline: none; border-color: #8b5cf6; }
+.textarea { min-height: 100px; resize: vertical; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { padding: 8px 14px; border-radius: 100px; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1); cursor: pointer; font-size: 13px; }
+.chip.active { background: linear-gradient(135deg, #8b5cf6, #ec4899); border-color: transparent; }
+.btns { display: flex; gap: 12px; justify-content: space-between; margin-top: 30px; }
+.btn { padding: 12px 24px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; font-size: 14px; }
+.btn-primary { background: linear-gradient(135deg, #8b5cf6, #ec4899); color: white; }
+.btn-secondary { background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1); }
+</style>
+</head>
+<body>
+<nav>
+  <div class="container nav-inner">
+    <a href="index.html" class="logo">00o.uz</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Bosh</a></li>
+      <li><a href="jobs.html">Ish</a></li>
+      <li><a href="freelancers.html">Frilanser</a></li>
+      <li><a href="community.html">Community</a></li>
+    </ul>
+    <div style="display:flex;gap:8px;">
+      <button class="btn-icon">🔔</button>
+      <a href="profile.html" class="btn-icon">👤</a>
+    </div>
+  </div>
+</nav>
+<section class="jc-hero container">
+  <h1>➕ Ish e'lon qilish</h1>
+  <p>5 ta oddiy qadamda vakansiya yarating</p>
+  <div class="wizard">
+    <div class="wstep active" data-s="1"><div class="wstep-num">1</div>Asosiy</div>
+    <div class="wstep" data-s="2"><div class="wstep-num">2</div>Tafsilot</div>
+    <div class="wstep" data-s="3"><div class="wstep-num">3</div>Talablar</div>
+    <div class="wstep" data-s="4"><div class="wstep-num">4</div>Maosh</div>
+    <div class="wstep" data-s="5"><div class="wstep-num">5</div>Chop etish</div>
+  </div>
+</section>
+<section class="container">
+  <div class="form" id="form">
+    <div class="step" data-step="1">
+      <div class="field">
+        <label class="label">Lavozim nomi *</label>
+        <input class="input" placeholder="masalan: Senior Frontend Developer" value="Senior Frontend Developer">
+      </div>
+      <div class="field">
+        <label class="label">Kompaniya nomi *</label>
+        <input class="input" placeholder="Kompaniya" value="00o Tech">
+      </div>
+      <div class="row">
+        <div class="field">
+          <label class="label">Kategoriya</label>
+          <select class="select">
+            <option>IT va Dasturlash</option>
+            <option>Dizayn</option>
+            <option>Marketing</option>
+            <option>Sales</option>
+            <option>HR</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="label">Ish turi</label>
+          <select class="select">
+            <option>To'liq stavka</option>
+            <option>Yarim stavka</option>
+            <option>Frilans</option>
+            <option>Masofaviy</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="btns">
+    <button class="btn btn-secondary" onclick="prev()">← Orqaga</button>
+    <button class="btn btn-primary" onclick="next()">Keyingi →</button>
+  </div>
+</section>
+<script src="/toast.js"></script>
+<script src="/confetti.js"></script>
+<script src="/sound-effects.js"></script>
+<script>
+let step = 1;
+const total = 5;
+const data = {
+  1: '<div class="field"><label class="label">Lavozim nomi *</label><input class="input" value="Senior Frontend Developer"></div><div class="field"><label class="label">Kompaniya *</label><input class="input" value="00o Tech"></div><div class="row"><div class="field"><label class="label">Kategoriya</label><select class="select"><option>IT va Dasturlash</option><option>Dizayn</option><option>Marketing</option></select></div><div class="field"><label class="label">Ish turi</label><select class="select"><option>To\'liq stavka</option><option>Masofaviy</option></select></div></div>',
+  2: '<div class="field"><label class="label">Qisqacha tavsif *</label><textarea class="textarea">Bizga tajribali Frontend Developer kerak. Siz React, TypeScript va zamonaviy texnologiyalar bilan ishlaysiz.</textarea></div><div class="field"><label class="label">Majburiyatlar</label><textarea class="textarea">• Yangi funksiyalar yaratish\n• Kod sifatini ta\'minlash\n• Jamoa bilan ishlash</textarea></div>',
+  3: '<div class="field"><label class="label">Texnologiyalar</label><div class="chips"><div class="chip active">React</div><div class="chip active">TypeScript</div><div class="chip">Node.js</div><div class="chip">GraphQL</div><div class="chip">Next.js</div><div class="chip">+ qo\'shish</div></div></div><div class="field"><label class="label">Tajriba</label><div class="chips"><div class="chip">1 yil</div><div class="chip active">3 yil</div><div class="chip">5+ yil</div></div></div>',
+  4: '<div class="row"><div class="field"><label class="label">Maosh (dan)</label><input class="input" value="15,000,000"></div><div class="field"><label class="label">Maosh (gacha)</label><input class="input" value="25,000,000"></div></div><div class="field"><label class="label">Valyuta</label><div class="chips"><div class="chip active">UZS</div><div class="chip">USD</div><div class="chip">RUB</div></div></div>',
+  5: '<div class="field"><label class="label">Aloqa emaili</label><input class="input" value="hr@00o.uz"></div><div class="field"><label class="label">Telegram</label><input class="input" value="@oo_hr"></div><div style="text-align:center;padding:20px"><div style="font-size:64px">🎉</div><h3>Tayyor!</h3><p style="color:#94a3b8">Vakansiya chop etishga tayyor</p></div>'
+};
+function render() {
+  document.getElementById('form').innerHTML = data[step];
+  document.querySelectorAll('.chip').forEach(c => c.onclick = function() { 
+    this.parentElement.querySelectorAll('.chip').forEach(x => x.classList.remove('active'));
+    this.classList.add('active');
+  });
+  document.querySelectorAll('.wstep').forEach((s, i) => {
+    s.classList.toggle('active', i+1 === step);
+    s.classList.toggle('completed', i+1 < step);
+  });
+}
+function next() {
+  if (step < total) { step++; render(); window.sfx?.click(); }
+  else { publish(); }
+}
+function prev() { if (step > 1) { step--; render(); } }
+function publish() {
+  window.sfx?.achievement();
+  window.confetti({count:200});
+  window.toast?.achievement('Vakansiya chop etildi! 🎉', '✓ Muvaffaqiyat');
+  setTimeout(() => location.href = 'jobs.html', 1500);
+}
+render();
+</script>
+</body>
+</html>
