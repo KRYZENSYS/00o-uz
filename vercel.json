@@ -1,9 +1,16 @@
 {
   "version": 2,
-  "cleanUrls": true,
-  "trailingSlash": false,
+  "builds": [
+    { "src": "api/**/*.py", "use": "@vercel/python" },
+    { "src": "package.json", "use": "@vercel/next" }
+  ],
+  "functions": {
+    "api/index.py": { "maxDuration": 30, "memory": 1024 },
+    "api/ai-chat.py": { "maxDuration": 25, "memory": 512 },
+    "api/health.py": { "maxDuration": 10, "memory": 256 }
+  },
   "rewrites": [
-    { "source": "/(.*)", "destination": "/public/$1" }
+    { "source": "/(.*)", "destination": "/" }
   ],
   "headers": [
     {
@@ -15,16 +22,11 @@
       ]
     },
     {
-      "source": "/sw.js",
+      "source": "/api/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
-        { "key": "Service-Worker-Allowed", "value": "/" }
-      ]
-    },
-    {
-      "source": "/manifest.json",
-      "headers": [
-        { "key": "Content-Type", "value": "application/manifest+json" }
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" }
       ]
     }
   ]
